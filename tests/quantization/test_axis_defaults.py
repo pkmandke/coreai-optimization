@@ -19,8 +19,7 @@ from coreai_opt.quantization import (
     QuantizerConfig,
 )
 from coreai_opt.quantization._axis_defaults import (
-    _PER_BLOCK_WEIGHT_AXIS_DEFAULTS,
-    _PER_CHANNEL_WEIGHT_AXIS_DEFAULTS,
+    _WEIGHT_AXIS_SPECS,
     _apply_defaults,
     _WeightFQMap,
 )
@@ -184,9 +183,9 @@ class TestWeightAxisDefaults:
         prepared = Quantizer(model, config).prepare((make_input(),))
 
         if isinstance(granularity, PerChannelGranularity):
-            expected_axis = _PER_CHANNEL_WEIGHT_AXIS_DEFAULTS[module_type]
+            expected_axis = _WEIGHT_AXIS_SPECS[module_type].per_channel_axis
         else:
-            expected_axis = _PER_BLOCK_WEIGHT_AXIS_DEFAULTS[module_type]
+            expected_axis = _WEIGHT_AXIS_SPECS[module_type].per_block_axis
 
         weight_fqs = _get_weight_fqs(prepared)
         assert len(weight_fqs) == 1
