@@ -717,7 +717,7 @@ def default_weight_quantization_spec() -> QuantizationSpec:
     return QuantizationSpec(
         dtype=torch.int8,
         qscheme="symmetric",
-        granularity=PerChannelGranularity(axis=0),
+        granularity=PerChannelGranularity(),
         fake_quantize_cls="default",
         qparam_calculator_cls="static",
         range_calculator_cls="minmax",

@@ -32,6 +32,7 @@ from coreai_opt.quantization.spec.spec import (
     QuantizationSpec,
     default_weight_quantization_spec,
 )
+from tests.utils import weight_quantization_spec_with_granularity
 
 
 class TestQuantizationComponentFactory:
@@ -112,7 +113,9 @@ class TestQuantizationComponentFactory:
 
     def test_create_qparams_calculator_functional(self):
         """Test that qparams calculator created by factory works functionally"""
-        spec = default_weight_quantization_spec()
+        # Standalone factory use has no prepare() context to resolve the axis
+        # default, so specify an explicit axis on the per-channel granularity.
+        spec = weight_quantization_spec_with_granularity(PerChannelGranularity(axis=0))
         qparams_calc = QuantizationComponentFactory.create_qparams_calculator(
             spec, CompressionTargetTensor.WEIGHT
         )
@@ -159,7 +162,9 @@ class TestQuantizationComponentFactory:
 
     def test_create_fake_quantizer_functional(self):
         """Test that fake quantizer created by factory works functionally"""
-        spec = default_weight_quantization_spec()
+        # Standalone factory use has no prepare() context to resolve the axis
+        # default, so specify an explicit axis on the per-channel granularity.
+        spec = weight_quantization_spec_with_granularity(PerChannelGranularity(axis=0))
         fake_quantizer = QuantizationComponentFactory.create_fake_quantizer(
             spec,
             quantization_target="weight",

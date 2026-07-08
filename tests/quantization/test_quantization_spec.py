@@ -141,7 +141,9 @@ def test_weight_qspec():
     assert spec.qscheme == QuantizationScheme.SYMMETRIC
     assert spec.qformulation == QuantizationFormulation.ZP
     assert isinstance(spec.granularity, PerChannelGranularity)
-    assert spec.granularity.axis == 0
+    # Per Channel axis resolution happens during Quantizer.prepare().
+    # Here it is expected to be None
+    assert spec.granularity.axis is None
     assert spec.fake_quantize_cls == _DefaultFakeQuantizeImpl
     assert spec.qparam_calculator_cls == StaticQParamsCalculator
     assert spec.range_calculator_cls == MinMaxRangeCalculator

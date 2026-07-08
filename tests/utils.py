@@ -11,6 +11,12 @@ import torch.nn.functional as F
 import yaml
 from torch.nn.utils.parametrize import is_parametrized
 
+from coreai_opt.quantization.spec import (
+    QuantizationGranularity,
+    QuantizationSpec,
+    default_weight_quantization_spec,
+)
+
 
 def count_weight_parametrizations(model: nn.Module, parametrization_cls: type) -> int:
     """Count modules in ``model`` whose ``weight`` is parametrized with ``parametrization_cls``."""
@@ -20,6 +26,23 @@ def count_weight_parametrizations(model: nn.Module, parametrization_cls: type) -
         if is_parametrized(module, "weight")
         and any(isinstance(p, parametrization_cls) for p in module.parametrizations["weight"])
     )
+
+
+def weight_quantization_spec_with_granularity(
+    granularity: QuantizationGranularity,
+) -> QuantizationSpec:
+    """Return the default weight quantization spec with an explicit granularity.
+
+    ``default_weight_quantization_spec()`` leaves the per-channel axis unset so
+    that ``Quantizer.prepare()`` can resolve it based on the consuming op/module.
+    That resolution only applies to standard weight-bearing layers (eg: ``nn.Linear``).
+    States that are non-standard -- buffers, bare parameters
+    consumed by elementwise ops such as add/sub, or parameters on custom module
+    types -- have no such default, so tests targeting those cases must specify the
+    granularity explicitly (e.g. ``PerChannelGranularity(axis=0)`` or a
+    ``PerTensorGranularity()``).
+    """
+    return default_weight_quantization_spec().model_copy(update={"granularity": granularity})
 
 
 def test_data_path():

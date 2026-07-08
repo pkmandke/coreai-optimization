@@ -47,6 +47,7 @@ from coreai_opt.quantization.spec.fake_quantize import _DefaultFakeQuantizeImpl
 from tests.quantization.test_quantization_spec import (
     expanded_dtype_allowlist,  # noqa: F401
 )
+from tests.utils import weight_quantization_spec_with_granularity
 
 
 def per_tensor_int4_qspec():
@@ -2559,14 +2560,22 @@ class TestAnnotationPatternRegistry:
                     op_input_spec=None,
                     op_output_spec=None,
                     op_state_spec=None,
-                    module_state_spec={"linear_weight": default_weight_quantization_spec()},
+                    module_state_spec={
+                        "linear_weight": weight_quantization_spec_with_granularity(
+                            PerChannelGranularity(axis=0)
+                        )
+                    },
                     # Using "*" will allow for MyModel.inner_linear_weight to be quantized when used
                     # as add's first input.
                     op_name_config={
                         "add": OpQuantizerConfig(
                             op_input_spec={1: default_activation_quantization_spec()},
                             op_output_spec=None,
-                            op_state_spec={_ALL_TENSORS: default_weight_quantization_spec()},
+                            op_state_spec={
+                                _ALL_TENSORS: weight_quantization_spec_with_granularity(
+                                    PerChannelGranularity(axis=0)
+                                )
+                            },
                         ),
                     },
                 ),
@@ -2930,7 +2939,11 @@ class TestAnnotationPatternRegistry:
                             op_input_spec=None,
                             op_output_spec=None,
                             op_state_spec=None,
-                            module_state_spec={"*": default_weight_quantization_spec()},
+                            module_state_spec={
+                                "*": weight_quantization_spec_with_granularity(
+                                    PerChannelGranularity(axis=0)
+                                )
+                            },
                         ),
                     },
                 ),
@@ -2966,7 +2979,11 @@ class TestAnnotationPatternRegistry:
                             op_input_spec=None,
                             op_output_spec=None,
                             op_state_spec=None,
-                            module_state_spec={"*": default_weight_quantization_spec()},
+                            module_state_spec={
+                                "*": weight_quantization_spec_with_granularity(
+                                    PerChannelGranularity(axis=0)
+                                )
+                            },
                         ),
                     },
                 ),
@@ -3002,7 +3019,11 @@ class TestAnnotationPatternRegistry:
                             op_input_spec=None,
                             op_output_spec=None,
                             op_state_spec=None,
-                            module_state_spec={"*": default_weight_quantization_spec()},
+                            module_state_spec={
+                                "*": weight_quantization_spec_with_granularity(
+                                    PerChannelGranularity(axis=0)
+                                )
+                            },
                         ),
                     },
                 ),
@@ -3133,7 +3154,11 @@ class TestAnnotationPatternRegistry:
                         "": ModuleQuantizerConfig(
                             op_input_spec=None,
                             op_output_spec=None,
-                            op_state_spec={"my_buf": default_weight_quantization_spec()},
+                            op_state_spec={
+                                "my_buf": weight_quantization_spec_with_granularity(
+                                    PerChannelGranularity(axis=0)
+                                )
+                            },
                         )
                     },
                 ),
@@ -3150,7 +3175,11 @@ class TestAnnotationPatternRegistry:
                             op_input_spec=None,
                             op_output_spec=None,
                             op_state_spec=None,
-                            module_state_spec={"my_buf": default_weight_quantization_spec()},
+                            module_state_spec={
+                                "my_buf": weight_quantization_spec_with_granularity(
+                                    PerChannelGranularity(axis=0)
+                                )
+                            },
                         )
                     },
                 ),

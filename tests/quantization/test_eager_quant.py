@@ -30,6 +30,7 @@ from coreai_opt.quantization._eager.supported_ops_registry import EagerQuantizer
 from coreai_opt.quantization.config import OpQuantizerConfig
 from coreai_opt.quantization.spec import (
     PerBlockGranularity,
+    PerChannelGranularity,
     PerTensorGranularity,
     QuantizationGranularity,
     QuantizationScheme,
@@ -37,6 +38,7 @@ from coreai_opt.quantization.spec import (
     default_weight_quantization_spec,
 )
 from coreai_opt.quantization.spec.fake_quantize import FakeQuantizeImplBase
+from tests.utils import weight_quantization_spec_with_granularity
 
 
 class InnerModule(nn.Module):
@@ -900,7 +902,7 @@ class TestEagerQuantizer:
         ]
         assert not [n for n, _ in fq_mods if n.startswith("conv") and n.endswith("quantize_input")]
 
-    def test_custom_module(self, basic_config):
+    def test_custom_module(self):
         """
         Test a custom module with some functional ops
         """
@@ -917,8 +919,23 @@ class TestEagerQuantizer:
                 x = torch.add(x, torch.ones_like(x))
                 return x
 
+        # A custom module type is not a known weight-bearing layer, so the axis
+        # default cannot be resolved from it. Specify an explicit per-channel axis.
+        config = QuantizerConfig(
+            global_config=ModuleQuantizerConfig(
+                op_state_spec={
+                    "weight": weight_quantization_spec_with_granularity(
+                        PerChannelGranularity(axis=0)
+                    )
+                },
+                op_input_spec={"*": default_activation_quantization_spec()},
+                op_output_spec=None,
+            ),
+            execution_mode="eager",
+        )
+
         module = CustomModule()
-        quantizer = Quantizer(module, basic_config)
+        quantizer = Quantizer(module, config)
         prepared_model = quantizer.prepare((torch.rand(10, 20),))
 
         assert is_parametrized(prepared_model, "weight")
@@ -1569,7 +1586,13 @@ class TestEagerQuantizer:
         assert not is_parametrized(prepared_model.linear2, "weight")
 
     def test_module_state_spec_wildcard(self):
-        """Test module_state_spec with wildcard '*' to quantize all states."""
+        """Test module_state_spec with wildcard '*' to quantize all states.
+
+        The wildcard matches every state, including the 1-D ``bias``. Per-channel
+        axis defaults are a only applicable to weights and are not resolved for a bias.
+        so for this test, use a per-tensor spec here, which needs no axis and applies
+        cleanly to both weight and bias.
+        """
         config = QuantizerConfig(
             global_config=ModuleQuantizerConfig(
                 op_state_spec=None,
@@ -1581,7 +1604,9 @@ class TestEagerQuantizer:
                     op_state_spec=None,
                     op_input_spec=None,
                     op_output_spec=None,
-                    module_state_spec={"*": default_weight_quantization_spec()},
+                    module_state_spec={
+                        "*": weight_quantization_spec_with_granularity(PerTensorGranularity())
+                    },
                 )
             },
             execution_mode="eager",
@@ -1864,7 +1889,9 @@ def test_custom_param_quantization():
     model = TestModule()
     config = QuantizerConfig(
         global_config=ModuleQuantizerConfig(
-            op_state_spec={"kernel": default_weight_quantization_spec()}
+            op_state_spec={
+                "kernel": weight_quantization_spec_with_granularity(PerChannelGranularity(axis=0))
+            }
         ),
         execution_mode="eager",
     )
