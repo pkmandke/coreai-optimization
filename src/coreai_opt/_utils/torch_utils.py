@@ -33,6 +33,19 @@ FP_DTYPE_TO_MAX_POW2: dict[torch.dtype, int] = {
 E8M0_EXPONENT_BIAS: Final[int] = 127
 F32_MIN_NORMAL: Final[float] = 2**-126  # ~1.175e-38
 
+# Maps a graph-mode aten ``OpOverload`` to the ``nn.Module`` type it corresponds
+# to.
+ATEN_OP_TO_MODULE_TYPE: dict[torch._ops.OpOverload, type[torch.nn.Module]] = {
+    torch.ops.aten.conv1d.default: torch.nn.Conv1d,
+    torch.ops.aten.conv2d.default: torch.nn.Conv2d,
+    torch.ops.aten.conv3d.default: torch.nn.Conv3d,
+    torch.ops.aten.conv_transpose1d.default: torch.nn.ConvTranspose1d,
+    torch.ops.aten.conv_transpose2d.input: torch.nn.ConvTranspose2d,
+    torch.ops.aten.conv_transpose3d.input: torch.nn.ConvTranspose3d,
+    torch.ops.aten.linear.default: torch.nn.Linear,
+    torch.ops.aten.embedding.default: torch.nn.Embedding,
+}
+
 
 class NamedModule(NamedTuple):
     """NamedTuple for holding name and module info"""

@@ -21,6 +21,7 @@ from coreai_opt.quantization import (
 from coreai_opt.quantization._axis_defaults import (
     _WEIGHT_AXIS_SPECS,
     _apply_defaults,
+    _WeightAxisSpec,
     _WeightFQMap,
 )
 from coreai_opt.quantization.spec import default_activation_quantization_spec
@@ -290,6 +291,25 @@ def _activation_only_config(
         ),
         execution_mode=execution_mode,
     )
+
+
+class TestWeightAxisSpec:
+    """Verify _WeightAxisSpec.default_axis_for maps granularity types to axes."""
+
+    def test_per_channel_returns_per_channel_axis(self):
+        """PerChannelGranularity resolves to the spec's per_channel_axis."""
+        spec = _WeightAxisSpec(per_channel_axis=0, per_block_axis=1)
+        assert spec.default_axis_for(PerChannelGranularity(axis=None)) == 0
+
+    def test_per_block_returns_per_block_axis(self):
+        """PerBlockGranularity resolves to the spec's per_block_axis."""
+        spec = _WeightAxisSpec(per_channel_axis=0, per_block_axis=1)
+        assert spec.default_axis_for(PerBlockGranularity(axis=None, block_size=2)) == 1
+
+    def test_other_granularity_returns_none(self):
+        """A granularity that is neither per-channel nor per-block returns None."""
+        spec = _WeightAxisSpec(per_channel_axis=0, per_block_axis=1)
+        assert spec.default_axis_for(PerTensorGranularity()) is None
 
 
 class TestActivationAxisValidation:

@@ -20,6 +20,7 @@ import torch.nn as nn
 import torch.nn.utils.parametrize as P
 from torch.fx import GraphModule
 
+from coreai_opt._utils.torch_utils import ATEN_OP_TO_MODULE_TYPE
 from coreai_opt.config.spec import CompressionTargetTensor
 from coreai_opt.quantization.spec.fake_quantize import FakeQuantizeImplBase
 from coreai_opt.quantization.spec.granularity import (
@@ -38,18 +39,15 @@ _WeightFQMap = defaultdict[FakeQuantizeImplBase, list[_ConsumerInfo]]
 
 @dataclass(frozen=True)
 class _WeightAxisSpec:
-    """Default axis indices and aten op mapping for a single ``nn.Module`` type.
+    """Default axis indices for a single ``nn.Module`` type.
 
     Attributes:
         per_channel_axis (int): Output-channel axis for per-channel granularity.
         per_block_axis (int): Input-channel (reduction) axis for per-block granularity.
-        aten_ops (tuple[torch._ops.OpOverload, ...]): Graph-mode aten ops that
-            correspond to this module type.
     """
 
     per_channel_axis: int
     per_block_axis: int
-    aten_ops: tuple[torch._ops.OpOverload, ...]
 
     def default_axis_for(self, granularity: QuantizationGranularity) -> int | None:
         """Return the default axis for the given granularity, or ``None`` if not applicable."""
@@ -63,18 +61,14 @@ class _WeightAxisSpec:
 # Conv weights are [out_ch, in_ch, ...]; ConvTranspose weights are [in_ch, out_ch, ...].
 # Embedding weights are [num_embeddings, embedding_dim].
 _WEIGHT_AXIS_SPECS: dict[type[nn.Module], _WeightAxisSpec] = {
-    nn.Conv1d: _WeightAxisSpec(0, 1, (torch.ops.aten.conv1d.default,)),
-    nn.Conv2d: _WeightAxisSpec(0, 1, (torch.ops.aten.conv2d.default,)),
-    nn.Conv3d: _WeightAxisSpec(0, 1, (torch.ops.aten.conv3d.default,)),
-    nn.ConvTranspose1d: _WeightAxisSpec(1, 0, (torch.ops.aten.conv_transpose1d.default,)),
-    nn.ConvTranspose2d: _WeightAxisSpec(1, 0, (torch.ops.aten.conv_transpose2d.input,)),
-    nn.ConvTranspose3d: _WeightAxisSpec(1, 0, (torch.ops.aten.conv_transpose3d.input,)),
-    nn.Linear: _WeightAxisSpec(0, 1, (torch.ops.aten.linear.default,)),
-    nn.Embedding: _WeightAxisSpec(0, 1, (torch.ops.aten.embedding.default,)),
-}
-
-_ATEN_OP_TO_MODULE_TYPE: dict[torch._ops.OpOverload, type[nn.Module]] = {
-    op: mod for mod, spec in _WEIGHT_AXIS_SPECS.items() for op in spec.aten_ops
+    nn.Conv1d: _WeightAxisSpec(0, 1),
+    nn.Conv2d: _WeightAxisSpec(0, 1),
+    nn.Conv3d: _WeightAxisSpec(0, 1),
+    nn.ConvTranspose1d: _WeightAxisSpec(1, 0),
+    nn.ConvTranspose2d: _WeightAxisSpec(1, 0),
+    nn.ConvTranspose3d: _WeightAxisSpec(1, 0),
+    nn.Linear: _WeightAxisSpec(0, 1),
+    nn.Embedding: _WeightAxisSpec(0, 1),
 }
 
 
@@ -225,7 +219,7 @@ def _apply_defaults(fq_map: _WeightFQMap) -> None:
 
     For each FQ in the map, resolves each consumer's identifier to a module
     type (aten ``OpOverload`` entries from graph-mode are mapped via
-    ``_ATEN_OP_TO_MODULE_TYPE``), then looks up the default axis from
+    ``ATEN_OP_TO_MODULE_TYPE``), then looks up the default axis from
     ``_WEIGHT_AXIS_SPECS``. When a single FQ has multiple consumers (shared
     weight), all consumers must agree on the same default axis.
 
@@ -251,7 +245,7 @@ def _apply_defaults(fq_map: _WeightFQMap) -> None:
         for module_type_or_op, name in consumers:
             # graph-mode consumers are aten ops, so map them to module types first
             if isinstance(module_type_or_op, torch._ops.OpOverload):
-                module_type = _ATEN_OP_TO_MODULE_TYPE.get(module_type_or_op)
+                module_type = ATEN_OP_TO_MODULE_TYPE.get(module_type_or_op)
             else:
                 module_type = module_type_or_op
 
