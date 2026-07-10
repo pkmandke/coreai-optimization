@@ -20,7 +20,9 @@ import torch.nn as nn
 import torch.nn.utils.parametrize as P
 from torch.fx import GraphModule
 
-from coreai_opt._utils.torch_utils import ATEN_OP_TO_MODULE_TYPE
+from coreai_opt._utils.torch_utils import (
+    ATEN_OP_TO_MODULE_TYPE as _ATEN_OP_TO_MODULE_TYPE,
+)
 from coreai_opt.config.spec import CompressionTargetTensor
 from coreai_opt.quantization.spec.fake_quantize import FakeQuantizeImplBase
 from coreai_opt.quantization.spec.granularity import (
@@ -219,7 +221,7 @@ def _apply_defaults(fq_map: _WeightFQMap) -> None:
 
     For each FQ in the map, resolves each consumer's identifier to a module
     type (aten ``OpOverload`` entries from graph-mode are mapped via
-    ``ATEN_OP_TO_MODULE_TYPE``), then looks up the default axis from
+    ``_ATEN_OP_TO_MODULE_TYPE``), then looks up the default axis from
     ``_WEIGHT_AXIS_SPECS``. When a single FQ has multiple consumers (shared
     weight), all consumers must agree on the same default axis.
 
@@ -245,7 +247,7 @@ def _apply_defaults(fq_map: _WeightFQMap) -> None:
         for module_type_or_op, name in consumers:
             # graph-mode consumers are aten ops, so map them to module types first
             if isinstance(module_type_or_op, torch._ops.OpOverload):
-                module_type = ATEN_OP_TO_MODULE_TYPE.get(module_type_or_op)
+                module_type = _ATEN_OP_TO_MODULE_TYPE.get(module_type_or_op)
             else:
                 module_type = module_type_or_op
 
