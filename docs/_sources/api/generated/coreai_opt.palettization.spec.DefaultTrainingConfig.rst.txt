@@ -1,0 +1,14 @@
+﻿coreai\_opt.palettization.spec.DefaultTrainingConfig
+====================================================
+
+.. currentmodule:: coreai_opt.palettization.spec
+
+.. autopydantic_model:: DefaultTrainingConfig
+
+   
+   
+   
+
+   
+   
+   
