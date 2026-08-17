@@ -256,14 +256,10 @@ data-aria-dark="Switch to auto color mode">
       <i class="i-lucide close"></i>
     </button>
     <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
-<li><a class="reference internal" href="#example">Example</a><ul>
+<li><a class="reference internal" href="#example">Example</a></li>
 <li><a class="reference internal" href="#patch-the-model-in-place-for-externalization-using-the-patch-model-for-externalization-api">Patch the model in-place for externalization using the <code class="docutils literal notranslate"><span class="pre">_patch_model_for_externalization</span></code> API</a></li>
-<li><a class="reference internal" href="#subexport-and-restore-and-provide-the-composite-op-exported-programs-during-add-exported-program"><code class="docutils literal notranslate"><span class="pre">_subexport_and_restore</span></code> and provide the composite op exported programs during <code class="docutils literal notranslate"><span class="pre">add_exported_program</span></code></a><ul>
+<li><a class="reference internal" href="#subexport-and-restore-and-provide-the-composite-op-exported-programs-during-add-exported-program"><code class="docutils literal notranslate"><span class="pre">_subexport_and_restore</span></code> and provide the composite op exported programs during <code class="docutils literal notranslate"><span class="pre">add_exported_program</span></code></a></li>
 <li><a class="reference internal" href="#notes">Notes</a></li>
-</ul>
-</li>
-</ul>
-</li>
 </ul>
 </div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
   </aside>
@@ -420,13 +416,14 @@ data-aria-dark="Switch to auto color mode">
 </span></pre></div>
 </div>
 <p>Compared to the <a class="reference internal" href="../introduction/integration_coreai.html"><span class="std std-doc">usual flow</span></a>, there are <em>two</em> key differences:</p>
+</section>
 <section id="patch-the-model-in-place-for-externalization-using-the-patch-model-for-externalization-api">
-<h3>Patch the model in-place for externalization using the <code class="docutils literal notranslate"><span class="pre">_patch_model_for_externalization</span></code> API<a class="headerlink" href="#patch-the-model-in-place-for-externalization-using-the-patch-model-for-externalization-api" title="Link to this heading">¶</a></h3>
+<h2>Patch the model in-place for externalization using the <code class="docutils literal notranslate"><span class="pre">_patch_model_for_externalization</span></code> API<a class="headerlink" href="#patch-the-model-in-place-for-externalization-using-the-patch-model-for-externalization-api" title="Link to this heading">¶</a></h2>
 <p>In graph mode execution, <code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code>’s <code class="docutils literal notranslate"><span class="pre">quantizer.prepare</span></code> invokes the <code class="docutils literal notranslate"><span class="pre">torch.export.export</span></code> API. By default, this causes the composite op body to be inlined in the graph and we lose the information about it’s boundary for externalization. In order to preserve this information, the <code class="docutils literal notranslate"><span class="pre">_patch_model_for_externalization</span></code> API modifies the original <code class="docutils literal notranslate"><span class="pre">torch</span></code> model in-place, before preparing the model for graph mode quantization using <code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code>. Specifically, it replaces the forward method of the <code class="docutils literal notranslate"><span class="pre">nn.module</span></code>s specified in <code class="docutils literal notranslate"><span class="pre">ExternalizeSpec(target_class)</span></code> with a <code class="docutils literal notranslate"><span class="pre">torch.library.custom_op</span></code> that, in turn, invokes the original forward method of the composite op. This keeps the model functionally the same, however, now the sub-module (<code class="docutils literal notranslate"><span class="pre">RMSNormComposite</span></code> in this example) becomes opaque to the <code class="docutils literal notranslate"><span class="pre">torch.export.export</span></code> API, i.e., a single node instead of the composite op body being inlined in the exported graph.</p>
 <p>Note that in addition to replacing the <code class="docutils literal notranslate"><span class="pre">forward</span></code> method of the composite ops with a <code class="docutils literal notranslate"><span class="pre">torch.library.custom_op</span></code>, the <code class="docutils literal notranslate"><span class="pre">_patch_model_for_externalization</span></code> API also registers some additional information/metadata as attributes on the composite op sub-modules. This metadata is then used by <code class="docutils literal notranslate"><span class="pre">_subexport_and_restore</span></code> as explained below, after which the model is restored by removing this metadata along with the <code class="docutils literal notranslate"><span class="pre">torch.library.custom_op</span></code> from the model.</p>
 </section>
 <section id="subexport-and-restore-and-provide-the-composite-op-exported-programs-during-add-exported-program">
-<h3><code class="docutils literal notranslate"><span class="pre">_subexport_and_restore</span></code> and provide the composite op exported programs during <code class="docutils literal notranslate"><span class="pre">add_exported_program</span></code><a class="headerlink" href="#subexport-and-restore-and-provide-the-composite-op-exported-programs-during-add-exported-program" title="Link to this heading">¶</a></h3>
+<h2><code class="docutils literal notranslate"><span class="pre">_subexport_and_restore</span></code> and provide the composite op exported programs during <code class="docutils literal notranslate"><span class="pre">add_exported_program</span></code><a class="headerlink" href="#subexport-and-restore-and-provide-the-composite-op-exported-programs-during-add-exported-program" title="Link to this heading">¶</a></h2>
 <p>Once a model is patched using the <code class="docutils literal notranslate"><span class="pre">_patch_model_for_externalization</span></code> API, it can be quantized as usual using <code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code>’s graph mode (either for PTQ or QAT) and finalized to <code class="docutils literal notranslate"><span class="pre">CoreAI</span></code> backend.</p>
 <p>Now in order to convert the finalized model into a coreai graph (<code class="docutils literal notranslate"><span class="pre">aimodel</span></code>):</p>
 <ul class="simple">
@@ -437,8 +434,9 @@ data-aria-dark="Switch to auto color mode">
 It returns a list of torch exported programs corresponding to all the composite op sub-modules that were <em>patched</em> for externalization by <code class="docutils literal notranslate"><span class="pre">_patch_model_for_externalization</span></code>.
 These torch exported programs are then passed to the <code class="docutils literal notranslate"><span class="pre">add_exported_program</span></code> API via the <code class="docutils literal notranslate"><span class="pre">_externalized_exported_programs</span></code> argument to prepare the coreai graph (<code class="docutils literal notranslate"><span class="pre">aimodel</span></code>).
 After this process, the coreai graph contains both the main graph and the sub-graphs corresponding to the composite op submodule preserved as function calls.</p>
+</section>
 <section id="notes">
-<h4>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h4>
+<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Quantization cannot be applied <em>inside</em> the composite op body.</p></li>
 <li><p>However, the boundaries (incoming and outgoing tensors) of the composite ops can be quantized as usual, using the <code class="docutils literal notranslate"><span class="pre">module_input_spec</span></code> and <code class="docutils literal notranslate"><span class="pre">module_output_spec</span></code> config kwargs as described in the documentation on <code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code> configs <a class="reference internal" href="../quantization/config.html"><span class="std std-doc">here</span></a>.</p></li>
@@ -447,8 +445,6 @@ After this process, the coreai graph contains both the main graph and the sub-gr
 <p class="admonition-title">Warning</p>
 <p>The externalization APIs used below, _patch_model_for_externalization and _subexport_and_restore in coreai-torch are currently experimental. :::</p>
 </div>
-</section>
-</section>
 </section>
 </section>
 
