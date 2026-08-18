@@ -2,7 +2,7 @@
 <html lang="en" data-accent-color="indigo" data-content_root="../">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>API Overview - CoreAI-Opt main documentation</title><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Config API" href="config.html" /><link rel="prev" title="Basics" href="basics.html" /><script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Quantization with Composite Ops - CoreAI-Opt main documentation</title><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Palettization" href="../palettization/index.html" /><link rel="prev" title="Deeper Dive" href="advanced.html" /><script>
     function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
     setColorMode(localStorage._theme||"auto");
   </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d88b86f9" />
@@ -21,7 +21,7 @@
 }
 </style>
     
-  <meta property="og:type" content="website"/><meta property="og:title" content="API Overview"/>
+  <meta property="og:type" content="website"/><meta property="og:title" content="Quantization with Composite Ops"/>
     <meta name="twitter:card" content="summary"/>
   </head>
 <body><div class="sy-head">
@@ -85,12 +85,12 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Core Algorithms and APIs</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../quantization/index.html">Quantization</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../quantization/basics.html">Basics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../quantization/overview.html">API Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../quantization/config.html">Config API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../quantization/advanced.html">Deeper Dive</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../quantization/composite_op_quantization.html">Quantization with Composite Ops</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Quantization</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="basics.html">Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">API Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Config API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html">Deeper Dive</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Quantization with Composite Ops</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../palettization/index.html">Palettization</a><ul>
@@ -99,10 +99,10 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../palettization/config.html">Config API</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Pruning</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="basics.html">Basics</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">API Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="config.html">Config API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pruning/index.html">Pruning</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pruning/basics.html">Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pruning/overview.html">API Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pruning/config.html">Config API</a></li>
 </ul>
 </li>
 </ul>
@@ -256,8 +256,10 @@ data-aria-dark="Switch to auto color mode">
       <i class="i-lucide close"></i>
     </button>
     <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
-<li><a class="reference internal" href="#post-training-pruning">Post-training Pruning</a></li>
-<li><a class="reference internal" href="#pruning-with-fine-tuning">Pruning with Fine-Tuning</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#patch-original-model-with-custom-ops">Patch original model with custom ops</a></li>
+<li><a class="reference internal" href="#extract-exported-programs-for-submodules">Extract exported programs for submodules</a></li>
+<li><a class="reference internal" href="#notes">Notes</a></li>
 </ul>
 </div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
   </aside>
@@ -275,11 +277,11 @@ data-aria-dark="Switch to auto color mode">
         <span>/</span>
         <meta itemprop="position" content="1" />
       </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-        <a itemprop="item" href="index.html"><span itemprop="name">Pruning</span></a>
+        <a itemprop="item" href="index.html"><span itemprop="name">Quantization</span></a>
         <span>/</span>
         <meta itemprop="position" content="2" />
       </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-        <strong itemprop="name">API Overview</strong>
+        <strong itemprop="name">Quantization with Composite Ops</strong>
         <meta itemprop="position" content="3" />
       </li></ol>
     <div class="xl:hidden ml-1">
@@ -294,7 +296,7 @@ data-aria-dark="Switch to auto color mode">
   <div id="copy-page-trigger"><button
       type="button"
       class="js-copy px-3 py-1 inline-flex items-center gap-1"
-      data-url="overview.html.md"
+      data-url="composite_op_quantization.html.md"
     >
       <i class="i-lucide" data-icon="copy"></i>
       <span>Copy page</span>
@@ -307,13 +309,13 @@ data-aria-dark="Switch to auto color mode">
   <div id="copy-page-content" role="menu" aria-orientation="vertical" aria-hidden="true">
     <div role="presentation">
       <div class="flex flex-col" role="group">
-        <button class="js-copy" type="button" role="menuitem" data-url="overview.html.md">
+        <button class="js-copy" type="button" role="menuitem" data-url="composite_op_quantization.html.md">
           <span class="iconify-icon">
             <i class="i-lucide" data-icon="copy"></i>
           </span>
           <span>Copy page</span>
         </button>
-        <a role="menuitem" href="overview.html.md" target="_blank" rel="nofollow">
+        <a role="menuitem" href="composite_op_quantization.html.md" target="_blank" rel="nofollow">
           <span class="iconify-icon">
             <img src="../_static/icons/markdown.svg" alt="" width="14" height="14">
           </span>
@@ -323,93 +325,126 @@ data-aria-dark="Switch to auto color mode">
     </div>
   </div>
 </div><article class="yue" role="main">
-          <section class="tex2jax_ignore mathjax_ignore" id="api-overview">
-<h1>API Overview<a class="headerlink" href="#api-overview" title="Link to this heading">¶</a></h1>
-<section id="post-training-pruning">
-<h2>Post-training Pruning<a class="headerlink" href="#post-training-pruning" title="Link to this heading">¶</a></h2>
-<p>Post-training pruning sparsifies the model in a single shot. The mask is computed during the <code class="docutils literal notranslate"><span class="pre">prepare()</span></code> call and the prepared model immediately reflects the effects of sparsity.</p>
-<p>Unless the original PyTorch model already has a large fraction of weights close to zero across all of its weight parameters, post-training pruning will almost always degrade accuracy. It is most useful as a quick way to evaluate the impact of sparsity on model size and inference latency before committing to a fine-tuning workflow.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">import</span><span class="w"> </span><span class="nn">coreai_opt</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">opt</span>
-</span><span data-line="2"><span class="kn">from</span><span class="w"> </span><span class="nn">coreai_opt.pruning</span><span class="w"> </span><span class="kn">import</span> <span class="n">MagnitudePruner</span><span class="p">,</span> <span class="n">MagnitudePrunerConfig</span>
-</span><span data-line="3"><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+          <section class="tex2jax_ignore mathjax_ignore" id="quantization-with-composite-ops">
+<h1>Quantization with Composite Ops<a class="headerlink" href="#quantization-with-composite-ops" title="Link to this heading">¶</a></h1>
+<p>Core AI recognizes certain well-known building blocks, such as SDPA or RMSNorm, as <em>composite ops</em> and applies optimized implementations for them at runtime. These composite ops are available via the <a class="reference external" href="https://apple.github.io/coreai-torch/main/api/composite-ops.html">coreai_torch.composite_ops</a> API. When a PyTorch model uses one of these ops, it can be converted to Core AI using one of the following APIs:</p>
+<ul class="simple">
+<li><p><strong>Using <code class="docutils literal notranslate"><span class="pre">TorchConverter.add_pytorch_module()</span></code> along with the <code class="docutils literal notranslate"><span class="pre">externalize_modules</span></code> arg</strong>: As described <a class="reference external" href="https://apple.github.io/coreai-torch/main/guides/composite-ops.html">here</a>, this approach takes as input an <code class="docutils literal notranslate"><span class="pre">nn.Module</span></code> torch model, along with the composite op torch module, specified via the <em><a class="reference external" href="https://apple.github.io/coreai-torch/main/guides/externalization.html">externalize_modules</a></em> arg. Any <code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code> optimizer that yields a torch model of type <code class="docutils literal notranslate"><span class="pre">nn.Module</span></code> can be converted using this API.</p></li>
+<li><p><strong>Using <code class="docutils literal notranslate"><span class="pre">TorchConverter.add_exported_program()</span></code></strong> : This <a class="reference external" href="https://apple.github.io/coreai-torch/main/api/TorchConverter.html#add-exported-program">coreai-torch API</a> operates on an already exported torch program. When using <code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code>’s quantizer with <a class="reference internal" href="overview.html#two-execution-modes-graph-and-eager"><span class="std std-ref">graph execution mode</span></a>, which results in a torch <code class="docutils literal notranslate"><span class="pre">ExportedProgram</span></code>, there are a few additional steps required to ensure correct conversion and externalization of the composite op modules. This process is explained below with an example.</p></li>
+</ul>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h2>
+<p>This example uses the same <code class="docutils literal notranslate"><span class="pre">RMSNormComposite</span></code> op from the <a class="reference external" href="https://apple.github.io/coreai-torch/main/guides/externalization.html">Externalization</a> guide, however, the same process applies for all composite ops with their respective <code class="docutils literal notranslate"><span class="pre">ExternalizeSpec</span></code>s.</p>
+<p>First define the model that uses a composite op:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+</span><span data-line="2"><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+</span><span data-line="3">
 </span><span data-line="4">
-</span><span data-line="5"><span class="n">model</span> <span class="o">=</span> <span class="n">MyModel</span><span class="p">()</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-</span><span data-line="6"><span class="n">example_inputs</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">),)</span>
-</span><span data-line="7">
-</span><span data-line="8"><span class="c1"># Default config: 50% unstructured magnitude pruning on every supported weight.</span>
-</span><span data-line="9"><span class="n">config</span> <span class="o">=</span> <span class="n">MagnitudePrunerConfig</span><span class="p">()</span>
-</span><span data-line="10">
-</span><span data-line="11"><span class="c1"># Apply sparsity to the model. After the prepare API is called,</span>
-</span><span data-line="12"><span class="c1"># the model will have 50% sparsity on every supported weight parameter</span>
-</span><span data-line="13"><span class="n">pruner</span> <span class="o">=</span> <span class="n">MagnitudePruner</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
-</span><span data-line="14"><span class="n">prepared_model</span> <span class="o">=</span> <span class="n">pruner</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">example_inputs</span><span class="p">)</span>
-</span><span data-line="15">
-</span><span data-line="16"><span class="c1"># Validate the model with the effects of sparsity</span>
-</span><span data-line="17"><span class="n">val_metric</span> <span class="o">=</span> <span class="n">validate</span><span class="p">(</span><span class="n">prepared_model</span><span class="p">,</span> <span class="n">val_dataset</span><span class="p">)</span>
+</span><span data-line="5"><span class="c1"># The composite op</span>
+</span><span data-line="6"><span class="k">class</span><span class="w"> </span><span class="nc">RMSNormComposite</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+</span><span data-line="7">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axes</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+</span><span data-line="8">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+</span><span data-line="9">        <span class="bp">self</span><span class="o">.</span><span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span>
+</span><span data-line="10">        <span class="bp">self</span><span class="o">.</span><span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span>
+</span><span data-line="11">        <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">version</span>
+</span><span data-line="12">
+</span><span data-line="13">    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+</span><span data-line="14">        <span class="n">x_f32</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</span><span data-line="15">        <span class="n">inv_rms</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rsqrt</span><span class="p">((</span><span class="n">x_f32</span> <span class="o">*</span> <span class="n">x_f32</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span>
+</span><span data-line="16">        <span class="k">return</span> <span class="p">(</span><span class="nb">input</span> <span class="o">*</span> <span class="n">inv_rms</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale</span>
+</span><span data-line="17">
 </span><span data-line="18">
-</span><span data-line="19"><span class="c1"># Deployment is similar to the Quantizer.</span>
-</span><span data-line="20"><span class="c1"># We invoke the &#39;finalize&#39; API to update the PyTorch model and make it compatible</span>
-</span><span data-line="21"><span class="c1"># for conversion with either CoreAI or CoreML</span>
-</span><span data-line="22">
-</span><span data-line="23"><span class="n">finalized_model_for_coreai</span> <span class="o">=</span> <span class="n">pruner</span><span class="o">.</span><span class="n">finalize</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">ExportBackend</span><span class="o">.</span><span class="n">CoreAI</span><span class="p">)</span>
-</span><span data-line="24"><span class="c1"># OR</span>
-</span><span data-line="25"><span class="n">finalized_model_for_coreml</span> <span class="o">=</span> <span class="n">pruner</span><span class="o">.</span><span class="n">finalize</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">ExportBackend</span><span class="o">.</span><span class="n">CoreML</span><span class="p">)</span>
-</span></pre></div>
-</div>
-</section>
-<section id="pruning-with-fine-tuning">
-<h2>Pruning with Fine-Tuning<a class="headerlink" href="#pruning-with-fine-tuning" title="Link to this heading">¶</a></h2>
-<p>In most cases, fine-tuning is required to recover good accuracy after pruning. We can use a sparsity schedule on the module config and call <code class="docutils literal notranslate"><span class="pre">pruner.step()</span></code> to gradually ramp up sparsity over training.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">coreai_opt.pruning</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-</span><span data-line="2">    <span class="n">MagnitudePruner</span><span class="p">,</span>
-</span><span data-line="3">    <span class="n">MagnitudePrunerConfig</span><span class="p">,</span>
-</span><span data-line="4">    <span class="n">ModuleMagnitudePrunerConfig</span><span class="p">,</span>
-</span><span data-line="5">    <span class="n">PruningSpec</span><span class="p">,</span>
-</span><span data-line="6"><span class="p">)</span>
-</span><span data-line="7"><span class="kn">from</span><span class="w"> </span><span class="nn">coreai_opt.pruning.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolynomialDecaySchedule</span>
-</span><span data-line="8"><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-</span><span data-line="9">
-</span><span data-line="10"><span class="n">model</span> <span class="o">=</span> <span class="n">MyModel</span><span class="p">()</span>
-</span><span data-line="11"><span class="n">example_inputs</span> <span class="o">=</span> <span class="p">(</span><span class="o">...</span><span class="p">,)</span>
-</span><span data-line="12"><span class="n">num_epochs</span> <span class="o">=</span> <span class="mi">5</span>
-</span><span data-line="13">
-</span><span data-line="14"><span class="c1"># 70% target sparsity ramped in via a polynomial schedule over num_epochs.</span>
-</span><span data-line="15"><span class="c1"># Schedule starts at step 0 (sparsity=0) and advances on every pruner.step()</span>
-</span><span data-line="16"><span class="c1"># call along a cubic curve until reaching target_sparsity at step total_iters.</span>
-</span><span data-line="17"><span class="n">config</span> <span class="o">=</span> <span class="n">MagnitudePrunerConfig</span><span class="p">(</span>
-</span><span data-line="18">    <span class="n">global_config</span><span class="o">=</span><span class="n">ModuleMagnitudePrunerConfig</span><span class="p">(</span>
-</span><span data-line="19">        <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">PruningSpec</span><span class="p">(</span><span class="n">target_sparsity</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)},</span>
-</span><span data-line="20">        <span class="n">sparsity_schedule</span><span class="o">=</span><span class="n">PolynomialDecaySchedule</span><span class="p">(</span>
-</span><span data-line="21">            <span class="n">begin_step</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">total_iters</span><span class="o">=</span><span class="n">num_epochs</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="mf">3.0</span>
-</span><span data-line="22">        <span class="p">),</span>
-</span><span data-line="23">    <span class="p">),</span>
-</span><span data-line="24"><span class="p">)</span>
-</span><span data-line="25"><span class="n">pruner</span> <span class="o">=</span> <span class="n">MagnitudePruner</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
-</span><span data-line="26"><span class="n">prepared_model</span> <span class="o">=</span> <span class="n">pruner</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">example_inputs</span><span class="p">)</span>
+</span><span data-line="19"><span class="c1"># A model that uses the composite op</span>
+</span><span data-line="20"><span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+</span><span data-line="21">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">32</span><span class="p">):</span>
+</span><span data-line="22">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+</span><span data-line="23">        <span class="bp">self</span><span class="o">.</span><span class="n">proj</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
+</span><span data-line="24">        <span class="bp">self</span><span class="o">.</span><span class="n">norm</span> <span class="o">=</span> <span class="n">RMSNormComposite</span><span class="p">()</span>
+</span><span data-line="25">        <span class="bp">self</span><span class="o">.</span><span class="n">norm_weight</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">dim</span><span class="p">))</span>
+</span><span data-line="26">        <span class="bp">self</span><span class="o">.</span><span class="n">out</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
 </span><span data-line="27">
-</span><span data-line="28"><span class="c1"># ---------- training loop --------------------</span>
-</span><span data-line="29"><span class="c1"># We fine-tune the model while incrementing the sparsity schedule.</span>
-</span><span data-line="30"><span class="c1"># The pruner.step() API advances the sparsity schedule and recomputes</span>
-</span><span data-line="31"><span class="c1"># the masks against the current weight magnitudes for the next sparsity level.</span>
-</span><span data-line="32"><span class="c1"># The step() API can be called at the epoch frequency or at the batch step frequency</span>
-</span><span data-line="33"><span class="c1"># based on the configuration of the schedule</span>
-</span><span data-line="34"><span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">prepared_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
-</span><span data-line="35"><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
-</span><span data-line="36">    <span class="n">prepared_model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
-</span><span data-line="37">    <span class="k">for</span> <span class="n">batch</span><span class="p">,</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">train_dataloader</span><span class="p">:</span>
-</span><span data-line="38">        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-</span><span data-line="39">        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">prepared_model</span><span class="p">(</span><span class="n">batch</span><span class="p">),</span> <span class="n">target</span><span class="p">)</span>
-</span><span data-line="40">        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
-</span><span data-line="41">        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-</span><span data-line="42">    <span class="n">pruner</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
-</span><span data-line="43">
-</span><span data-line="44">    <span class="n">val_metric</span> <span class="o">=</span> <span class="n">validate</span><span class="p">(</span><span class="n">prepared_model</span><span class="p">,</span> <span class="n">val_dataloader</span><span class="p">)</span>
-</span><span data-line="45">
-</span><span data-line="46"><span class="c1"># ----------- deployment ------------------</span>
-</span><span data-line="47"><span class="c1"># same as before</span>
+</span><span data-line="28">    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+</span><span data-line="29">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">out</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_weight</span><span class="p">))</span>
+</span><span data-line="30">
+</span><span data-line="31">
+</span><span data-line="32"><span class="n">original_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">()</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+</span><span data-line="33"><span class="n">example_inputs</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">32</span><span class="p">),)</span>
 </span></pre></div>
 </div>
-<p>For more details on how to use <a class="reference internal" href="../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html#coreai_opt.pruning.MagnitudePrunerConfig" title="coreai_opt.pruning.MagnitudePrunerConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">MagnitudePrunerConfig</span></code></a>, <a class="reference internal" href="../api/generated/coreai_opt.pruning.ModuleMagnitudePrunerConfig.html#coreai_opt.pruning.ModuleMagnitudePrunerConfig" title="coreai_opt.pruning.ModuleMagnitudePrunerConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModuleMagnitudePrunerConfig</span></code></a> to apply different settings to different weights in the model, see <a class="reference internal" href="config.html"><span class="std std-doc">Pruning Config</span></a>.</p>
+<p>Next, apply <code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code> quantization with graph mode, and convert using <code class="docutils literal notranslate"><span class="pre">coreai-torch</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">import</span><span class="w"> </span><span class="nn">coreai_opt</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">opt</span>
+</span><span data-line="2"><span class="kn">from</span><span class="w"> </span><span class="nn">coreai_opt.quantization</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantizer</span><span class="p">,</span> <span class="n">QuantizerConfig</span>
+</span><span data-line="3"><span class="kn">from</span><span class="w"> </span><span class="nn">coreai_opt.quantization.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExecutionMode</span>
+</span><span data-line="4"><span class="kn">import</span><span class="w"> </span><span class="nn">coreai_torch</span>
+</span><span data-line="5"><span class="kn">from</span><span class="w"> </span><span class="nn">coreai_torch</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span data-line="6">    <span class="n">ExternalizeSpec</span><span class="p">,</span>
+</span><span data-line="7">    <span class="n">TorchConverter</span><span class="p">,</span>
+</span><span data-line="8">    <span class="n">_patch_model_for_externalization</span><span class="p">,</span>
+</span><span data-line="9">    <span class="n">_subexport_and_restore</span><span class="p">,</span>
+</span><span data-line="10"><span class="p">)</span>
+</span><span data-line="11">
+</span><span data-line="12"><span class="c1"># Patch the model in-place</span>
+</span><span data-line="13"><span class="c1"># to mark RMSNormComposite module for externalization</span>
+</span><span data-line="14"><span class="n">_patch_model_for_externalization</span><span class="p">(</span>
+</span><span data-line="15">    <span class="n">original_model</span><span class="p">,</span>
+</span><span data-line="16">    <span class="n">targets</span><span class="o">=</span><span class="p">[</span>
+</span><span data-line="17">        <span class="n">ExternalizeSpec</span><span class="p">(</span>
+</span><span data-line="18">            <span class="n">target_class</span><span class="o">=</span><span class="n">RMSNormComposite</span><span class="p">,</span>
+</span><span data-line="19">            <span class="n">composite_op_name</span><span class="o">=</span><span class="s2">&quot;rms_norm&quot;</span><span class="p">,</span>
+</span><span data-line="20">            <span class="n">composite_attrs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;axes&quot;</span><span class="p">,</span> <span class="s2">&quot;eps&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">],</span>
+</span><span data-line="21">        <span class="p">)</span>
+</span><span data-line="22">    <span class="p">],</span>
+</span><span data-line="23"><span class="p">)</span>
+</span><span data-line="24">
+</span><span data-line="25"><span class="c1"># Usual flow using coreai-opt APIs for quantization</span>
+</span><span data-line="26"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="o">.</span><span class="n">presets</span><span class="o">.</span><span class="n">w8</span><span class="p">(</span><span class="n">execution_mode</span><span class="o">=</span><span class="n">ExecutionMode</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">)</span>
+</span><span data-line="27"><span class="n">quantizer</span> <span class="o">=</span> <span class="n">Quantizer</span><span class="p">(</span><span class="n">original_model</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+</span><span data-line="28"><span class="n">prepared_model</span> <span class="o">=</span> <span class="n">quantizer</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">example_inputs</span><span class="p">)</span>
+</span><span data-line="29"><span class="n">finalized_quantized_model</span> <span class="o">=</span> <span class="n">quantizer</span><span class="o">.</span><span class="n">finalize</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="n">opt</span><span class="o">.</span><span class="n">ExportBackend</span><span class="o">.</span><span class="n">CoreAI</span><span class="p">)</span>
+</span><span data-line="30">
+</span><span data-line="31"><span class="c1"># Export to Core AI</span>
+</span><span data-line="32"><span class="n">exported_program</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">export</span><span class="p">(</span>
+</span><span data-line="33">    <span class="n">finalized_quantized_model</span><span class="p">,</span> <span class="n">example_inputs</span>
+</span><span data-line="34"><span class="p">)</span><span class="o">.</span><span class="n">run_decompositions</span><span class="p">(</span><span class="n">coreai_torch</span><span class="o">.</span><span class="n">get_decomp_table</span><span class="p">())</span>
+</span><span data-line="35"><span class="n">composite_module_exported_programs</span> <span class="o">=</span> <span class="n">_subexport_and_restore</span><span class="p">(</span>
+</span><span data-line="36">    <span class="n">original_model</span><span class="p">,</span> <span class="n">exported_program</span>
+</span><span data-line="37"><span class="p">)</span>
+</span><span data-line="38"><span class="n">coreai_program</span> <span class="o">=</span> <span class="p">(</span>
+</span><span data-line="39">    <span class="n">TorchConverter</span><span class="p">()</span>
+</span><span data-line="40">    <span class="o">.</span><span class="n">add_exported_program</span><span class="p">(</span>
+</span><span data-line="41">        <span class="n">exported_program</span><span class="p">,</span>
+</span><span data-line="42">        <span class="n">_externalized_exported_programs</span><span class="o">=</span><span class="n">composite_module_exported_programs</span><span class="p">,</span>
+</span><span data-line="43">    <span class="p">)</span>
+</span><span data-line="44">    <span class="o">.</span><span class="n">to_coreai</span><span class="p">()</span>
+</span><span data-line="45"><span class="p">)</span>
+</span></pre></div>
+</div>
+<p>Compared to the <a class="reference internal" href="../introduction/integration_coreai.html"><span class="std std-doc">usual flow</span></a>, there are <em>two</em> key differences:</p>
+</section>
+<section id="patch-original-model-with-custom-ops">
+<h2>Patch original model with custom ops<a class="headerlink" href="#patch-original-model-with-custom-ops" title="Link to this heading">¶</a></h2>
+<p>In graph mode execution, <code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code>’s <code class="docutils literal notranslate"><span class="pre">quantizer.prepare</span></code> invokes the <code class="docutils literal notranslate"><span class="pre">torch.export.export</span></code> API. By default, this causes the composite op body to be inlined in the graph and we lose the information about it’s boundary for externalization. In order to preserve this information, the <code class="docutils literal notranslate"><span class="pre">_patch_model_for_externalization</span></code> API modifies the original <code class="docutils literal notranslate"><span class="pre">torch</span></code> model in-place, before preparing the model for graph mode quantization using <code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code>. Specifically, it replaces the forward method of the <code class="docutils literal notranslate"><span class="pre">nn.module</span></code>s specified in <code class="docutils literal notranslate"><span class="pre">ExternalizeSpec(target_class)</span></code> with a <code class="docutils literal notranslate"><span class="pre">torch.library.custom_op</span></code> that, in turn, invokes the original forward method of the composite op. This keeps the model functionally the same, however, now the sub-module (<code class="docutils literal notranslate"><span class="pre">RMSNormComposite</span></code> in this example) becomes opaque to the <code class="docutils literal notranslate"><span class="pre">torch.export.export</span></code> API, i.e., a single node instead of the composite op body being inlined in the exported graph.</p>
+<p>Note that in addition to replacing the <code class="docutils literal notranslate"><span class="pre">forward</span></code> method of the composite ops with a <code class="docutils literal notranslate"><span class="pre">torch.library.custom_op</span></code>, the <code class="docutils literal notranslate"><span class="pre">_patch_model_for_externalization</span></code> API also registers some additional information/metadata as attributes on the composite op sub-modules. This metadata is then used by <code class="docutils literal notranslate"><span class="pre">_subexport_and_restore</span></code> as explained below, after which the model is restored by removing this metadata along with the <code class="docutils literal notranslate"><span class="pre">torch.library.custom_op</span></code> from the model.</p>
+</section>
+<section id="extract-exported-programs-for-submodules">
+<h2>Extract exported programs for submodules<a class="headerlink" href="#extract-exported-programs-for-submodules" title="Link to this heading">¶</a></h2>
+<p>Once a model is patched using the <code class="docutils literal notranslate"><span class="pre">_patch_model_for_externalization</span></code> API, it can be quantized as usual using <code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code>’s graph mode (either for PTQ or QAT) and finalized to <code class="docutils literal notranslate"><span class="pre">CoreAI</span></code> backend.</p>
+<p>Now in order to convert the finalized model into a coreai graph (<code class="docutils literal notranslate"><span class="pre">aimodel</span></code>), the composite op sub-module bodies need to be exported as torch exported programs in order to be included in the graph as externalized function calls.
+The <code class="docutils literal notranslate"><span class="pre">_subexport_and_restore</span></code> takes in the <strong>original torch model</strong> and does exactly that.
+It returns a list of torch exported programs corresponding to all the composite op sub-modules that were <em>patched</em> for externalization by <code class="docutils literal notranslate"><span class="pre">_patch_model_for_externalization</span></code>.
+These torch exported programs are then passed to the <code class="docutils literal notranslate"><span class="pre">add_exported_program</span></code> API via the <code class="docutils literal notranslate"><span class="pre">_externalized_exported_programs</span></code> argument to prepare the coreai graph (<code class="docutils literal notranslate"><span class="pre">aimodel</span></code>).
+After this process, the coreai graph contains both the main graph and the sub-graphs corresponding to the composite op submodule preserved as function calls.</p>
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Quantization cannot be applied <em>inside</em> the composite op body because the <code class="docutils literal notranslate"><span class="pre">_patch_model_for_externalization</span></code> API replaces the composite op body with a torch custom op, thus making it opaque to <code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code>’s graph mode quantizer.</p></li>
+<li><p>However, the boundaries (incoming and outgoing tensors) of the composite ops can be quantized as usual, using the <code class="docutils literal notranslate"><span class="pre">module_input_spec</span></code> and <code class="docutils literal notranslate"><span class="pre">module_output_spec</span></code> config kwargs as described in the documentation on <code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code> configs <a class="reference internal" href="config.html"><span class="std std-doc">here</span></a>.</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The externalization APIs used below, <code class="docutils literal notranslate"><span class="pre">_patch_model_for_externalization</span></code> and <code class="docutils literal notranslate"><span class="pre">_subexport_and_restore</span></code> in coreai-torch are currently experimental. :::</p>
+</div>
 </section>
 </section>
 
@@ -419,16 +454,16 @@ data-aria-dark="Switch to auto color mode">
   </svg>
   <span>Back to top</span>
 </button><div class="navigation flex print:hidden"><div class="navigation-prev">
-    <a href="basics.html">
+    <a href="advanced.html">
       <i class="i-lucide chevron-left"></i>
       <div class="page-info">
-        <span>Previous</span><div class="title">Basics</div></div>
+        <span>Previous</span><div class="title">Deeper Dive</div></div>
     </a>
   </div><div class="navigation-next">
-    <a href="config.html">
+    <a href="../palettization/index.html">
       <div class="page-info">
         <span>Next</span>
-        <div class="title">Config API</div>
+        <div class="title">Palettization</div>
       </div>
       <i class="i-lucide chevron-right"></i>
     </a>
