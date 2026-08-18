@@ -433,7 +433,7 @@ data-aria-dark="Switch to auto color mode">
 The <code class="docutils literal notranslate"><span class="pre">_subexport_and_restore</span></code> takes in the <strong>original torch model</strong> and does exactly that.
 It returns a list of torch exported programs corresponding to all the composite op sub-modules that were <em>patched</em> for externalization by <code class="docutils literal notranslate"><span class="pre">_patch_model_for_externalization</span></code>.
 These torch exported programs are then passed to the <code class="docutils literal notranslate"><span class="pre">add_exported_program</span></code> API via the <code class="docutils literal notranslate"><span class="pre">_externalized_exported_programs</span></code> argument to prepare the coreai graph (<code class="docutils literal notranslate"><span class="pre">aimodel</span></code>).
-After this process, the coreai graph contains both the main graph and the sub-graphs corresponding to the composite op submodule preserved as function calls.</p>
+After this process, the coreai graph contains both the main graph and the sub-graphs corresponding to the composite op submodules preserved as function calls.</p>
 </section>
 <section id="notes">
 <h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">¶</a></h2>
