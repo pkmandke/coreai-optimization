@@ -8,16 +8,27 @@
 import pytest
 import torch
 from coreai_torch._compression._floatx import Float4Tensor
+from safetensors.torch import load_file
 from torch import nn
 from torchao.quantization.pt2e import allow_exported_model_train_eval
 
 from coreai_opt._utils.fx_utils import normalize_module_fqn
 from coreai_opt._utils.torch_utils import (
     mmap_module_state_dict,
+    mmap_named_tensors,
     move_model_to_eval,
     move_model_to_train,
     normalize_axis,
 )
+
+
+def _non_cpu_device_or_skip():
+    """Return an available non-CPU device name, or skip the test if there is none."""
+    if torch.cuda.is_available():
+        return "cuda"
+    if torch.backends.mps.is_available():
+        return "mps"
+    pytest.skip("No non-CPU device available")
 
 
 class TestMoveModelContextManagers:
@@ -152,14 +163,68 @@ class TestMmapModuleStateDict:
     @staticmethod
     def test_raises_on_non_cpu_tensor(tmp_path):
         """Raises ValueError when a tensor is not on CPU."""
-        if torch.cuda.is_available():
-            device = "cuda"
-        elif torch.backends.mps.is_available():
-            device = "mps"
-        else:
-            pytest.skip("No non-CPU device available")
-
+        device = _non_cpu_device_or_skip()
         model = nn.Linear(4, 4).to(device)
 
         with pytest.raises(ValueError, match="requires CPU tensors"):
             mmap_module_state_dict(model, tmp_path / "model.safetensors")
+
+
+class TestMmapNamedTensors:
+    """Test mmap_named_tensors partial remapping of a module's tensors."""
+
+    @staticmethod
+    def _module_with_buffers():
+        module = nn.Module()
+        module.register_buffer("kept", torch.randn(4, 4))
+        module.register_buffer("moved", torch.randn(8, 8))
+        return module
+
+    @staticmethod
+    def test_remaps_only_the_named_tensors(tmp_path):
+        """The named buffer is remapped and the others are left alone."""
+        module = TestMmapNamedTensors._module_with_buffers()
+        original_moved = module.moved.clone()
+        original_kept_ptr = module.kept.data_ptr()
+
+        path = tmp_path / "partial.safetensors"
+        mmap_named_tensors(module, path, ["moved"])
+
+        assert torch.equal(module.moved, original_moved)
+        assert module.kept.data_ptr() == original_kept_ptr, "an unnamed buffer was remapped"
+        assert set(load_file(path)) == {"moved"}, "the file must hold only the named tensor"
+        assert not module.moved.untyped_storage().resizable(), (
+            "the remapped buffer is still an ordinary allocation, so it was not mmap-backed"
+        )
+        assert "moved" in module.state_dict(), "the remapped tensor not in buffer registry"
+
+    @staticmethod
+    def test_float4_tensor_is_rewrapped(tmp_path):
+        """A ``Float4Tensor`` buffer comes back as a ``Float4Tensor``, not a raw elem."""
+        module = nn.Module()
+        uint8_data = torch.randint(0, 255, (2, 8), dtype=torch.uint8)
+        module.register_buffer("compressed", Float4Tensor(uint8_data))
+
+        mmap_named_tensors(module, tmp_path / "fp4.safetensors", ["compressed"])
+
+        assert isinstance(module.compressed, Float4Tensor)
+        assert torch.equal(module.compressed.elem, uint8_data)
+
+    @staticmethod
+    def test_raises_on_non_tensor_name(tmp_path):
+        """A name that does not resolve to a tensor is rejected."""
+        module = nn.Module()
+        module.not_a_tensor = "hello"
+
+        with pytest.raises(TypeError, match="expected a tensor"):
+            mmap_named_tensors(module, tmp_path / "bad.safetensors", ["not_a_tensor"])
+
+    @staticmethod
+    def test_raises_on_non_cpu_tensor(tmp_path):
+        """Raises ValueError when a named tensor is not on CPU."""
+        device = _non_cpu_device_or_skip()
+        module = nn.Module()
+        module.register_buffer("moved", torch.randn(4, 4, device=device))
+
+        with pytest.raises(ValueError, match="requires CPU tensors"):
+            mmap_named_tensors(module, tmp_path / "module.safetensors", ["moved"])

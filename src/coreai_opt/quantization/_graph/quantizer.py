@@ -1105,16 +1105,21 @@ class GraphQuantizer(_BaseQuantizer):
             model: Optional model to finalize. If None, uses the internal prepared model.
             backend: Target export backend for the quantized model.
                 Supports CoreAI (default) and CoreML.
-            mmap_dir (str | None): Not supported in graph mode. Raises
-                ``ValueError`` if non-None.
+            mmap_dir (str | None): If provided, each quantized weight is serialized to
+                its own safetensors file under this directory and re-read mmap-backed
+                as soon as it is produced, so the quantized payload is never all
+                resident at once. Only supported with the CoreAI backend; raises
+                ``ValueError`` otherwise. The directory must be empty, and its files
+                must remain in place for the lifetime of the returned model.
 
         Returns:
             The finalized quantized GraphModule.
 
         """
-        if mmap_dir is not None:
+        if mmap_dir is not None and backend != ExportBackend.CoreAI:
             raise ValueError(
-                "mmap_dir is only supported in eager execution mode, got execution_mode=graph."
+                f"mmap_dir is only supported with backend=ExportBackend.CoreAI, "
+                f"got backend={backend}."
             )
         if model is None:
             model = self._model
@@ -1127,9 +1132,12 @@ class GraphQuantizer(_BaseQuantizer):
         # Retrieve preserved attributes before conversion
         preserved_attrs = model.meta.get(_USER_PRESERVED_ATTRIBUTES_KEY, {})
 
-        # Always first call convert_pt2e API
+        # Always first call convert_pt2e API.
+        # fold_quantize=False skips torchao's constant_fold pass.
+        # Our FakeQuantize.convert is a no-op, so folding
+        # rewrites nothing, but disabling it makes this memory efficient.
         try:
-            finalized_model = convert_pt2e(model)
+            finalized_model = convert_pt2e(model, fold_quantize=False)
         except Exception as e:
             raise RuntimeError(f"Failed to convert model with convert_pt2e, with error: {e}") from e
 
@@ -1156,7 +1164,7 @@ class GraphQuantizer(_BaseQuantizer):
                 finalized_model = prepare_for_mil_export(finalized_model)
 
             case ExportBackend.CoreAI:
-                finalized_model = prepare_for_mlir_export(finalized_model)
+                finalized_model = prepare_for_mlir_export(finalized_model, mmap_dir=mmap_dir)
                 # Relocate each cache-update op's input dq to its output edge so
                 # the cache state stays in the quantized dtype.
                 for op, kc in (self._config.kv_cache_quant_configs or {}).items():

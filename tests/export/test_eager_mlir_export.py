@@ -24,7 +24,7 @@ from coreai_opt.quantization.spec import (
 )
 from tests.fixtures.fp4 import ParametrizedFP4Configs
 from tests.fixtures.fp8 import ParametrizedFP8Configs
-from tests.fixtures.quantization import ParametrizedQuantConfigs
+from tests.fixtures.quantization import ParametrizedQuantConfigs, make_quant_config
 
 from . import export_utils
 
@@ -35,6 +35,7 @@ def _run_eager_mlir_export_test_ex(
     config: QuantizerConfig,
     expected_ops: Mapping[str, int],
     model_dtype: torch.dtype | None = None,
+    mmap_dir: str | None = None,
 ) -> None:
     """Run eager Core AI export test with expanded configuration parameters.
 
@@ -44,6 +45,9 @@ def _run_eager_mlir_export_test_ex(
         config: Eager quantization configuration
         model_dtype: Model dtype (float16, float32, bfloat16, or None for no conversion)
         expected_ops: Expected operation counts in converted model
+        mmap_dir: If set, finalize streams each quantized weight to a safetensors
+            file under this directory and reads it back mmap-backed (memory-efficient
+            finalize). The full export must succeed unchanged over the mmap views.
     """
     if model_dtype is not None:
         model = model.to(dtype=model_dtype)
@@ -56,7 +60,7 @@ def _run_eager_mlir_export_test_ex(
     with torch.no_grad():
         prepared_model_output = prepared_model(input_data)
 
-    finalized_model = quantizer.finalize(backend=ExportBackend.CoreAI)
+    finalized_model = quantizer.finalize(backend=ExportBackend.CoreAI, mmap_dir=mmap_dir)
 
     export_utils.convert_and_verify(
         finalized_model=finalized_model,
@@ -318,6 +322,69 @@ def test_fp4_simple_model_export(
             "dequantize": 4 if parametrized_fp4_config.with_activation_quant else 0,
         },
     )
+
+
+@pytest.mark.parametrize(
+    "weight_dtype",
+    [torch.int4, torch.int8],
+    ids=["4bit_weight", "8bit_weight"],
+)
+@pytest.mark.parametrize(
+    "has_activation_quant",
+    [False, True],
+    ids=["weight_only", "weight_and_activation"],
+)
+def test_simple_model_export_with_mmap(
+    simple_conv_linear_model: torch.nn.Module,
+    simple_model_input: torch.Tensor,
+    weight_dtype: torch.dtype,
+    has_activation_quant: bool,
+    tmp_path,
+) -> None:
+    """Full eager Core AI export succeeds when finalize streams quantized weights to
+    ``mmap_dir`` (memory-efficient finalize).
+    """
+    config = make_quant_config(
+        weight_dtype=weight_dtype,
+        act_dtype=torch.int8 if has_activation_quant else None,
+        execution_mode="eager",
+    )
+    _run_eager_mlir_export_test_ex(
+        model=simple_conv_linear_model,
+        input_data=simple_model_input,
+        config=config,
+        expected_ops={
+            "constexpr_blockwise_shift_scale": 2,
+            "quantize": 4 if has_activation_quant else 0,
+            "dequantize": 4 if has_activation_quant else 0,
+        },
+        mmap_dir=str(tmp_path),
+    )
+    assert any(tmp_path.glob("*.safetensors")), "finalize did not write mmap files"
+
+
+def test_fp4_simple_model_export_with_mmap(
+    simple_linear_model: torch.nn.Module,
+    simple_linear_model_input: torch.Tensor,
+    parametrized_fp4_config: ParametrizedFP4Configs,
+    tmp_path,
+) -> None:
+    """Full eager FP4 export succeeds over mmap-backed weights, exercising the
+    ``Float4Tensor`` unwrap/re-wrap during mmap.
+    """
+    _run_eager_mlir_export_test_ex(
+        model=simple_linear_model,
+        input_data=simple_linear_model_input,
+        config=parametrized_fp4_config.eager,
+        model_dtype=parametrized_fp4_config.model_dtype,
+        expected_ops={
+            "constexpr_blockwise_shift_scale": 2,
+            "quantize": 4 if parametrized_fp4_config.with_activation_quant else 0,
+            "dequantize": 4 if parametrized_fp4_config.with_activation_quant else 0,
+        },
+        mmap_dir=str(tmp_path),
+    )
+    assert any(tmp_path.glob("*.safetensors")), "finalize did not write mmap files"
 
 
 def test_gated_mlp_perchannel_act_export(
