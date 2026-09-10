@@ -690,9 +690,9 @@ def prepare_for_mlir_export(
 
     Args:
         model: The quantized GraphModule containing fake quantization nodes
-        mmap_dir: If provided, each quantized weight and it's scales/offsets are written to safetensor
-            files under this directory and re-read mmap-backed as soon as it is
-            produced.
+        mmap_dir: If provided, each quantized weight and its scales/offsets are
+            written to safetensor files under this directory and re-read mmap-backed
+            as soon as it is produced.
 
     Returns:
         The modified GraphModule with quantization operations
