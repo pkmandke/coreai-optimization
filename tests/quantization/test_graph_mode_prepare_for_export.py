@@ -284,4 +284,3 @@ def test_weight_quantization_buffer(param_dtype, qformulation):
         assert stored_minval == expected_minval, (
             f"Minval mismatch: expected {expected_minval}, got {stored_minval}"
         )
-

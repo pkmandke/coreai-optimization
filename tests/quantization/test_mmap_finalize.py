@@ -37,12 +37,6 @@ def prepare_and_finalize(model, config, example_input, mmap_dir):
     return quantizer.finalize(backend=ExportBackend.CoreAI, mmap_dir=mmap_dir)
 
 
-def _payload_tensor(tensor):
-    """The tensor safetensors actually stores. ``Float4Tensor`` and other subbyte
-    subclasses keep their payload in ``.elem`` while plain tensors are stored as-is."""
-    return getattr(tensor, "elem", tensor)
-
-
 def _resolve_live_buffer(finalized, stem, key, execution_mode):
     """Return the live buffer/parameter behind safetensors ``key`` in the file whose
     stem is ``stem``. This is the only mode-specific step: graph keeps flat buffers
@@ -54,14 +48,6 @@ def _resolve_live_buffer(finalized, stem, key, execution_mode):
     parent = finalized.get_submodule(module_name) if module_name else finalized
     dequant = next(p for p in parent.parametrizations[param_name] if hasattr(p, key))
     return getattr(dequant, key)
-
-
-def assert_file_backed(tensor, name):
-    """Assert ``tensor`` reads through an mmap rather than a copy in RAM."""
-    storage = tensor.untyped_storage()
-    assert not storage.resizable(), (
-        f"{name} storage is resizable, so it is a direct allocation on {tensor.device}."
-    )
 
 
 def _expected_file_names(weight_fqns, execution_mode):
@@ -97,9 +83,11 @@ def test_finalize_mmap_is_file_backed_and_output_preserving(
     for path in files:
         for key, file_tensor in load_file(path).items():
             live = _resolve_live_buffer(finalized_mmap, path.stem, key, execution_mode)
-            live = _payload_tensor(live)
+            live = getattr(live, "elem", live)
             assert torch.equal(file_tensor, live), f"{key} in {path.name} does not match the buffer"
-            assert_file_backed(live, key)
+            assert not live.untyped_storage().resizable(), (
+                f"{key} storage is resizable, so it is a direct allocation on {live.device}."
+            )
 
     with torch.no_grad():
         assert torch.equal(finalized_ref(example_input), finalized_mmap(example_input)), (

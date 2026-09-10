@@ -501,8 +501,7 @@ def _unwrap_tensors_for_safetensors(
             continue
         if not is_tensor_on_cpu(value):
             raise ValueError(
-                f"mmap-backed serialization requires CPU tensors but '{name}' "
-                f"is on {value.device}."
+                f"mmap-backed serialization requires CPU tensors but '{name}' is on {value.device}."
             )
         if isinstance(value, _SubbyteTensor):
             subbyte_classes[name] = type(value)
