@@ -620,7 +620,7 @@ def test_fold_quantize_is_noop(
     model_dtype: torch.dtype,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """convert_pt2e must yield identical finalized models with and
+    """Ensure convert_pt2e yields identical finalized models with and
     without fold_quantize."""
     config = ParametrizedQuantConfigs.from_quant_params(
         weight_dtype=torch.int8,

@@ -1150,9 +1150,11 @@ class GraphQuantizer(_BaseQuantizer):
         preserved_attrs = model.meta.get(_USER_PRESERVED_ATTRIBUTES_KEY, {})
 
         # Always first call convert_pt2e API.
-        # fold_quantize=False skips torchao's constant_fold pass.
-        # Our FakeQuantize.convert is a no-op, so folding
-        # rewrites nothing, but disabling it makes this memory efficient.
+        # We disable fold_quantize purely to save memory: torchao's constant_fold runs a full-graph FX interpreter pass
+        # (ConstantFolder.run) that transiently materializes weight-sized tensors.
+        # However, this folds nothing here because our
+        # FakeQuantize.convert is a no-op, so no quantize_per_* nodes are emitted for
+        # its quantize-node constraint to match.
         try:
             finalized_model = convert_pt2e(model, fold_quantize=False)
         except Exception as e:
