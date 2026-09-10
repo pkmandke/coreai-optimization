@@ -1150,7 +1150,7 @@ class GraphQuantizer(_BaseQuantizer):
         # We disable fold_quantize purely to save memory: torchao's constant_fold runs a full-graph FX interpreter pass
         # (ConstantFolder.run) that transiently materializes weight-sized tensors.
         # However, this folds nothing here because our
-        # FakeQuantize.convert is a no-op, so no quantize_per_* nodes are emitted for
+        # FakeQuantize.convert is a no-op, so no torch's quantize_* nodes are emitted for
         # its quantize-node constraint to match.
         try:
             finalized_model = convert_pt2e(model, fold_quantize=False)
