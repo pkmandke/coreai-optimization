@@ -9,14 +9,13 @@ import copy
 
 import pytest
 import torch
-from safetensors.torch import load_file
+from safetensors.torch import load_file, save_file
 
 from coreai_opt import ExportBackend
 from coreai_opt.quantization import Quantizer
 from coreai_opt.quantization.config import ExecutionMode
 from tests.fixtures.fp4 import ParametrizedFP4Configs
 from tests.fixtures.quantization import make_quant_config
-from tests.models.simple import SharedParamsModel, SimpleLinearModel
 
 MODES = [ExecutionMode.EAGER, ExecutionMode.GRAPH]
 
@@ -75,16 +74,17 @@ def _expected_file_names(weight_fqns, execution_mode):
 
 @pytest.mark.parametrize("execution_mode", MODES)
 @pytest.mark.parametrize("kind", ["int4", "fp4"])
-def test_finalize_mmap_is_file_backed_and_output_preserving(execution_mode, kind, tmp_path):
+def test_finalize_mmap_is_file_backed_and_output_preserving(
+    execution_mode, kind, simple_linear_model, simple_linear_model_input, tmp_path
+):
     """With ``mmap_dir`` set, test every quantized weight and its qparams live in a safetensors
     file and are read back as mmap views, and finalized model output remains unchanged with
     and without mmap.
     """
     config = weight_only_config(execution_mode, kind)
-    example_input = torch.randn(4, 64)
+    example_input = simple_linear_model_input
 
-    torch.manual_seed(0)
-    model = SimpleLinearModel().eval()
+    model = simple_linear_model.eval()
     model_ref = copy.deepcopy(model)
 
     finalized_mmap = prepare_and_finalize(model, config, example_input, str(tmp_path))
@@ -108,14 +108,15 @@ def test_finalize_mmap_is_file_backed_and_output_preserving(execution_mode, kind
 
 
 @pytest.mark.parametrize("execution_mode", MODES)
-def test_finalize_mmap_preserves_weight_sharing(execution_mode, tmp_path):
+def test_finalize_mmap_preserves_weight_sharing(
+    execution_mode, shared_params_model, shared_params_model_input, tmp_path
+):
     """A weight shared across layers is quantized once and written once, so mmap does
     not rewrite a file that has already been mapped, and output is unchanged."""
-    example_input = torch.randn(1, 784)
+    example_input = shared_params_model_input
     config = weight_only_config(execution_mode)
 
-    torch.manual_seed(0)
-    model = SharedParamsModel().eval()
+    model = shared_params_model.eval()
     model_ref = copy.deepcopy(model)
 
     finalized_mmap = prepare_and_finalize(model, config, example_input, str(tmp_path))
@@ -150,15 +151,49 @@ def test_finalize_mmap_preserves_weight_sharing(execution_mode, tmp_path):
 
 @pytest.mark.parametrize("execution_mode", MODES)
 @pytest.mark.parametrize("backend", [ExportBackend.CoreML, ExportBackend._TORCH])
-def test_finalize_mmap_rejects_non_coreai_backend(execution_mode, backend, tmp_path):
+def test_finalize_mmap_rejects_non_coreai_backend(
+    execution_mode, backend, simple_linear_model, simple_linear_model_input, tmp_path
+):
     """``mmap_dir`` is a CoreAI-only feature in both execution modes."""
-    model = SimpleLinearModel().eval()
-    example_input = torch.randn(4, 64)
-
-    quantizer = Quantizer(model, weight_only_config(execution_mode))
-    quantizer.prepare((example_input,))
+    quantizer = Quantizer(simple_linear_model.eval(), weight_only_config(execution_mode))
+    quantizer.prepare((simple_linear_model_input,))
 
     with pytest.raises(
         ValueError, match="mmap_dir is only supported with backend=ExportBackend.CoreAI"
     ):
         quantizer.finalize(backend=backend, mmap_dir=str(tmp_path))
+
+
+def test_eager_finalize_state_dict_safetensors_roundtrip(
+    simple_linear_model, simple_linear_model_input, tmp_path
+):
+    """Test that an eager mmap-finalized model survives a state_dict -> save_file -> load_file ->
+    load_state_dict(assign=True) round-trip with identical forward output."""
+
+    example_input = simple_linear_model_input
+    config = make_quant_config(
+        weight_dtype=torch.int8, act_dtype=None, execution_mode=ExecutionMode.EAGER
+    )
+    finalized = prepare_and_finalize(
+        simple_linear_model.eval(),
+        config,
+        example_input,
+        str(tmp_path / "per_layer_mmap"),
+    )
+
+    with torch.no_grad():
+        out_before = finalized(example_input)
+
+    bundled = tmp_path / "full_state.safetensors"
+    save_file(
+        {
+            k: v.contiguous()
+            for k, v in finalized.state_dict().items()
+            if isinstance(v, torch.Tensor)
+        },
+        str(bundled),
+    )
+    finalized.load_state_dict(load_file(str(bundled), device="cpu"), assign=True)
+
+    with torch.no_grad():
+        assert torch.equal(out_before, finalized(example_input))
