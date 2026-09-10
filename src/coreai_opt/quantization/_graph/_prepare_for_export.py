@@ -246,7 +246,7 @@ def _mmap_quantized_buffers(
     mmap_dir: str | PathLike[str] | None,
     mmapped_params: set[str],
 ) -> None:
-    """Move the quantized weight, scales and offsets out to their own safetensors file and
+    """Move the quantized weight, scales and offsets to their own safetensors file and
     read them back mmap-backed. No-op when ``mmap_dir is None``.
 
     Args:

@@ -1123,11 +1123,8 @@ class GraphQuantizer(_BaseQuantizer):
             backend: Target export backend for the quantized model.
                 Supports CoreAI (default) and CoreML.
             mmap_dir (str | None): If provided, each quantized weight is serialized to
-                its own safetensors file under this directory and re-read mmap-backed
-                as soon as it is produced, so the quantized payload is never all
-                resident at once. Only supported with the CoreAI backend; raises
-                ``ValueError`` otherwise. The directory must be empty, and its files
-                must remain in place for the lifetime of the returned model.
+                its own safetensors file under this directory and re-read mmap-backed.
+                Only supported with the CoreAI backend.
 
         Returns:
             The finalized quantized GraphModule.

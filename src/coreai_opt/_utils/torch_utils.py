@@ -477,10 +477,11 @@ def _unwrap_tensors_for_safetensors(
     """Retrieve only the tensors from ``named_values``
     that can then be serialized by ``safetensors.torch.save_file``.
 
-    Values that are not tensors are dropped since the mapping may be a ``state_dict``,
+    Values that are not tensors are dropped since named_values may be a ``state_dict``,
     which can carry non-tensor extra state. ``SubbyteTensor`` subclasses (e.g.
     ``Float4Tensor``) are unwrapped to their plain uint8 ``elem`` for storage, and
     their class is reported back so the reloaded tensor can be re-wrapped.
+    All tensors must be on CPU.
 
     Args:
         named_values (Mapping[str, object]): Name to value mapping to serialize.
@@ -568,10 +569,8 @@ def mmap_named_tensors(
     each tensor back with ``setattr`` rather than through ``load_state_dict``.
 
     Args:
-        module (nn.Module): Module owning the tensors. Names are resolved relative
-            to it and may be dotted (e.g. ``"conv.weight"``).
-        path (str | PathLike): Safetensors file to write. It must stay in place for
-            the lifetime of the remapped tensors; removing it invalidates them.
+        module (nn.Module): Module owning the tensors.
+        path (str | PathLike): Safetensors file to write.
         names (Iterable[str]): Parameter or buffer names to serialize and remap.
     """
     owners: dict[str, tuple[torch.nn.Module, str]] = {}
