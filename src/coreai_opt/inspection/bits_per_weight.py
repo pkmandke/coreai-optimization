@@ -23,14 +23,18 @@ Supported model shapes and compression:
 - Full-precision ``torch.nn.Module``.
 - Eager-mode integer weight quantization (int8 / int4 / int2 and their unsigned
   variants), symmetric or asymmetric, at any granularity. Sub-byte payloads and
-  zero-points are packed at ``n_bits`` with no padding, matching the export.
+  zero-points are packed at ``n_bits`` with no padding.
+- Eager-mode floating-point weight quantization (FP8 ``e4m3``/``e5m2`` and FP4
+  ``e2m1``), which the spec restricts to a symmetric qscheme and the ``zp``
+  formulation, with FP4 additionally requiring per-block granularity with a
+  block size of 32 along the last axis. FP4 payloads pack two values per byte,
+  the same rule as int4. A ``float8_e8m0fnu`` scale costs one byte per block.
 - Palettization at any spec-supported ``n_bits`` (1, 2, 3, 4, 6, 8), including a
   quantized LUT (``lut_qspec``).
 
 Unsupported (raises ``NotImplementedError``):
 
-- Floating-point weight quantization (FP8 / FP4): the deploy-time storage math
-  is not yet validated for these formats.
+- A weight or scale dtype outside the sets this module knows how to size.
 - Pruned models
 - Weight parametrizations whose dense tensor is not a single ``original``
   tensor (e.g. ``torch.nn.utils.parametrizations.weight_norm``).
@@ -38,15 +42,12 @@ Unsupported (raises ``NotImplementedError``):
 
 **Notes:** This is an estimate, not a measurement. A real export may differ:
 
-- It may be *smaller*, because a backend ships only what its graph needs while
-  this counts every parameter and buffer the model owns, and because a tensor may
-  be representable more compactly than its shape and dtype imply. A tensor that
-  ``forward`` never reads or a module that is never called both are accounted for
-  here but may be skipped in the export.
+- It may be *smaller*, because a backend may choose to optimize the export while
+  we count every parameter and buffer the model owns.
 - It may be *larger*, because a serialized artifact carries structural metadata
   that is not modelled here.
 - This utility is intended to be used with a prepared ``coreai-opt`` model. Passing
-  a finalized model to it may result in unpredictable behavior or a wrong bpw value.
+  a finalized model is not supported and will lead to unpredictable behavior.
 
 Example:
     >>> from coreai_opt.inspection import bits_per_weight
@@ -61,13 +62,12 @@ from dataclasses import dataclass
 import torch
 from torch.nn.utils import parametrize as _parametrize
 
-from coreai_opt._utils.torch_utils import is_float_quant_dtype as _is_float_quant_dtype
 from coreai_opt.base_model_compressor import _COREAI_OPT_PREPARED_ATTR as _PREPARED_MARKER
-from coreai_opt.quantization.spec.fake_quantize import FakeQuantizeImplBase as _FakeQuantizeImplBase
 
 from ._bpw_utils import (
     ensure_not_pruned as _ensure_not_pruned,
     ensure_single_original as _ensure_single_original,
+    ensure_supported_quantization as _ensure_supported_quantization,
     full_precision_bits as _full_precision_bits,
     get_weight_compressor as _get_weight_compressor,
     named_modules_excluding_compression_machinery as _named_modules_excluding_compression_machinery,
@@ -115,8 +115,8 @@ def bits_per_weight(model: torch.nn.Module) -> BitsPerWeightResult:
     ``persistent=``, i.e., the metric covers every tensor the model carries.
 
     Args:
-        model (torch.nn.Module): A full-precision, eager-mode integer-quantized,
-            or palettized prepared model.
+        model (torch.nn.Module): A full-precision, eager-mode quantized, or
+            palettized prepared model.
 
     Returns:
         BitsPerWeightResult: Overall bpw, per-module breakdown, and the totals
@@ -126,13 +126,13 @@ def bits_per_weight(model: torch.nn.Module) -> BitsPerWeightResult:
         NotImplementedError: If ``model`` is a graph-mode prepared model (a
             ``torch.fx.GraphModule``) or a ``torch.export.ExportedProgram``, or if it
             contains a weight compression whose storage cost this utility cannot
-            compute: floating-point (FP8 / FP4) quantization, pruning, or a
+            compute: an unsupported quantization or scale dtype, pruning, or a
             parametrization storing multiple original tensors.
     """
     if isinstance(model, (torch.fx.GraphModule, torch.export.ExportedProgram)):
         raise NotImplementedError(
             f"Graph mode prepared models are not supported currently, got {type(model)}. "
-            "Only full-precision, eager-mode integer quantized, and palettized "
+            "Only full-precision, eager-mode quantized, and palettized "
             "nn.Modules are handled."
         )
 
@@ -156,16 +156,7 @@ def bits_per_weight(model: torch.nn.Module) -> BitsPerWeightResult:
                 seen_ids.add(id(original))
 
                 compressor = _get_weight_compressor(param_list)
-
-                if isinstance(compressor, _FakeQuantizeImplBase) and _is_float_quant_dtype(
-                    compressor.target_dtype
-                ):
-                    raise NotImplementedError(
-                        f"bits_per_weight cannot compute the storage cost of floating-point "
-                        f"weight quantization (dtype {compressor.target_dtype}) on module "
-                        f"'{name}'. Only integer quantization (int8 / int4 / int2 and "
-                        f"their unsigned variants) and palettization are supported currently."
-                    )
+                _ensure_supported_quantization(compressor, name, tensor_name)
 
                 module_bits[name] += _tensor_storage_bits(original, compressor)
                 module_weights[name] += original.numel()

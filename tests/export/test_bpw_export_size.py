@@ -3,8 +3,7 @@
 # Use of this source code is governed by a BSD-3-Clause license that can
 # be found in the LICENSE file or at https://opensource.org/licenses/BSD-3-Clause
 
-"""Validate the bits-per-weight prediction against the actual Core AI exported
-asset size."""
+"""Validate the bits-per-weight prediction against the Core AI export."""
 
 import pytest
 import torch
@@ -56,16 +55,22 @@ def _mlp_input() -> torch.Tensor:
 
 
 def _eager_quant_config(
-    dtype: torch.dtype, qscheme: str, granularity: object | None = None
+    dtype: torch.dtype,
+    qscheme: str,
+    granularity: object | None = None,
+    scale_dtype: torch.dtype | None = None,
+    module_name_configs: dict[str, ModuleQuantizerConfig | None] | None = None,
 ) -> QuantizerConfig:
     """Build an eager-mode weight-quantization config, per-channel by default."""
     spec = QuantizationSpec(
         dtype=dtype,
         qscheme=qscheme,
         granularity=granularity or PerChannelGranularity(axis=0),
+        scale_dtype=scale_dtype,
     )
     return QuantizerConfig(
         global_config=ModuleQuantizerConfig(op_state_spec={"weight": spec}, op_input_spec=None),
+        module_name_configs=module_name_configs,
         execution_mode="eager",
     )
 
@@ -75,13 +80,7 @@ def _assert_prediction_matches_export(
     input_data: torch.Tensor,
     result: BitsPerWeightResult,
 ) -> None:
-    """Assert the bits-per-weight prediction matches the exported asset size.
-
-    The lower bound holds only for fixtures whose tensors are all reachable from
-    ``forward`` and randomly initialized. The export ships what the graph needs,
-    and may shrink tensors it can represent more compactly, so a fixture with a
-    dead buffer or uniform-valued weights would export below the prediction.
-    """
+    """Assert the bits-per-weight prediction matches the exported asset size."""
     predicted_bytes = result.total_bits / 8
     actual_bytes = export_utils.coreai_export_size_bytes(finalized_model, input_data)
     actual_bpw = actual_bytes * 8 / result.total_weights
@@ -108,9 +107,13 @@ def _assert_quantized_matches_export(
     dtype: torch.dtype,
     qscheme: str = "symmetric",
     granularity: object | None = None,
+    scale_dtype: torch.dtype | None = None,
+    module_name_configs: dict[str, ModuleQuantizerConfig | None] | None = None,
 ) -> None:
     """Quantize and check the prediction against the export."""
-    quantizer = Quantizer(model, _eager_quant_config(dtype, qscheme, granularity))
+    quantizer = Quantizer(
+        model, _eager_quant_config(dtype, qscheme, granularity, scale_dtype, module_name_configs)
+    )
     prepared_model = quantizer.prepare((input_data,))
 
     result = bits_per_weight(prepared_model)
@@ -119,11 +122,16 @@ def _assert_quantized_matches_export(
 
 
 def _assert_palettized_matches_export(
-    model: nn.Module, input_data: torch.Tensor, spec: PalettizationSpec
+    model: nn.Module,
+    input_data: torch.Tensor,
+    spec: PalettizationSpec,
+    enable_fast_kmeans_mode: bool = True,
 ) -> None:
     """Palettize and check the prediction against the export."""
     config = KMeansPalettizerConfig(
-        global_config=ModuleKMeansPalettizerConfig(op_state_spec={"weight": spec})
+        global_config=ModuleKMeansPalettizerConfig(
+            op_state_spec={"weight": spec}, enable_fast_kmeans_mode=enable_fast_kmeans_mode
+        )
     )
     palettizer = KMeansPalettizer(model, config)
     prepared_model = palettizer.prepare((input_data,))
@@ -147,6 +155,48 @@ def test_eager_quant_prediction_matches_export(dtype: torch.dtype, qscheme: str)
     """Per-channel weight quantization: predicted deploy size matches the export."""
     # bias=True so the fp32 biases are amortized into the prediction too.
     _assert_quantized_matches_export(_gated_mlp(bias=True), _mlp_input(), dtype, qscheme)
+
+
+_PER_BLOCK_32 = PerBlockGranularity(axis=1, block_size=32)
+
+
+def _spread_across_blocks(model: nn.Module, block_size: int = 32) -> nn.Module:
+    """Give each per-block group along the input axis a distinct scale."""
+    with torch.no_grad():
+        for module in model.modules():
+            if isinstance(module, nn.Linear):
+                num_blocks = module.weight.shape[1] // block_size
+                octaves = torch.logspace(-4, 4, num_blocks, base=2.0)
+                module.weight.mul_(octaves.repeat_interleave(block_size))
+    return model
+
+
+@pytest.mark.parametrize(
+    ("dtype", "granularity", "scale_dtype"),
+    [
+        pytest.param(torch.float8_e4m3fn, None, None, id="fp8_e4m3_per_channel"),
+        pytest.param(torch.float4_e2m1fn_x2, _PER_BLOCK_32, None, id="fp4_e2m1_per_block"),
+        pytest.param(
+            torch.float8_e4m3fn, _PER_BLOCK_32, torch.float8_e8m0fnu, id="fp8_e4m3_per_block_e8m0"
+        ),
+    ],
+)
+def test_float_quant_prediction_matches_export(
+    dtype: torch.dtype,
+    granularity: object | None,
+    scale_dtype: torch.dtype | None,
+) -> None:
+    """Floating-point weight quantization: predicted deploy size matches the export."""
+    model = _gated_mlp(bias=True)
+    if granularity is _PER_BLOCK_32:
+        _spread_across_blocks(model)
+    _assert_quantized_matches_export(
+        model,
+        _mlp_input(),
+        dtype,
+        granularity=granularity,
+        scale_dtype=scale_dtype,
+    )
 
 
 @pytest.mark.parametrize(
@@ -174,9 +224,20 @@ def test_palettized_prediction_matches_export(spec: PalettizationSpec) -> None:
     Per-grouped-channel multiplies the LUT count by the number of channel groups, so
     it is what exercises the ``num_blocks_to_cluster`` term in the LUT cost.
     bias=False isolates the palettized weights so the deploy size is dominated by the
-    indices and LUTs, not amortized fp32 biases.
+    indices and LUTs, not the fp32 biases.
     """
     _assert_palettized_matches_export(_gated_mlp(bias=False), _mlp_input(), spec)
+
+
+@pytest.mark.parametrize("cluster_dim", [2, 4], ids=["cluster_dim2", "cluster_dim4"])
+def test_vector_palettized_prediction_matches_export(cluster_dim: int) -> None:
+    """Vector palettization (``cluster_dim > 1``): one index per group, wider LUT."""
+    _assert_palettized_matches_export(
+        _gated_mlp(bias=False),
+        _mlp_input(),
+        PalettizationSpec(n_bits=4, cluster_dim=cluster_dim),
+        enable_fast_kmeans_mode=False,
+    )
 
 
 @pytest.mark.parametrize(
@@ -189,11 +250,7 @@ def test_perblock_asymmetric_subbyte_prediction_matches_export(
     """Per-block asymmetric sub-byte weights: zero-points are packed at ``n_bits``.
 
     Per-channel granularity keeps the zero-point term small enough to hide its
-    width; per-block ``block_size=32`` makes it ~3% of the payload, so this is what
-    catches a zero-point charged at ``target_dtype``'s byte width (``element_size()``
-    is 1 for int4 and int2 alike) instead of at ``n_bits``.
-
-    The ``fp16_weights`` case additionally pins the scale width to the weight dtype.
+    width but per-block ``block_size=32`` makes it ~3% of the payload.
     """
     _assert_quantized_matches_export(
         _gated_mlp(bias=False).to(weight_dtype),
@@ -205,13 +262,7 @@ def test_perblock_asymmetric_subbyte_prediction_matches_export(
 
 
 def test_quantized_lut_prediction_matches_export() -> None:
-    """Palettization with a quantized LUT: the LUT's own qparams are amortized too.
-
-    One group per channel at 1 bit maximizes the qparam-to-payload ratio (one LUT
-    scale and zero-point per palettization block against a 1-bit index payload), so
-    omitting the LUT-quantization qparams shows up as a ~4% shortfall here while
-    staying under 0.1% for the default per-tensor 4-bit config.
-    """
+    """Palettization with a quantized LUT: the LUT's own qparams are amortized too."""
     _assert_palettized_matches_export(
         _gated_mlp(bias=False),
         _mlp_input(),
@@ -223,25 +274,33 @@ def test_quantized_lut_prediction_matches_export() -> None:
     )
 
 
-@pytest.mark.parametrize("dtype", [torch.int8, torch.int4], ids=["int8", "int4"])
+@pytest.mark.parametrize(
+    ("dtype", "granularity"),
+    [
+        (torch.int8, None),
+        (torch.int4, None),
+        (torch.float8_e4m3fn, None),
+        (torch.float8_e4m3fn, _PER_BLOCK_32),
+    ],
+    ids=["int8", "int4", "fp8_e4m3_per_channel", "fp8_e4m3_per_block"],
+)
 def test_resnet18_quant_prediction_matches_export(
     resnet18_model: nn.Module,
     resnet_example_input: torch.Tensor,
     dtype: torch.dtype,
+    granularity: object | None,
 ) -> None:
     """Pretrained ResNet-18 quantized: a deep real model with ~50 leaf modules."""
-    _assert_quantized_matches_export(resnet18_model, resnet_example_input, dtype)
+    _assert_quantized_matches_export(
+        resnet18_model, resnet_example_input, dtype, granularity=granularity
+    )
 
 
 def test_resnet18_palettized_prediction_matches_export(
     resnet18_model: nn.Module,
     resnet_example_input: torch.Tensor,
 ) -> None:
-    """Pretrained ResNet-18 palettized at the default 4 bits.
-
-    Only the default config, matching ``test_kmeans_export.test_resnet_export``: the
-    per-``n_bits`` matrix runs on the faster synthetic model instead.
-    """
+    """Pretrained ResNet-18 palettized at the default 4 bits."""
     _assert_palettized_matches_export(
         resnet18_model, resnet_example_input, default_weight_palettization_spec()
     )
@@ -253,12 +312,7 @@ def test_mnist_dense_prediction_matches_export(
     mnist_example_input: torch.Tensor,
     dtype: torch.dtype,
 ) -> None:
-    """Real conv/BN/linear model, dense fp32 and fp16: the export matches prediction.
-
-    Exercises persistent BatchNorm buffers (running_mean / running_var), which are
-    counted by bits_per_weight and survive export as constants rather than being
-    folded away.
-    """
+    """Real conv/BN/linear model, dense fp32 and fp16: the export matches prediction."""
     model = custom_test_mnist_model.to(dtype)
     model.eval()
     input_data = mnist_example_input.to(dtype)
@@ -267,14 +321,49 @@ def test_mnist_dense_prediction_matches_export(
     _assert_prediction_matches_export(model, input_data, result)
 
 
-@pytest.mark.parametrize("dtype", [torch.int8, torch.int4], ids=["int8", "int4"])
+@pytest.mark.parametrize(
+    ("dtype", "granularity"),
+    [
+        (torch.int8, None),
+        (torch.int4, None),
+        (torch.float8_e4m3fn, None),
+        (torch.float8_e4m3fn, _PER_BLOCK_32),
+    ],
+    ids=["int8", "int4", "fp8_e4m3_per_channel", "fp8_e4m3_per_block"],
+)
 def test_mnist_quant_prediction_matches_export(
     custom_test_mnist_model: nn.Module,
     mnist_example_input: torch.Tensor,
     dtype: torch.dtype,
+    granularity: object | None,
 ) -> None:
-    """Real conv/BN/linear model, int8 and int4 per-channel weights."""
-    _assert_quantized_matches_export(custom_test_mnist_model, mnist_example_input, dtype)
+    """Real conv/BN/linear model, integer and FP8 weights."""
+    _assert_quantized_matches_export(
+        custom_test_mnist_model, mnist_example_input, dtype, granularity=granularity
+    )
+
+
+def test_mnist_fp4_linear_only_prediction_matches_export(
+    custom_test_mnist_model: nn.Module,
+    mnist_example_input: torch.Tensor,
+) -> None:
+    """FP4 on a real model, with the convs left at full precision.
+
+    FP4 export needs per-block granularity with a block size of 32 along the last axis,
+    which the conv weight cannot satisfy, so the convs and BatchNorms opt out.
+    """
+    dense_only = {
+        name: None
+        for name, module in custom_test_mnist_model.named_modules()
+        if isinstance(module, (nn.Conv2d, nn.ConvTranspose2d, nn.BatchNorm2d))
+    }
+    _assert_quantized_matches_export(
+        custom_test_mnist_model,
+        mnist_example_input,
+        torch.float4_e2m1fn_x2,
+        granularity=_PER_BLOCK_32,
+        module_name_configs=dense_only,
+    )
 
 
 @pytest.mark.parametrize("persistent", [True, False], ids=["persistent", "non_persistent"])

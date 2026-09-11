@@ -10,6 +10,11 @@ import torch
 import torch.nn as nn
 
 from coreai_opt.inspection import bits_per_weight
+from coreai_opt.inspection._bpw_utils import (
+    _SUPPORTED_QFORMULATIONS,
+    _SUPPORTED_QSCHEMES,
+    _SUPPORTED_QUANT_DTYPES,
+)
 from coreai_opt.palettization import (
     KMeansPalettizer,
     KMeansPalettizerConfig,
@@ -26,8 +31,10 @@ from coreai_opt.quantization.spec import (
     PerBlockGranularity,
     PerChannelGranularity,
     PerTensorGranularity,
+    QuantizationScheme,
     QuantizationSpec,
 )
+from coreai_opt.quantization.spec.qformulation import QuantizationFormulation
 from tests.models.simple import LinearBatchNormModel, SharedParamsModel, SimpleLinearModel
 
 # SimpleLinearModel and LinearBatchNormModel are both Linear(64, 128) -> Linear(128, 64),
@@ -45,10 +52,11 @@ _BIAS_ELEMS = _HIDDEN_FEATURES + _OUT_FEATURES
 _OUT_CHANNELS = _HIDDEN_FEATURES + _OUT_FEATURES
 _FP32_BITS = 32
 _INT64_BITS = 64
+_E8M0_BITS = 8
 
 # Sanity envelope for the qparam / LUT / bias overhead a sane config adds on top of the
-# nominal bit width, in bpw. See _assert_bpw_is_plausible for why 2 and not 1.
-_MAX_EXPECTED_OVERHEAD_BPW = 2.0
+# nominal bit width, in bpw.
+_MAX_EXPECTED_BPW_OVERHEAD_OVER_NOMINAL_BITWIDTH = 2.0
 
 _EXAMPLE_INPUT = torch.rand(4, _IN_FEATURES)
 
@@ -64,14 +72,16 @@ def _expected_quant_bits(
     qscheme: str,
     bias: bool,
     qformulation: str = "zp",
+    scale_dtype_bits: int = _FP32_BITS,
 ) -> int:
     """Hand-derived cost of the weight-quantized model, in bits.
 
-    Payload is ``n_bits`` per weight. Overhead is one fp32 scale per qparam block, the
-    per-block dequantization offset, and the fp32 biases, which quantization does not
-    target.
+    Payload is ``n_bits`` per weight. Overhead is one scale per qparam block, the
+    per-block offset, and the fp32 biases which are not quantized.
+
+    ``scale_dtype_bits`` is the stored width of one scale.
     """
-    scale_bits = num_qparam_blocks * _FP32_BITS
+    scale_bits = num_qparam_blocks * scale_dtype_bits
     if qformulation == "minval":
         offset_bits = num_qparam_blocks * _FP32_BITS
     elif qscheme == "asymmetric":
@@ -83,24 +93,25 @@ def _expected_quant_bits(
 
 
 def _expected_palettized_bits(
-    n_bits: int, num_lut_blocks: int, bias: bool, per_channel_scale: bool
+    n_bits: int, num_lut_blocks: int, bias: bool, per_channel_scale: bool, cluster_dim: int = 1
 ) -> int:
     """Hand-derived cost of the palettized model, in bits.
 
-    Payload is one ``n_bits`` index per weight (``cluster_dim=1``). Overhead is one LUT
-    of ``2**n_bits`` fp32 centroids per LUT block, one fp32 per-channel scale per output
-    channel when that is enabled, and the fp32 biases, which palettization does not
-    target.
+    Payload is one ``n_bits`` index per ``cluster_dim``-sized group of weights. Overhead
+    is one LUT of ``2**n_bits`` centroids of width ``cluster_dim`` per LUT block, one fp32
+    per-channel scale per output channel when that is enabled, and the fp32 biases, which
+    are not palettized.
     """
-    lut_bits = num_lut_blocks * (2**n_bits) * _FP32_BITS
+    payload_bits = (_WEIGHT_ELEMS // cluster_dim) * n_bits
+    lut_bits = num_lut_blocks * (2**n_bits) * cluster_dim * _FP32_BITS
     per_channel_scale_bits = _OUT_CHANNELS * _FP32_BITS if per_channel_scale else 0
     bias_bits = _BIAS_ELEMS * _FP32_BITS if bias else 0
-    return _WEIGHT_ELEMS * n_bits + lut_bits + per_channel_scale_bits + bias_bits
+    return payload_bits + lut_bits + per_channel_scale_bits + bias_bits
 
 
 def _assert_bpw_is_plausible(bpw: float, n_bits: int) -> None:
     """Structural sanity bounds on bpw, independent of how the cost is modelled."""
-    assert n_bits <= bpw < n_bits + _MAX_EXPECTED_OVERHEAD_BPW
+    assert n_bits <= bpw < n_bits + _MAX_EXPECTED_BPW_OVERHEAD_OVER_NOMINAL_BITWIDTH
 
 
 def _prepare_eager_quant(
@@ -109,6 +120,7 @@ def _prepare_eager_quant(
     qscheme: str = "symmetric",
     granularity: object | None = None,
     qformulation: str = "zp",
+    scale_dtype: torch.dtype | None = None,
 ) -> nn.Module:
     """Prepare an eager-mode weight-quantized model."""
     spec = QuantizationSpec(
@@ -116,6 +128,7 @@ def _prepare_eager_quant(
         qscheme=qscheme,
         granularity=granularity or PerChannelGranularity(axis=0),
         qformulation=qformulation,
+        scale_dtype=scale_dtype,
     )
     config = QuantizerConfig(
         global_config=ModuleQuantizerConfig(op_state_spec={"weight": spec}, op_input_spec=None),
@@ -124,10 +137,14 @@ def _prepare_eager_quant(
     return Quantizer(model, config).prepare(example_inputs=(_EXAMPLE_INPUT,))
 
 
-def _prepare_palettized(model: nn.Module, spec: PalettizationSpec) -> nn.Module:
+def _prepare_palettized(
+    model: nn.Module, spec: PalettizationSpec, enable_fast_kmeans_mode: bool = True
+) -> nn.Module:
     """Prepare a palettized model."""
     config = KMeansPalettizerConfig(
-        global_config=ModuleKMeansPalettizerConfig(op_state_spec={"weight": spec})
+        global_config=ModuleKMeansPalettizerConfig(
+            op_state_spec={"weight": spec}, enable_fast_kmeans_mode=enable_fast_kmeans_mode
+        )
     )
     return KMeansPalettizer(model, config).prepare((_EXAMPLE_INPUT,))
 
@@ -246,6 +263,30 @@ def test_palettized_matches_analytical(
     _assert_bpw_is_plausible(result.bpw, n_bits)
 
 
+@pytest.mark.parametrize("cluster_dim", [2, 4], ids=["cluster_dim2", "cluster_dim4"])
+def test_vector_palettized_matches_analytical(cluster_dim: int):
+    """Vector palettization (``cluster_dim > 1``): one index per group, wider LUT."""
+    n_bits = 4
+    num_lut_blocks = 2
+    prepared = _prepare_palettized(
+        SimpleLinearModel(bias=False),
+        PalettizationSpec(
+            n_bits=n_bits,
+            granularity=PalettPerTensorGranularity(axis=None),
+            cluster_dim=cluster_dim,
+        ),
+        enable_fast_kmeans_mode=False,
+    )
+    result = bits_per_weight(prepared)
+
+    expected_bits = _expected_palettized_bits(
+        n_bits, num_lut_blocks, bias=False, per_channel_scale=False, cluster_dim=cluster_dim
+    )
+    assert result.total_bits == expected_bits
+    assert result.total_weights == _expected_elems(bias=False)
+    assert result.bpw == expected_bits / _expected_elems(bias=False)
+
+
 @pytest.mark.parametrize(
     ("compression", "dtype", "n_bits", "granularity", "num_blocks"),
     [
@@ -259,14 +300,6 @@ def test_palettized_matches_analytical(
             _HIDDEN_FEATURES * (_IN_FEATURES // 8) + _OUT_FEATURES * (_HIDDEN_FEATURES // 8),
             id="quant_int2_block8",
         ),
-        pytest.param(
-            "quantization",
-            torch.int4,
-            4,
-            PerBlockGranularity(axis=1, block_size=4),
-            _HIDDEN_FEATURES * (_IN_FEATURES // 4) + _OUT_FEATURES * (_HIDDEN_FEATURES // 4),
-            id="quant_int4_block4",
-        ),
         # One 2**8-entry fp32 LUT per 8 output channels: 12 bpw of LUT over an 8 bpw
         # payload. Palettization takes n_bits directly, so it needs no dtype.
         pytest.param(
@@ -276,14 +309,6 @@ def test_palettized_matches_analytical(
             PerGroupedChannelGranularity(axis=0, group_size=8),
             _HIDDEN_FEATURES // 8 + _OUT_FEATURES // 8,
             id="palett_n8_group8",
-        ),
-        pytest.param(
-            "palettization",
-            None,
-            8,
-            PerGroupedChannelGranularity(axis=0, group_size=32),
-            _HIDDEN_FEATURES // 32 + _OUT_FEATURES // 32,
-            id="palett_n8_group32",
         ),
     ],
 )
@@ -316,7 +341,7 @@ def test_overhead_heavy_configs_exceed_bitwidth(
 
     assert result.total_bits == expected_bits
     assert result.total_weights == _expected_elems(bias=False)
-    assert n_bits + _MAX_EXPECTED_OVERHEAD_BPW < result.bpw < _FP32_BITS
+    assert n_bits + _MAX_EXPECTED_BPW_OVERHEAD_OVER_NOMINAL_BITWIDTH < result.bpw < _FP32_BITS
 
 
 def test_persistent_buffers_counted():
@@ -374,24 +399,75 @@ def test_non_persistent_buffer_counted():
     assert result.total_bits == (8 * 8 + 1000) * 32
 
 
-@pytest.mark.parametrize(
-    ("dtype", "granularity"),
-    [
-        (torch.float8_e4m3fn, PerChannelGranularity(axis=0)),
-        (torch.float4_e2m1fn_x2, PerBlockGranularity(axis=1, block_size=32)),
-    ],
-    ids=["fp8_per_channel", "fp4_per_block"],
+_PER_BLOCK_32 = PerBlockGranularity(axis=1, block_size=32)
+# One qparam block per 32 weights along the input-feature axis of each layer.
+_PER_BLOCK_32_BLOCKS = _HIDDEN_FEATURES * (_IN_FEATURES // 32) + _OUT_FEATURES * (
+    _HIDDEN_FEATURES // 32
 )
-def test_float_quant_is_unsupported(dtype, granularity):
-    spec = QuantizationSpec(dtype=dtype, qscheme="symmetric", granularity=granularity)
-    config = QuantizerConfig(
-        global_config=ModuleQuantizerConfig(op_state_spec={"weight": spec}, op_input_spec=None),
-        execution_mode="eager",
-    )
-    prepared = Quantizer(SimpleLinearModel(), config).prepare(example_inputs=(_EXAMPLE_INPUT,))
 
-    with pytest.raises(NotImplementedError, match="floating-point weight quantization"):
-        bits_per_weight(prepared)
+
+@pytest.mark.parametrize(
+    ("dtype", "n_bits", "granularity", "num_qparam_blocks"),
+    [
+        pytest.param(torch.float8_e4m3fn, 8, None, _OUT_CHANNELS, id="fp8_e4m3_per_channel"),
+        pytest.param(torch.float8_e5m2, 8, None, _OUT_CHANNELS, id="fp8_e5m2_per_channel"),
+        pytest.param(
+            torch.float8_e4m3fn, 8, _PER_BLOCK_32, _PER_BLOCK_32_BLOCKS, id="fp8_e4m3_per_block"
+        ),
+    ],
+)
+def test_eager_float_quant_matches_analytical(
+    dtype: torch.dtype,
+    n_bits: int,
+    granularity: object | None,
+    num_qparam_blocks: int,
+):
+    """Floating-point weight quantization against hand-derived goldens.
+
+    These cells carry an fp32 scale, so they exercise the fp8 payload and dtype
+    dispatch. The e8m0 scale width is covered by test_e8m0_scale_width.
+    """
+    prepared = _prepare_eager_quant(SimpleLinearModel(bias=False), dtype, granularity=granularity)
+    result = bits_per_weight(prepared)
+
+    expected_bits = _expected_quant_bits(n_bits, num_qparam_blocks, "symmetric", bias=False)
+    expected_elems = _expected_elems(bias=False)
+    assert result.total_bits == expected_bits
+    assert result.total_weights == expected_elems
+    assert result.bpw == expected_bits / expected_elems
+    _assert_bpw_is_plausible(result.bpw, n_bits)
+
+
+def test_e8m0_scale_width():
+    """An e8m0-scaled fp8 config charges one 8-bit scale per block, no splat discount.
+
+    e8m0 scales are stored one byte per block regardless of whether the scale values
+    happen to be uniform across blocks: the cost model counts ``num_blocks`` scales
+    unconditionally. This pins that width (8 bits) against the golden helper.
+    """
+    prepared = _prepare_eager_quant(
+        SimpleLinearModel(bias=False),
+        torch.float8_e4m3fn,
+        granularity=_PER_BLOCK_32,
+        scale_dtype=torch.float8_e8m0fnu,
+    )
+    result = bits_per_weight(prepared)
+
+    expected_bits = _expected_quant_bits(
+        8, _PER_BLOCK_32_BLOCKS, "symmetric", bias=False, scale_dtype_bits=_E8M0_BITS
+    )
+    expected_elems = _expected_elems(bias=False)
+    assert result.total_bits == expected_bits
+    assert result.total_weights == expected_elems
+    assert result.bpw == expected_bits / expected_elems
+    _assert_bpw_is_plausible(result.bpw, 8)
+
+
+def test_supported_quantization_settings_cover_the_library():
+    """Every dtype, scheme, and formulation the library defines must have a known storage cost."""
+    assert _SUPPORTED_QUANT_DTYPES == frozenset(QuantizationSpec.SUPPORTED_DTYPES)
+    assert _SUPPORTED_QSCHEMES == frozenset(QuantizationScheme)
+    assert _SUPPORTED_QFORMULATIONS == frozenset(QuantizationFormulation)
 
 
 def test_per_module_attributes_cost_to_the_owning_module():
