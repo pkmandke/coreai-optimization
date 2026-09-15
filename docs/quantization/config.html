@@ -634,6 +634,7 @@ static qparam calculator.</p>
 </span></pre></div>
 </div>
 <p>This config would apply the FP4 quantization to all supported ops’ weights, and FP8 quantization to all supported ops’ activations at both inputs and outputs. (See discussion in <a class="reference internal" href="overview.html#two-execution-modes-graph-and-eager"><span class="std std-ref">Two Execution Modes</span></a> on the supported ops and patterns for quantization).</p>
+<p>To estimate what a weight config like this costs in terms of bits per weight (BPW), use the <code class="xref py py-func docutils literal notranslate"><span class="pre">bits_per_weight()</span></code> utility to get an analytical BPW estimate for a <em>prepared</em> <code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code> model.</p>
 <p><code class="docutils literal notranslate"><span class="pre">global_config</span></code> allows access to the scope of all supported ops and modules in the model.</p>
 <p>Three fields target specific tensor groups within a module’s operation:</p>
 <ul class="simple">
