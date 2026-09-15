@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -173,12 +173,12 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.DefaultTrainingConfig.html">coreai_opt.palettization.spec.DefaultTrainingConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategyConfig.html">coreai_opt.palettization.spec.TrainingStrategyConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -364,7 +364,7 @@ Through an example, let us see how the API lets us do that.</p>
 </span><span data-line="18">    <span class="p">)</span>
 </span><span data-line="19"><span class="p">)</span>
 </span><span data-line="20">
-</span><span data-line="21"><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="21"><span class="sd">"""</span>
 </span><span data-line="22"><span class="sd"># equivalent yaml config</span>
 </span><span data-line="23"><span class="sd">quantization_config:</span>
 </span><span data-line="24"><span class="sd">  global_config:</span>
@@ -372,7 +372,7 @@ Through an example, let us see how the API lets us do that.</p>
 </span><span data-line="26"><span class="sd">      enable_observer: 0</span>
 </span><span data-line="27"><span class="sd">      enable_fake_quant: 150</span>
 </span><span data-line="28"><span class="sd">      disable_observer: 2000</span>
-</span><span data-line="29"><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="29"><span class="sd">"""</span>
 </span><span data-line="30">
 </span><span data-line="31"><span class="n">quantizer</span> <span class="o">=</span> <span class="n">Quantizer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
 </span><span data-line="32"><span class="n">prepared_model</span> <span class="o">=</span> <span class="n">quantizer</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">example_inputs</span><span class="p">)</span>
@@ -394,13 +394,13 @@ Through an example, let us see how the API lets us do that.</p>
 </span><span data-line="48">            <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
 </span><span data-line="49">            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
 </span><span data-line="50">            <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>  <span class="c1"># update weights</span>
-</span><span data-line="51">            <span class="c1"># advance the QAT schedule (inside the mini-batch loop as QATschedule is specified in units of &#39;steps&#39;)</span>
+</span><span data-line="51">            <span class="c1"># advance the QAT schedule (inside the mini-batch loop as QATschedule is specified in units of 'steps')</span>
 </span><span data-line="52">            <span class="n">quantizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 </span><span data-line="53">
 </span><span data-line="54">        <span class="c1"># update the LR. Outside of the mini-batch loop (for per-epoch schedulers)</span>
 </span><span data-line="55">        <span class="n">scheduler</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 </span><span data-line="56">
-</span><span data-line="57">    <span class="c1"># outside &quot;training_mode&quot; : prepared model restored to validation state (observers off, fake quantization on)</span>
+</span><span data-line="57">    <span class="c1"># outside "training_mode" : prepared model restored to validation state (observers off, fake quantization on)</span>
 </span><span data-line="58">    <span class="n">val_metric</span> <span class="o">=</span> <span class="n">validate</span><span class="p">(</span><span class="n">prepared_model</span><span class="p">,</span> <span class="n">val_dataloader</span><span class="p">)</span>
 </span></pre></div>
 </div>
@@ -431,7 +431,7 @@ Through an example, let us see how the API lets us do that.</p>
 </span><span data-line="24">        <span class="c1"># update the QAT schedule counts. Outside of the mini-batch loop</span>
 </span><span data-line="25">        <span class="n">quantizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 </span><span data-line="26">
-</span><span data-line="27">    <span class="c1"># outside &quot;training_mode&quot; : prepared model restored to validation state (observers off, fake quantization on)</span>
+</span><span data-line="27">    <span class="c1"># outside "training_mode" : prepared model restored to validation state (observers off, fake quantization on)</span>
 </span><span data-line="28">    <span class="n">val_metric</span> <span class="o">=</span> <span class="n">validate</span><span class="p">(</span><span class="n">prepared_model</span><span class="p">,</span> <span class="n">val_dataloader</span><span class="p">)</span>
 </span></pre></div>
 </div>
@@ -570,7 +570,7 @@ Through an example, let us see how the API lets us do that.</p>
 </span><span data-line="5"><span class="p">)</span>
 </span><span data-line="6">
 </span><span data-line="7">
-</span><span data-line="8"><span class="nd">@_AnnotationPatternRegistry</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;div_act&quot;</span><span class="p">)</span>
+</span><span data-line="8"><span class="nd">@_AnnotationPatternRegistry</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"div_act"</span><span class="p">)</span>
 </span><span data-line="9"><span class="k">class</span><span class="w"> </span><span class="nc">DivActPattern</span><span class="p">(</span><span class="n">NAryActPattern</span><span class="p">):</span>
 </span><span data-line="10">    <span class="nd">@classmethod</span>
 </span><span data-line="11">    <span class="k">def</span><span class="w"> </span><span class="nf">generate_patterns</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
@@ -601,7 +601,7 @@ Through an example, let us see how the API lets us do that.</p>
 </span><span data-line="18"><span class="k">def</span><span class="w"> </span><span class="nf">_annotate_multi_op_match</span><span class="p">(</span>
 </span><span data-line="19">    <span class="n">annotator_match</span><span class="p">,</span> <span class="n">quantization_config</span><span class="p">,</span> <span class="n">shared_observer_nodes</span>
 </span><span data-line="20"><span class="p">):</span>
-</span><span data-line="21"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Annotate a multi-op chain: quantize inputs of first op, output of last op.&quot;&quot;&quot;</span>
+</span><span data-line="21"><span class="w">    </span><span class="sd">"""Annotate a multi-op chain: quantize inputs of first op, output of last op."""</span>
 </span><span data-line="22">    <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">_get_call_function_node_from_partition</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">annotator_match</span><span class="p">]</span>
 </span><span data-line="23">    <span class="k">if</span> <span class="n">is_any_annotated</span><span class="p">(</span><span class="n">nodes</span><span class="p">):</span>
 </span><span data-line="24">        <span class="k">return</span>
@@ -628,7 +628,7 @@ Through an example, let us see how the API lets us do that.</p>
 </span><span data-line="45">    <span class="p">)</span>
 </span><span data-line="46">
 </span><span data-line="47">
-</span><span data-line="48"><span class="nd">@_AnnotationPatternRegistry</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;add_mul_sub&quot;</span><span class="p">)</span>
+</span><span data-line="48"><span class="nd">@_AnnotationPatternRegistry</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"add_mul_sub"</span><span class="p">)</span>
 </span><span data-line="49"><span class="k">class</span><span class="w"> </span><span class="nc">AddMulSubPattern</span><span class="p">(</span><span class="n">BaseAnnotationPattern</span><span class="p">):</span>
 </span><span data-line="50">    <span class="nd">@classmethod</span>
 </span><span data-line="51">    <span class="k">def</span><span class="w"> </span><span class="nf">get_annotator_func</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
@@ -654,7 +654,7 @@ Through an example, let us see how the API lets us do that.</p>
 </span></pre></div>
 </div>
 <p>Registering with a key that already exists overwrites the previous pattern with a warning. There is no <code class="docutils literal notranslate"><span class="pre">unregister</span></code> method — to remove a pattern, delete it directly from the registry dict:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">del</span> <span class="n">_AnnotationPatternRegistry</span><span class="o">.</span><span class="n">REGISTRY</span><span class="p">[</span><span class="s2">&quot;add_mul_sub&quot;</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="k">del</span> <span class="n">_AnnotationPatternRegistry</span><span class="o">.</span><span class="n">REGISTRY</span><span class="p">[</span><span class="s2">"add_mul_sub"</span><span class="p">]</span>
 </span></pre></div>
 </div>
 </section>
@@ -674,9 +674,9 @@ Through an example, let us see how the API lets us do that.</p>
 </span><span data-line="5"><span class="p">)</span>
 </span><span data-line="6">
 </span><span data-line="7">
-</span><span data-line="8"><span class="nd">@QParamsCalculatorBase</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;max_range&quot;</span><span class="p">)</span>
+</span><span data-line="8"><span class="nd">@QParamsCalculatorBase</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"max_range"</span><span class="p">)</span>
 </span><span data-line="9"><span class="k">class</span><span class="w"> </span><span class="nc">MaxRangeQParamsCalculator</span><span class="p">(</span><span class="n">RunningRangeMixin</span><span class="p">,</span> <span class="n">QParamsCalculatorBase</span><span class="p">):</span>
-</span><span data-line="10"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Track the widest observed min/max range across all calibration batches.&quot;&quot;&quot;</span>
+</span><span data-line="10"><span class="w">    </span><span class="sd">"""Track the widest observed min/max range across all calibration batches."""</span>
 </span><span data-line="11">
 </span><span data-line="12">    <span class="k">def</span><span class="w"> </span><span class="nf">update_running_range</span><span class="p">(</span>
 </span><span data-line="13">        <span class="bp">self</span><span class="p">,</span> <span class="n">min_val</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">max_val</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
@@ -691,7 +691,7 @@ Through an example, let us see how the API lets us do that.</p>
 </span><span data-line="2">
 </span><span data-line="3"><span class="n">spec</span> <span class="o">=</span> <span class="n">QuantizationSpec</span><span class="p">(</span>
 </span><span data-line="4">    <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int8</span><span class="p">,</span>
-</span><span data-line="5">    <span class="n">qparam_calculator_cls</span><span class="o">=</span><span class="s2">&quot;max_range&quot;</span><span class="p">,</span>
+</span><span data-line="5">    <span class="n">qparam_calculator_cls</span><span class="o">=</span><span class="s2">"max_range"</span><span class="p">,</span>
 </span><span data-line="6"><span class="p">)</span>
 </span></pre></div>
 </div>

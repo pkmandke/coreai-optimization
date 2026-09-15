@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -90,6 +90,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../../../quantization/overview.html">API Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../quantization/config.html">Config API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../quantization/advanced.html">Deeper Dive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quantization/composite_op_quantization.html">Quantization with Composite Ops</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../palettization/index.html">Palettization</a><ul>
@@ -110,7 +111,6 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l1"><a class="reference internal" href="../../../utils/joint_compression.html">Joint Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../utils/mixed_precision.html">Mixed-Precision Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../utils/activation_comparison.html">Comparing Intermediate Activations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../utils/composite_op_quantization.html">Quantizing Models with Core AI Composite Ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../utils/casting.html">16-bit PyTorch Model Casting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../utils/coreai_compression.html">Compressing Core AI Models</a></li>
 </ul>
@@ -172,9 +172,13 @@ data-aria-dark="Switch to auto color mode">
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -359,7 +363,7 @@ data-aria-dark="Switch to auto color mode">
 <div class="viewcode-block" id="Quantizer">
 <a class="viewcode-back" href="../../../api/generated/coreai_opt.quantization.Quantizer.html#coreai_opt.quantization.Quantizer">[docs]</a>
 </span><span data-line="41"><span class="k">class</span><span class="w"> </span><span class="nc">Quantizer</span><span class="p">(</span><span class="n">_BaseQuantizer</span><span class="p">):</span>
-</span><span data-line="42"><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="42"><span class="w">    </span><span class="sd">"""</span>
 </span><span data-line="43"><span class="sd">    Unified quantizer API that provides a single entry point for various quantization</span>
 </span><span data-line="44"><span class="sd">    workflows, including:</span>
 </span><span data-line="45">
@@ -367,7 +371,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="47"><span class="sd">      (e.g. float8_e4m3fn, float8_e5m2) quantization</span>
 </span><span data-line="48"><span class="sd">    - **Quantization Workflows**: Post-training quantization (PTQ) and</span>
 </span><span data-line="49"><span class="sd">      quantization-aware training (QAT)</span>
-</span><span data-line="50"><span class="sd">    - **Execution Modes**: Graph mode (built on torchao&#39;s PT2E) or eager mode</span>
+</span><span data-line="50"><span class="sd">    - **Execution Modes**: Graph mode (built on torchao's PT2E) or eager mode</span>
 </span><span data-line="51">
 </span><span data-line="52"><span class="sd">    The quantizer automatically selects the appropriate underlying implementation based</span>
 </span><span data-line="53"><span class="sd">    on the `execution_mode` specified in the configuration. Defaults to graph mode. Some</span>
@@ -456,7 +460,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="136"><span class="sd">        ...         optimizer.step()</span>
 </span><span data-line="137"><span class="sd">        ...         quantizer.step()</span>
 </span><span data-line="138"><span class="sd">        &gt;&gt;&gt; quantized_model = quantizer.finalize()</span>
-</span><span data-line="139"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="139"><span class="sd">    """</span>
 </span><span data-line="140">
 <div class="viewcode-block" id="Quantizer.__init__">
 <a class="viewcode-back" href="../../../api/generated/coreai_opt.quantization.Quantizer.html#coreai_opt.quantization.Quantizer.__init__">[docs]</a>
@@ -492,20 +496,20 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="169">
 </span><span data-line="170">    <span class="nd">@property</span>
 </span><span data-line="171">    <span class="k">def</span><span class="w"> </span><span class="nf">_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="172"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Delegate to the underlying quantizer&#39;s model.&quot;&quot;&quot;</span>
+</span><span data-line="172"><span class="w">        </span><span class="sd">"""Delegate to the underlying quantizer's model."""</span>
 </span><span data-line="173">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantizer</span><span class="o">.</span><span class="n">_model</span>
 </span><span data-line="174">
 </span><span data-line="175">    <span class="nd">@_model</span><span class="o">.</span><span class="n">setter</span>
 </span><span data-line="176">    <span class="k">def</span><span class="w"> </span><span class="nf">_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-</span><span data-line="177"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Delegate model setting to the underlying quantizer.&quot;&quot;&quot;</span>
+</span><span data-line="177"><span class="w">        </span><span class="sd">"""Delegate model setting to the underlying quantizer."""</span>
 </span><span data-line="178">        <span class="bp">self</span><span class="o">.</span><span class="n">_quantizer</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="n">value</span>
 </span><span data-line="179">
 </span><span data-line="180">    <span class="k">def</span><span class="w"> </span><span class="nf">_get_fake_quantize_modules</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
-</span><span data-line="181"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Delegate to the underlying execution-mode quantizer.&quot;&quot;&quot;</span>
+</span><span data-line="181"><span class="w">        </span><span class="sd">"""Delegate to the underlying execution-mode quantizer."""</span>
 </span><span data-line="182">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantizer</span><span class="o">.</span><span class="n">_get_fake_quantize_modules</span><span class="p">()</span>
 </span><span data-line="183">
 </span><span data-line="184">    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QATSchedule</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="185"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Look up the QAT schedule for a module via the config hierarchy.&quot;&quot;&quot;</span>
+</span><span data-line="185"><span class="w">        </span><span class="sd">"""Look up the QAT schedule for a module via the config hierarchy."""</span>
 </span><span data-line="186">        <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">_ConfigLevel</span><span class="o">.</span><span class="n">priority_order</span><span class="p">():</span>
 </span><span data-line="187">            <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_module_config_dict</span><span class="p">[</span><span class="n">level</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
 </span><span data-line="188">            <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -513,13 +517,13 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="190">        <span class="k">return</span> <span class="kc">None</span>
 </span><span data-line="191">
 </span><span data-line="192">    <span class="k">def</span><span class="w"> </span><span class="nf">_build_fq_to_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="193"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Build ``_fq_to_schedule`` from cached config dict + FQ modules.</span>
+</span><span data-line="193"><span class="w">        </span><span class="sd">"""Build ``_fq_to_schedule`` from cached config dict + FQ modules.</span>
 </span><span data-line="194">
 </span><span data-line="195"><span class="sd">        Must be called after ``prepare()`` so that FQ modules exist.</span>
 </span><span data-line="196"><span class="sd">        Requires ``_module_config_dict`` to have been populated before</span>
 </span><span data-line="197"><span class="sd">        ``prepare()`` (since prepare may modify the module types in Eager</span>
 </span><span data-line="198"><span class="sd">        mode).</span>
-</span><span data-line="199"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="199"><span class="sd">        """</span>
 </span><span data-line="200">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fq_to_schedule</span><span class="p">:</span>
 </span><span data-line="201">            <span class="k">return</span>
 </span><span data-line="202">
@@ -529,9 +533,9 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="206">                <span class="k">for</span> <span class="n">fq_mod</span> <span class="ow">in</span> <span class="n">fq_list</span><span class="p">:</span>
 </span><span data-line="207">                    <span class="k">if</span> <span class="n">fq_mod</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fq_to_schedule</span><span class="p">:</span>
 </span><span data-line="208">                        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-</span><span data-line="209">                            <span class="sa">f</span><span class="s2">&quot;FakeQuantize module under &#39;</span><span class="si">{</span><span class="n">module_name</span><span class="si">}</span><span class="s2">&#39; is shared &quot;</span>
-</span><span data-line="210">                            <span class="sa">f</span><span class="s2">&quot;with another module that already has a qat_schedule &quot;</span>
-</span><span data-line="211">                            <span class="sa">f</span><span class="s2">&quot;assigned. The existing schedule will be kept.&quot;</span><span class="p">,</span>
+</span><span data-line="209">                            <span class="sa">f</span><span class="s2">"FakeQuantize module under '</span><span class="si">{</span><span class="n">module_name</span><span class="si">}</span><span class="s2">' is shared "</span>
+</span><span data-line="210">                            <span class="sa">f</span><span class="s2">"with another module that already has a qat_schedule "</span>
+</span><span data-line="211">                            <span class="sa">f</span><span class="s2">"assigned. The existing schedule will be kept."</span><span class="p">,</span>
 </span><span data-line="212">                            <span class="ne">UserWarning</span><span class="p">,</span>
 </span><span data-line="213">                            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 </span><span data-line="214">                        <span class="p">)</span>
@@ -539,26 +543,26 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="216">                        <span class="bp">self</span><span class="o">.</span><span class="n">_fq_to_schedule</span><span class="p">[</span><span class="n">fq_mod</span><span class="p">]</span> <span class="o">=</span> <span class="n">schedule</span>
 </span><span data-line="217">
 </span><span data-line="218">    <span class="k">def</span><span class="w"> </span><span class="nf">_maybe_apply_qat_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="219"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply observer/fake-quant state for the current step count.&quot;&quot;&quot;</span>
+</span><span data-line="219"><span class="w">        </span><span class="sd">"""Apply observer/fake-quant state for the current step count."""</span>
 </span><span data-line="220">        <span class="k">for</span> <span class="n">fq_module</span><span class="p">,</span> <span class="n">schedule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fq_to_schedule</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 </span><span data-line="221">            <span class="n">state</span> <span class="o">=</span> <span class="n">schedule</span><span class="o">.</span><span class="n">_compute_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_step_count</span><span class="p">)</span>
 </span><span data-line="222">            <span class="n">fq_module</span><span class="o">.</span><span class="n">enable_observer</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">obs_on</span><span class="p">)</span>
 </span><span data-line="223">            <span class="n">fq_module</span><span class="o">.</span><span class="n">enable_fake_quant</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">fq_on</span><span class="p">)</span>
 </span><span data-line="224">
 </span><span data-line="225">    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_no_schedule_configured</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="226"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Raise RuntimeError if any FQ modules have a qat_schedule.&quot;&quot;&quot;</span>
+</span><span data-line="226"><span class="w">        </span><span class="sd">"""Raise RuntimeError if any FQ modules have a qat_schedule."""</span>
 </span><span data-line="227">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fq_to_schedule</span><span class="p">:</span>
 </span><span data-line="228">            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-</span><span data-line="229">                <span class="s2">&quot;Enable/disable APIs for observers or fake quantization cannot be &quot;</span>
-</span><span data-line="230">                <span class="s2">&quot;used with a qat_schedule configured. To use these APIs, make sure &quot;</span>
-</span><span data-line="231">                <span class="s2">&quot;there are no global or module-level qat_schedule configured. For &quot;</span>
-</span><span data-line="232">                <span class="s2">&quot;using the QAT schedule, refer to the step() API.&quot;</span>
+</span><span data-line="229">                <span class="s2">"Enable/disable APIs for observers or fake quantization cannot be "</span>
+</span><span data-line="230">                <span class="s2">"used with a qat_schedule configured. To use these APIs, make sure "</span>
+</span><span data-line="231">                <span class="s2">"there are no global or module-level qat_schedule configured. For "</span>
+</span><span data-line="232">                <span class="s2">"using the QAT schedule, refer to the step() API."</span>
 </span><span data-line="233">            <span class="p">)</span>
 </span><span data-line="234">
 <div class="viewcode-block" id="Quantizer.step">
 <a class="viewcode-back" href="../../../api/generated/coreai_opt.quantization.Quantizer.html#coreai_opt.quantization.Quantizer.step">[docs]</a>
 </span><span data-line="235">    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="236"><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="236"><span class="w">        </span><span class="sd">"""</span>
 </span><span data-line="237"><span class="sd">        Advance the QAT schedule by one step and apply observer/fake_quant</span>
 </span><span data-line="238"><span class="sd">        transitions after the step has been incremented.</span>
 </span><span data-line="239">
@@ -571,17 +575,17 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="246">
 </span><span data-line="247"><span class="sd">        Warns:</span>
 </span><span data-line="248"><span class="sd">            UserWarning: If no qat_schedule is configured on any module.</span>
-</span><span data-line="249"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="249"><span class="sd">        """</span>
 </span><span data-line="250">        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_training_mode</span><span class="p">:</span>
-</span><span data-line="251">            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;step() must be called inside a training_mode() context.&quot;</span><span class="p">)</span>
+</span><span data-line="251">            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"step() must be called inside a training_mode() context."</span><span class="p">)</span>
 </span><span data-line="252">
 </span><span data-line="253">        <span class="bp">self</span><span class="o">.</span><span class="n">_step_count</span> <span class="o">+=</span> <span class="mi">1</span>
 </span><span data-line="254">
 </span><span data-line="255">        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fq_to_schedule</span><span class="p">:</span>
 </span><span data-line="256">            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-</span><span data-line="257">                <span class="s2">&quot;step() was called but no qat_schedule is configured on any module. &quot;</span>
-</span><span data-line="258">                <span class="s2">&quot;step() has no effect. Configure a QATSchedule on at least one &quot;</span>
-</span><span data-line="259">                <span class="s2">&quot;ModuleQuantizerConfig to use QAT scheduling.&quot;</span><span class="p">,</span>
+</span><span data-line="257">                <span class="s2">"step() was called but no qat_schedule is configured on any module. "</span>
+</span><span data-line="258">                <span class="s2">"step() has no effect. Configure a QATSchedule on at least one "</span>
+</span><span data-line="259">                <span class="s2">"ModuleQuantizerConfig to use QAT scheduling."</span><span class="p">,</span>
 </span><span data-line="260">                <span class="ne">UserWarning</span><span class="p">,</span>
 </span><span data-line="261">                <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 </span><span data-line="262">            <span class="p">)</span>
@@ -591,11 +595,11 @@ data-aria-dark="Switch to auto color mode">
 
 </span><span data-line="266">
 </span><span data-line="267">    <span class="k">def</span><span class="w"> </span><span class="nf">_maybe_apply_fn_to_fqs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="nb">callable</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="268"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply fn to FQ modules if no QAT schedule is configured.</span>
+</span><span data-line="268"><span class="w">        </span><span class="sd">"""Apply fn to FQ modules if no QAT schedule is configured.</span>
 </span><span data-line="269">
 </span><span data-line="270"><span class="sd">        Validates that no schedule is set (raises RuntimeError otherwise).</span>
 </span><span data-line="271"><span class="sd">        If module is None, applies to the entire model. If module is given,</span>
-</span><span data-line="272"><span class="sd">        finds its FQs via the cached ``_module_to_fqs`` by resolving the module&#39;s</span>
+</span><span data-line="272"><span class="sd">        finds its FQs via the cached ``_module_to_fqs`` by resolving the module's</span>
 </span><span data-line="273"><span class="sd">        name and walking its children.</span>
 </span><span data-line="274">
 </span><span data-line="275"><span class="sd">        Args:</span>
@@ -607,7 +611,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="281"><span class="sd">        Raises:</span>
 </span><span data-line="282"><span class="sd">            RuntimeError: If any ModuleQuantizerConfig has qat_schedule configured.</span>
 </span><span data-line="283"><span class="sd">            ValueError: If the given module is not found in the model.</span>
-</span><span data-line="284"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="284"><span class="sd">        """</span>
 </span><span data-line="285">        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_no_schedule_configured</span><span class="p">()</span>
 </span><span data-line="286">        <span class="k">if</span> <span class="n">module</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="287">            <span class="bp">self</span><span class="o">.</span><span class="n">_quantizer</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
@@ -615,38 +619,38 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="289">
 </span><span data-line="290">        <span class="n">prefix</span> <span class="o">=</span> <span class="n">_get_module_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_quantizer</span><span class="o">.</span><span class="n">_model</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
 </span><span data-line="291">        <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="292">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Module </span><span class="si">{</span><span class="n">module</span><span class="si">}</span><span class="s2"> is not a submodule of the prepared model.&quot;</span><span class="p">)</span>
+</span><span data-line="292">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Module </span><span class="si">{</span><span class="n">module</span><span class="si">}</span><span class="s2"> is not a submodule of the prepared model."</span><span class="p">)</span>
 </span><span data-line="293">
 </span><span data-line="294">        <span class="k">for</span> <span class="n">child_name</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">module</span><span class="o">.</span><span class="n">named_modules</span><span class="p">():</span>
-</span><span data-line="295">            <span class="n">full_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">child_name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">child_name</span> <span class="k">else</span> <span class="n">prefix</span>
+</span><span data-line="295">            <span class="n">full_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">child_name</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">child_name</span> <span class="k">else</span> <span class="n">prefix</span>
 </span><span data-line="296">            <span class="k">for</span> <span class="n">fq</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_module_to_fqs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">full_name</span><span class="p">,</span> <span class="p">[]):</span>
 </span><span data-line="297">                <span class="n">fq</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
 </span><span data-line="298">
 <div class="viewcode-block" id="Quantizer.enable_observer">
 <a class="viewcode-back" href="../../../api/generated/coreai_opt.quantization.Quantizer.html#coreai_opt.quantization.Quantizer.enable_observer">[docs]</a>
 </span><span data-line="299">    <span class="k">def</span><span class="w"> </span><span class="nf">enable_observer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="300"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Enable observers on the model or a specific module.&quot;&quot;&quot;</span>
+</span><span data-line="300"><span class="w">        </span><span class="sd">"""Enable observers on the model or a specific module."""</span>
 </span><span data-line="301">        <span class="bp">self</span><span class="o">.</span><span class="n">_maybe_apply_fn_to_fqs</span><span class="p">(</span><span class="n">_torchao_enable_observer</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span></div>
 
 </span><span data-line="302">
 <div class="viewcode-block" id="Quantizer.disable_observer">
 <a class="viewcode-back" href="../../../api/generated/coreai_opt.quantization.Quantizer.html#coreai_opt.quantization.Quantizer.disable_observer">[docs]</a>
 </span><span data-line="303">    <span class="k">def</span><span class="w"> </span><span class="nf">disable_observer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="304"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Disable observers on the model or a specific module.&quot;&quot;&quot;</span>
+</span><span data-line="304"><span class="w">        </span><span class="sd">"""Disable observers on the model or a specific module."""</span>
 </span><span data-line="305">        <span class="bp">self</span><span class="o">.</span><span class="n">_maybe_apply_fn_to_fqs</span><span class="p">(</span><span class="n">_torchao_disable_observer</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span></div>
 
 </span><span data-line="306">
 <div class="viewcode-block" id="Quantizer.enable_fake_quant">
 <a class="viewcode-back" href="../../../api/generated/coreai_opt.quantization.Quantizer.html#coreai_opt.quantization.Quantizer.enable_fake_quant">[docs]</a>
 </span><span data-line="307">    <span class="k">def</span><span class="w"> </span><span class="nf">enable_fake_quant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="308"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Enable fake quantization on the model or a specific module.&quot;&quot;&quot;</span>
+</span><span data-line="308"><span class="w">        </span><span class="sd">"""Enable fake quantization on the model or a specific module."""</span>
 </span><span data-line="309">        <span class="bp">self</span><span class="o">.</span><span class="n">_maybe_apply_fn_to_fqs</span><span class="p">(</span><span class="n">_torchao_enable_fake_quant</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span></div>
 
 </span><span data-line="310">
 <div class="viewcode-block" id="Quantizer.disable_fake_quant">
 <a class="viewcode-back" href="../../../api/generated/coreai_opt.quantization.Quantizer.html#coreai_opt.quantization.Quantizer.disable_fake_quant">[docs]</a>
 </span><span data-line="311">    <span class="k">def</span><span class="w"> </span><span class="nf">disable_fake_quant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="312"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Disable fake quantization on the model or a specific module.&quot;&quot;&quot;</span>
+</span><span data-line="312"><span class="w">        </span><span class="sd">"""Disable fake quantization on the model or a specific module."""</span>
 </span><span data-line="313">        <span class="bp">self</span><span class="o">.</span><span class="n">_maybe_apply_fn_to_fqs</span><span class="p">(</span><span class="n">_torchao_disable_fake_quant</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span></div>
 
 </span><span data-line="314">
@@ -658,7 +662,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="318">        <span class="n">dynamic_shapes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span data-line="319">        <span class="n">export_with_no_grad</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 </span><span data-line="320">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span> <span class="o">|</span> <span class="n">fx</span><span class="o">.</span><span class="n">GraphModule</span><span class="p">:</span>
-</span><span data-line="321"><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="321"><span class="w">        </span><span class="sd">"""</span>
 </span><span data-line="322"><span class="sd">        Prepare the model for quantization by inserting fake quantization modules.</span>
 </span><span data-line="323">
 </span><span data-line="324"><span class="sd">        **Graph Mode:**</span>
@@ -696,7 +700,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="356"><span class="sd">            and batchnorm ops are affected via FX graph rewriting. User code</span>
 </span><span data-line="357"><span class="sd">            branching on the ``training`` flag and other ops with</span>
 </span><span data-line="358"><span class="sd">            mode-dependent behavior are not affected.</span>
-</span><span data-line="359"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="359"><span class="sd">        """</span>
 </span><span data-line="360">        <span class="c1"># Cache config dict before prepare() so that module_type_configs can</span>
 </span><span data-line="361">        <span class="c1"># match original types. After prepare, modules can be modified such</span>
 </span><span data-line="362">        <span class="c1"># that the types no longer match what is given in the config.</span>
@@ -705,13 +709,13 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="365">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execution_mode</span> <span class="o">==</span> <span class="n">ExecutionMode</span><span class="o">.</span><span class="n">EAGER</span><span class="p">:</span>
 </span><span data-line="366">            <span class="k">if</span> <span class="n">dynamic_shapes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="367">                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-</span><span data-line="368">                    <span class="s2">&quot;dynamic_shapes is only supported in graph mode and will be ignored.&quot;</span><span class="p">,</span>
+</span><span data-line="368">                    <span class="s2">"dynamic_shapes is only supported in graph mode and will be ignored."</span><span class="p">,</span>
 </span><span data-line="369">                    <span class="ne">UserWarning</span><span class="p">,</span>
 </span><span data-line="370">                    <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 </span><span data-line="371">                <span class="p">)</span>
 </span><span data-line="372">            <span class="k">if</span> <span class="ow">not</span> <span class="n">export_with_no_grad</span><span class="p">:</span>
 </span><span data-line="373">                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-</span><span data-line="374">                    <span class="s2">&quot;export_with_no_grad is only supported in graph mode and will be ignored.&quot;</span><span class="p">,</span>
+</span><span data-line="374">                    <span class="s2">"export_with_no_grad is only supported in graph mode and will be ignored."</span><span class="p">,</span>
 </span><span data-line="375">                    <span class="ne">UserWarning</span><span class="p">,</span>
 </span><span data-line="376">                    <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 </span><span data-line="377">                <span class="p">)</span>
@@ -735,15 +739,15 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="394">        <span class="n">backend</span><span class="p">:</span> <span class="n">ExportBackend</span><span class="p">,</span>
 </span><span data-line="395">        <span class="n">mmap_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
 </span><span data-line="396">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="397"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate that ``mmap_dir`` is compatible with the current execution mode,</span>
+</span><span data-line="397"><span class="w">        </span><span class="sd">"""Validate that ``mmap_dir`` is compatible with the current execution mode,</span>
 </span><span data-line="398"><span class="sd">        target backend, and model device. No-op when ``mmap_dir is None``.</span>
-</span><span data-line="399"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="399"><span class="sd">        """</span>
 </span><span data-line="400">        <span class="k">if</span> <span class="n">mmap_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="401">            <span class="k">return</span>
 </span><span data-line="402">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_execution_mode</span> <span class="o">!=</span> <span class="n">ExecutionMode</span><span class="o">.</span><span class="n">EAGER</span><span class="p">:</span>
 </span><span data-line="403">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="404">                <span class="s2">&quot;mmap_dir is only supported in eager execution mode, &quot;</span>
-</span><span data-line="405">                <span class="sa">f</span><span class="s2">&quot;got execution_mode=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_execution_mode</span><span class="si">}</span><span class="s2">.&quot;</span>
+</span><span data-line="404">                <span class="s2">"mmap_dir is only supported in eager execution mode, "</span>
+</span><span data-line="405">                <span class="sa">f</span><span class="s2">"got execution_mode=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_execution_mode</span><span class="si">}</span><span class="s2">."</span>
 </span><span data-line="406">            <span class="p">)</span>
 </span><span data-line="407">        <span class="n">model_to_check</span> <span class="o">=</span> <span class="n">model</span> <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span>
 </span><span data-line="408">        <span class="n">_validate_mmap_backend_and_device</span><span class="p">(</span><span class="n">model_to_check</span><span class="p">,</span> <span class="n">backend</span><span class="p">,</span> <span class="n">mmap_dir</span><span class="p">)</span>
@@ -753,9 +757,9 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="412">        <span class="n">model</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span> <span class="o">|</span> <span class="n">fx</span><span class="o">.</span><span class="n">GraphModule</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
 </span><span data-line="413">        <span class="n">backend</span><span class="p">:</span> <span class="n">ExportBackend</span><span class="p">,</span>
 </span><span data-line="414">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="415"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Reject CoreAI/CoreML export when any qparams calculator is a</span>
+</span><span data-line="415"><span class="w">        </span><span class="sd">"""Reject CoreAI/CoreML export when any qparams calculator is a</span>
 </span><span data-line="416"><span class="sd">        ``StatelessQParamsCalculatorBase`` (e.g. dynamic quantization).</span>
-</span><span data-line="417"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="417"><span class="sd">        """</span>
 </span><span data-line="418">        <span class="k">if</span> <span class="n">backend</span> <span class="o">==</span> <span class="n">ExportBackend</span><span class="o">.</span><span class="n">_TORCH</span><span class="p">:</span>
 </span><span data-line="419">            <span class="k">return</span>
 </span><span data-line="420">        <span class="n">model_to_check</span> <span class="o">=</span> <span class="n">model</span> <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span>
@@ -767,10 +771,10 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="426">        <span class="p">]</span>
 </span><span data-line="427">        <span class="k">if</span> <span class="n">stateless_fq_names</span><span class="p">:</span>
 </span><span data-line="428">            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-</span><span data-line="429">                <span class="sa">f</span><span class="s2">&quot;backend=</span><span class="si">{</span><span class="n">backend</span><span class="si">}</span><span class="s2"> does not yet support qparams calculators that &quot;</span>
-</span><span data-line="430">                <span class="sa">f</span><span class="s2">&quot;recompute every forward (e.g. dynamic quantization). &quot;</span>
-</span><span data-line="431">                <span class="sa">f</span><span class="s2">&quot;Affected FakeQuantize modules: </span><span class="si">{</span><span class="n">stateless_fq_names</span><span class="si">}</span><span class="s2">. Use &quot;</span>
-</span><span data-line="432">                <span class="sa">f</span><span class="s2">&quot;backend=ExportBackend._TORCH for torch-only inference.&quot;</span>
+</span><span data-line="429">                <span class="sa">f</span><span class="s2">"backend=</span><span class="si">{</span><span class="n">backend</span><span class="si">}</span><span class="s2"> does not yet support qparams calculators that "</span>
+</span><span data-line="430">                <span class="sa">f</span><span class="s2">"recompute every forward (e.g. dynamic quantization). "</span>
+</span><span data-line="431">                <span class="sa">f</span><span class="s2">"Affected FakeQuantize modules: </span><span class="si">{</span><span class="n">stateless_fq_names</span><span class="si">}</span><span class="s2">. Use "</span>
+</span><span data-line="432">                <span class="sa">f</span><span class="s2">"backend=ExportBackend._TORCH for torch-only inference."</span>
 </span><span data-line="433">            <span class="p">)</span>
 </span><span data-line="434">
 <div class="viewcode-block" id="Quantizer.finalize">
@@ -782,7 +786,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="439">        <span class="o">*</span><span class="p">,</span>
 </span><span data-line="440">        <span class="n">mmap_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span data-line="441">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span> <span class="o">|</span> <span class="n">fx</span><span class="o">.</span><span class="n">GraphModule</span><span class="p">:</span>
-</span><span data-line="442"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert quantized model to backend-specific representations.</span>
+</span><span data-line="442"><span class="w">        </span><span class="sd">"""Convert quantized model to backend-specific representations.</span>
 </span><span data-line="443">
 </span><span data-line="444"><span class="sd">        Converts fake quantization modules into backend-specific quantization ops.</span>
 </span><span data-line="445"><span class="sd">        Only call ``finalize`` when exporting to a target backend. For torch-based evaluation, use</span>
@@ -821,7 +825,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="478"><span class="sd">        Note:</span>
 </span><span data-line="479"><span class="sd">            When ``backend=ExportBackend.CoreAI`` in execution_mode=ExecutionMode.EAGER,</span>
 </span><span data-line="480"><span class="sd">            finalize frees the original dense weights.</span>
-</span><span data-line="481"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="481"><span class="sd">        """</span>
 </span><span data-line="482">        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_mmap_dir_constraints</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">backend</span><span class="p">,</span> <span class="n">mmap_dir</span><span class="p">)</span>
 </span><span data-line="483">        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_no_persistent_observer_calculators</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">backend</span><span class="p">)</span>
 </span><span data-line="484">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantizer</span><span class="o">.</span><span class="n">finalize</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">backend</span><span class="p">,</span> <span class="n">mmap_dir</span><span class="o">=</span><span class="n">mmap_dir</span><span class="p">)</span></div>
@@ -831,7 +835,7 @@ data-aria-dark="Switch to auto color mode">
 <a class="viewcode-back" href="../../../api/generated/coreai_opt.quantization.Quantizer.html#coreai_opt.quantization.Quantizer.calibration_mode">[docs]</a>
 </span><span data-line="486">    <span class="nd">@contextmanager</span>
 </span><span data-line="487">    <span class="k">def</span><span class="w"> </span><span class="nf">calibration_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span> <span class="o">|</span> <span class="n">fx</span><span class="o">.</span><span class="n">GraphModule</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-</span><span data-line="488"><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="488"><span class="w">        </span><span class="sd">"""</span>
 </span><span data-line="489"><span class="sd">        Context manager for calibration-based post-training quantization.</span>
 </span><span data-line="490">
 </span><span data-line="491"><span class="sd">        When entering this context, observers are enabled to collect statistics</span>
@@ -863,7 +867,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="517">
 </span><span data-line="518"><span class="sd">        Raises:</span>
 </span><span data-line="519"><span class="sd">            RuntimeError: If the model has not been prepared.</span>
-</span><span data-line="520"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="520"><span class="sd">        """</span>
 </span><span data-line="521">        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantizer</span><span class="o">.</span><span class="n">calibration_mode</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
 </span><span data-line="522">            <span class="k">yield</span></div>
 
@@ -872,7 +876,7 @@ data-aria-dark="Switch to auto color mode">
 <a class="viewcode-back" href="../../../api/generated/coreai_opt.quantization.Quantizer.html#coreai_opt.quantization.Quantizer.training_mode">[docs]</a>
 </span><span data-line="524">    <span class="nd">@contextmanager</span>
 </span><span data-line="525">    <span class="k">def</span><span class="w"> </span><span class="nf">training_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span> <span class="o">|</span> <span class="n">fx</span><span class="o">.</span><span class="n">GraphModule</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-</span><span data-line="526"><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="526"><span class="w">        </span><span class="sd">"""</span>
 </span><span data-line="527"><span class="sd">        Context manager for quantization-aware training (QAT) workflow.</span>
 </span><span data-line="528">
 </span><span data-line="529"><span class="sd">        When entering this context, the model is configured for training with both</span>
@@ -898,7 +902,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="549"><span class="sd">        - The prepared model from prepare() may have poor accuracy for</span>
 </span><span data-line="550"><span class="sd">          weight-only quantization. Fine-tuning the model with the quantization</span>
 </span><span data-line="551"><span class="sd">          enabled will help the weights adapt to the effects of quantization.</span>
-</span><span data-line="552"><span class="sd">        - Upon calibrating an activation-quantized model, there wasn&#39;t enough</span>
+</span><span data-line="552"><span class="sd">        - Upon calibrating an activation-quantized model, there wasn't enough</span>
 </span><span data-line="553"><span class="sd">          improvement in model accuracy. Fine-tuning the weights to adapt to</span>
 </span><span data-line="554"><span class="sd">          the effect of activation (and weight) quantization can help recover</span>
 </span><span data-line="555"><span class="sd">          the lost accuracy.</span>
@@ -928,12 +932,12 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="579"><span class="sd">            RuntimeError: If the model has not been prepared.</span>
 </span><span data-line="580"><span class="sd">            RuntimeError: If called while already inside a training_mode() context.</span>
 </span><span data-line="581"><span class="sd">            TypeError: If the provided model is not a torch.fx.GraphModule (graph mode).</span>
-</span><span data-line="582"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="582"><span class="sd">        """</span>
 </span><span data-line="583">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_in_training_mode</span><span class="p">:</span>
 </span><span data-line="584">            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-</span><span data-line="585">                <span class="s2">&quot;Cannot enter training_mode() while already inside a &quot;</span>
-</span><span data-line="586">                <span class="s2">&quot;training_mode() context. Nested training_mode() calls are not &quot;</span>
-</span><span data-line="587">                <span class="s2">&quot;supported.&quot;</span>
+</span><span data-line="585">                <span class="s2">"Cannot enter training_mode() while already inside a "</span>
+</span><span data-line="586">                <span class="s2">"training_mode() context. Nested training_mode() calls are not "</span>
+</span><span data-line="587">                <span class="s2">"supported."</span>
 </span><span data-line="588">            <span class="p">)</span>
 </span><span data-line="589">
 </span><span data-line="590">        <span class="bp">self</span><span class="o">.</span><span class="n">_in_training_mode</span> <span class="o">=</span> <span class="kc">True</span>

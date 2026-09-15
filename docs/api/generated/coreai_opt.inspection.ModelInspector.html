@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -173,12 +173,12 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.spec.DefaultTrainingConfig.html">coreai_opt.palettization.spec.DefaultTrainingConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.spec.TrainingStrategyConfig.html">coreai_opt.palettization.spec.TrainingStrategyConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -390,7 +390,7 @@ torch.no_grad() context. Defaults to True.</p></li>
 </div>
 <p>Inspect all compressable ops for the Quantizer compressor:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="gp">&gt;&gt;&gt; </span><span class="n">inspector</span> <span class="o">=</span> <span class="n">ModelInspector</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">),),</span>
-</span><span data-line="2"><span class="gp">... </span>    <span class="n">execution_mode</span><span class="o">=</span><span class="s2">&quot;graph&quot;</span><span class="p">,</span> <span class="n">compressor</span><span class="o">=</span><span class="n">Quantizer</span><span class="p">)</span>
+</span><span data-line="2"><span class="gp">... </span>    <span class="n">execution_mode</span><span class="o">=</span><span class="s2">"graph"</span><span class="p">,</span> <span class="n">compressor</span><span class="o">=</span><span class="n">Quantizer</span><span class="p">)</span>
 </span></pre></div>
 </div>
 <p>Query all ops in the model:</p>
@@ -404,11 +404,11 @@ torch.no_grad() context. Defaults to True.</p></li>
 <p>Navigate the module hierarchy:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="gp">&gt;&gt;&gt; </span><span class="n">root</span> <span class="o">=</span> <span class="n">inspector</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">model</span>
 </span><span data-line="2"><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">named_children</span><span class="p">():</span>
-</span><span data-line="3"><span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">module_type</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">ops</span><span class="p">)</span><span class="si">}</span><span class="s2"> ops&quot;</span><span class="p">)</span>
+</span><span data-line="3"><span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">module_type</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">ops</span><span class="p">)</span><span class="si">}</span><span class="s2"> ops"</span><span class="p">)</span>
 </span></pre></div>
 </div>
 <p>Look up a specific submodule by fully-qualified name:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="gp">&gt;&gt;&gt; </span><span class="n">linear_mod</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">get_submodule</span><span class="p">(</span><span class="s2">&quot;0&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="gp">&gt;&gt;&gt; </span><span class="n">linear_mod</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">get_submodule</span><span class="p">(</span><span class="s2">"0"</span><span class="p">)</span>
 </span><span data-line="2"><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">linear_mod</span><span class="o">.</span><span class="n">module_type</span><span class="p">)</span>  <span class="c1"># torch.nn.modules.linear.Linear</span>
 </span><span data-line="3"><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">linear_mod</span><span class="o">.</span><span class="n">ops</span><span class="p">)</span>          <span class="c1"># ops directly owned by this module</span>
 </span></pre></div>
@@ -419,8 +419,8 @@ torch.no_grad() context. Defaults to True.</p></li>
 </div>
 <p>Filter ops by type, name pattern, or module with the same filtering logic which Quantizer
 uses:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="gp">&gt;&gt;&gt; </span><span class="n">inspector</span><span class="o">.</span><span class="n">get_matched_ops_for_op_type</span><span class="p">(</span><span class="s2">&quot;linear&quot;</span><span class="p">)</span>
-</span><span data-line="2"><span class="gp">&gt;&gt;&gt; </span><span class="n">inspector</span><span class="o">.</span><span class="n">get_matched_ops_for_op_name</span><span class="p">(</span><span class="s2">&quot;.*linear.*&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="gp">&gt;&gt;&gt; </span><span class="n">inspector</span><span class="o">.</span><span class="n">get_matched_ops_for_op_type</span><span class="p">(</span><span class="s2">"linear"</span><span class="p">)</span>
+</span><span data-line="2"><span class="gp">&gt;&gt;&gt; </span><span class="n">inspector</span><span class="o">.</span><span class="n">get_matched_ops_for_op_name</span><span class="p">(</span><span class="s2">".*linear.*"</span><span class="p">)</span>
 </span><span data-line="3"><span class="gp">&gt;&gt;&gt; </span><span class="n">inspector</span><span class="o">.</span><span class="n">get_matched_ops_for_module_type</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">)</span>
 </span></pre></div>
 </div>

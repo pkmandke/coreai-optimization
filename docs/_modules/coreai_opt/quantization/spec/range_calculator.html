@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -90,6 +90,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/overview.html">API Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/config.html">Config API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/advanced.html">Deeper Dive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quantization/composite_op_quantization.html">Quantization with Composite Ops</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../palettization/index.html">Palettization</a><ul>
@@ -110,7 +111,6 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/joint_compression.html">Joint Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/mixed_precision.html">Mixed-Precision Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/activation_comparison.html">Comparing Intermediate Activations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../utils/composite_op_quantization.html">Quantizing Models with Core AI Composite Ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/casting.html">16-bit PyTorch Model Casting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/coreai_compression.html">Compressing Core AI Models</a></li>
 </ul>
@@ -172,9 +172,13 @@ data-aria-dark="Switch to auto color mode">
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -336,10 +340,10 @@ data-aria-dark="Switch to auto color mode">
 <div class="viewcode-block" id="RangeCalculatorBase">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.RangeCalculatorBase.html#coreai_opt.quantization.spec.RangeCalculatorBase">[docs]</a>
 </span><span data-line="18"><span class="k">class</span><span class="w"> </span><span class="nc">RangeCalculatorBase</span><span class="p">(</span><span class="n">_ClassRegistryMixin</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-</span><span data-line="19"><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="19"><span class="w">    </span><span class="sd">"""</span>
 </span><span data-line="20"><span class="sd">    Base class and registry for classes used to compute the range</span>
 </span><span data-line="21"><span class="sd">    of a given tensor.</span>
-</span><span data-line="22"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="22"><span class="sd">    """</span>
 </span><span data-line="23">
 <div class="viewcode-block" id="RangeCalculatorBase.__init__">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.RangeCalculatorBase.html#coreai_opt.quantization.spec.RangeCalculatorBase.__init__">[docs]</a>
@@ -355,10 +359,10 @@ data-aria-dark="Switch to auto color mode">
 
 </span><span data-line="33">
 </span><span data-line="34">    <span class="k">def</span><span class="w"> </span><span class="nf">_reshape_min_max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">range_tensor</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">input_shape</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Size</span><span class="p">):</span>
-</span><span data-line="35"><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="35"><span class="w">        </span><span class="sd">"""</span>
 </span><span data-line="36"><span class="sd">        Reshape range_tensor to have the same number of dimensions as input shape,</span>
 </span><span data-line="37"><span class="sd">        taking block size into account.</span>
-</span><span data-line="38"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="38"><span class="sd">        """</span>
 </span><span data-line="39">        <span class="n">block_size_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">granularity</span><span class="o">.</span><span class="n">get_block_size</span><span class="p">(</span><span class="n">input_shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantization_target</span><span class="p">)</span>
 </span><span data-line="40">
 </span><span data-line="41">        <span class="c1"># While reducing, each dimension with block size other than 1 or the original</span>
@@ -378,14 +382,14 @@ data-aria-dark="Switch to auto color mode">
 <div class="viewcode-block" id="RangeCalculatorBase.forward">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.RangeCalculatorBase.html#coreai_opt.quantization.spec.RangeCalculatorBase.forward">[docs]</a>
 </span><span data-line="55">    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
-</span><span data-line="56"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute range statistics on an input and return the min/max bounds.</span>
+</span><span data-line="56"><span class="w">        </span><span class="sd">"""Compute range statistics on an input and return the min/max bounds.</span>
 </span><span data-line="57">
 </span><span data-line="58"><span class="sd">        Calls _generate_min_max to compute range statistics and validates that</span>
 </span><span data-line="59"><span class="sd">        the returned min/max shapes match the original tensor number of dimensions.</span>
 </span><span data-line="60">
 </span><span data-line="61"><span class="sd">        Args:</span>
 </span><span data-line="62"><span class="sd">            x (:py:class:`torch.Tensor`): Tensor to compute range statistics upon.</span>
-</span><span data-line="63"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="63"><span class="sd">        """</span>
 </span><span data-line="64">        <span class="n">min_tensor</span><span class="p">,</span> <span class="n">max_tensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_min_max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </span><span data-line="65">        <span class="n">min_tensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reshape_min_max</span><span class="p">(</span><span class="n">min_tensor</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </span><span data-line="66">        <span class="n">max_tensor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reshape_min_max</span><span class="p">(</span><span class="n">max_tensor</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -394,23 +398,23 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="68">
 </span><span data-line="69">    <span class="nd">@abstractmethod</span>
 </span><span data-line="70">    <span class="k">def</span><span class="w"> </span><span class="nf">_generate_min_max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
-</span><span data-line="71"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the lower and upper bound of the range.</span>
+</span><span data-line="71"><span class="w">        </span><span class="sd">"""Compute the lower and upper bound of the range.</span>
 </span><span data-line="72">
 </span><span data-line="73"><span class="sd">        Args:</span>
 </span><span data-line="74"><span class="sd">            x (:py:class:`torch.Tensor`): Tensor to compute range statistics upon.</span>
-</span><span data-line="75"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="75"><span class="sd">        """</span>
 </span><span data-line="76">        <span class="k">pass</span></div>
 
 </span><span data-line="77">
 </span><span data-line="78">
 <div class="viewcode-block" id="MinMaxRangeCalculator">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.MinMaxRangeCalculator.html#coreai_opt.quantization.spec.MinMaxRangeCalculator">[docs]</a>
-</span><span data-line="79"><span class="nd">@RangeCalculatorBase</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;minmax&quot;</span><span class="p">)</span>
+</span><span data-line="79"><span class="nd">@RangeCalculatorBase</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"minmax"</span><span class="p">)</span>
 </span><span data-line="80"><span class="k">class</span><span class="w"> </span><span class="nc">MinMaxRangeCalculator</span><span class="p">(</span><span class="n">RangeCalculatorBase</span><span class="p">):</span>
-</span><span data-line="81"><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="81"><span class="w">    </span><span class="sd">"""</span>
 </span><span data-line="82"><span class="sd">    Range calculator that computes the range of a given tensor as the min and max</span>
 </span><span data-line="83"><span class="sd">    values of the tensor.</span>
-</span><span data-line="84"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="84"><span class="sd">    """</span>
 </span><span data-line="85">
 </span><span data-line="86">    <span class="k">def</span><span class="w"> </span><span class="nf">_generate_min_max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
 </span><span data-line="87">        <span class="n">block_size_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">granularity</span><span class="o">.</span><span class="n">get_block_size</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantization_target</span><span class="p">)</span>
@@ -419,8 +423,8 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="90">        <span class="c1"># If tensor is already the shape required, no minmaxing is needed.</span>
 </span><span data-line="91">        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">reduction_dims</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 </span><span data-line="92">            <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span>
-</span><span data-line="93">                <span class="sa">f</span><span class="s2">&quot;With no reduction dims, tensor shape </span><span class="si">{</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> is &quot;</span>
-</span><span data-line="94">                <span class="sa">f</span><span class="s2">&quot;expected to match shape_for_reduction </span><span class="si">{</span><span class="n">shape_for_reduction</span><span class="si">}</span><span class="s2">.&quot;</span>
+</span><span data-line="93">                <span class="sa">f</span><span class="s2">"With no reduction dims, tensor shape </span><span class="si">{</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> is "</span>
+</span><span data-line="94">                <span class="sa">f</span><span class="s2">"expected to match shape_for_reduction </span><span class="si">{</span><span class="n">shape_for_reduction</span><span class="si">}</span><span class="s2">."</span>
 </span><span data-line="95">            <span class="p">)</span>
 </span><span data-line="96">            <span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="n">shape_for_reduction</span><span class="p">,</span> <span class="n">error_msg</span>
 </span><span data-line="97">            <span class="k">return</span> <span class="n">tensor</span><span class="p">,</span> <span class="n">tensor</span>

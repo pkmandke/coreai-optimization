@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -173,12 +173,12 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.DefaultTrainingConfig.html">coreai_opt.palettization.spec.DefaultTrainingConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategyConfig.html">coreai_opt.palettization.spec.TrainingStrategyConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -265,6 +265,7 @@ data-aria-dark="Switch to auto color mode">
 <li><a class="reference internal" href="#construct-accuracy-vs-bpw-graph">Construct accuracy vs BPW graph</a></li>
 <li><a class="reference internal" href="#applying-to-different-compression-techniques">Applying to different compression techniques</a></li>
 <li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#utility-for-computing-analytical-bits-per-weight-bpw">Utility for computing analytical Bits Per Weight (BPW)</a></li>
 </ul>
 </div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
   </aside>
@@ -388,9 +389,46 @@ data-aria-dark="Switch to auto color mode">
 <section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
 <ul class="simple">
-<li><p><a class="reference internal" href="../examples/mixed_precision_palettization.html"><span class="std std-doc">Mixed-precision palettization with ResNet50</span></a> — applies palettization with 2/4/6-bit per-tensor candidate configs and the greedy approach targeting a BPW of 4.</p></li>
+<li><p><a class="reference internal" href="../examples/model_examples/mixed_precision_palettization.html"><span class="std std-doc">Mixed-precision palettization with ResNet50</span></a> — applies palettization with 2/4/6-bit per-tensor candidate configs and the greedy approach targeting a BPW of 4.</p></li>
 <li><p><a class="reference external" href="https://github.com/apple/coreai-models">coreai-models</a> — the same workflow is applied to a few LLMs in this repository to produce mixed precision compression recipes. Users can find the mixed precision configs in the repo and apply them with <code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code>.</p></li>
 </ul>
+</section>
+<section id="utility-for-computing-analytical-bits-per-weight-bpw">
+<h2>Utility for computing analytical Bits Per Weight (BPW)<a class="headerlink" href="#utility-for-computing-analytical-bits-per-weight-bpw" title="Link to this heading">¶</a></h2>
+<p><code class="xref py py-func docutils literal notranslate"><span class="pre">bits_per_weight()</span></code> is a utility that computes an analytical BPW estimate from a <em>prepared</em> <code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code> model.</p>
+<p>It estimates the average bit width of a model, amortizing compression overhead such as quantization scales and zero-points as well as palettization look-up tables and per-channel scales. Compressed tensors are counted at their effective compressed cost and everything else (biases, norms and buffers such as BatchNorm running statistics) is counted at its full-precision dtype cost.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">coreai_opt.quantization</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantizer</span><span class="p">,</span> <span class="n">QuantizerConfig</span>
+</span><span data-line="2"><span class="kn">from</span><span class="w"> </span><span class="nn">coreai_opt.quantization.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExecutionMode</span>
+</span><span data-line="3"><span class="kn">from</span><span class="w"> </span><span class="nn">coreai_opt.inspection</span><span class="w"> </span><span class="kn">import</span> <span class="n">bits_per_weight</span>
+</span><span data-line="4">
+</span><span data-line="5"><span class="c1"># Prepare an eager-mode weight-quantized model</span>
+</span><span data-line="6"><span class="n">quantizer</span> <span class="o">=</span> <span class="n">Quantizer</span><span class="p">(</span>
+</span><span data-line="7">    <span class="n">model</span><span class="p">,</span> <span class="n">QuantizerConfig</span><span class="o">.</span><span class="n">presets</span><span class="o">.</span><span class="n">w8</span><span class="p">(</span><span class="n">execution_mode</span><span class="o">=</span><span class="n">ExecutionMode</span><span class="o">.</span><span class="n">EAGER</span><span class="p">)</span>
+</span><span data-line="8"><span class="p">)</span>
+</span><span data-line="9"><span class="n">prepared_model</span> <span class="o">=</span> <span class="n">quantizer</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">example_inputs</span><span class="p">)</span>
+</span><span data-line="10">
+</span><span data-line="11"><span class="n">result</span> <span class="o">=</span> <span class="n">bits_per_weight</span><span class="p">(</span><span class="n">prepared_model</span><span class="p">)</span>
+</span><span data-line="12"><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">bpw</span><span class="p">)</span>  <span class="c1"># e.g. 8.86</span>
+</span></pre></div>
+</div>
+<p>The returned <code class="xref py py-class docutils literal notranslate"><span class="pre">BitsPerWeightResult</span></code> also exposes <code class="docutils literal notranslate"><span class="pre">per_module_map</span></code>, a mapping from module name to the module’s own average BPW, which is useful for inspecting how bits are distributed across different parts of the model.</p>
+<p>The utility supports:</p>
+<ul class="simple">
+<li><p><strong>Eager-mode integer weight quantization</strong>: int8, int4, int2 and their unsigned variants along with symmetric and asymmetric, at any granularity.</p></li>
+<li><p><strong>Eager-mode floating-point weight quantization</strong>: FP8 (<code class="docutils literal notranslate"><span class="pre">e4m3</span></code>, <code class="docutils literal notranslate"><span class="pre">e5m2</span></code>) and FP4 (<code class="docutils literal notranslate"><span class="pre">e2m1</span></code>).</p></li>
+<li><p><strong>Palettization</strong> at any spec-supported <code class="docutils literal notranslate"><span class="pre">n_bits</span></code>, including a quantized LUT.</p></li>
+</ul>
+<p>Sub-byte payloads and zero-points are packed at <code class="docutils literal notranslate"><span class="pre">n_bits</span></code> with no padding.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Pruned models and graph-mode (<code class="docutils literal notranslate"><span class="pre">torch.fx.GraphModule</span></code>) quantized models are currently not supported.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is an analytical estimate computed on a <em>prepared</em> <code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code> model and as such does not reflect the exported asset size of any <a class="reference internal" href="../introduction/integration_coreai.html"><span class="std std-doc"><code class="docutils literal notranslate"><span class="pre">finalize()</span></code> backend</span></a>. Passing a finalized model to the utility is not supported.</p>
+</div>
+<p>For the full API, see the <code class="xref py py-func docutils literal notranslate"><span class="pre">bits_per_weight()</span></code> reference.</p>
 </section>
 </section>
 

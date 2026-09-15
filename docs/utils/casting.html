@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -173,12 +173,12 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.DefaultTrainingConfig.html">coreai_opt.palettization.spec.DefaultTrainingConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategyConfig.html">coreai_opt.palettization.spec.TrainingStrategyConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -392,7 +392,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="25"><span class="n">converter</span><span class="o">.</span><span class="n">add_exported_program</span><span class="p">(</span><span class="n">exported_program</span><span class="p">)</span>
 </span><span data-line="26"><span class="n">ai_program</span> <span class="o">=</span> <span class="n">converter</span><span class="o">.</span><span class="n">to_coreai</span><span class="p">()</span>
 </span><span data-line="27"><span class="n">ai_program</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
-</span><span data-line="28"><span class="n">ai_program</span><span class="o">.</span><span class="n">save_asset</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;model.aimodel&quot;</span><span class="p">))</span>
+</span><span data-line="28"><span class="n">ai_program</span><span class="o">.</span><span class="n">save_asset</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">"model.aimodel"</span><span class="p">))</span>
 </span></pre></div>
 </div>
 <p>If only one type of casting is needed, replace <code class="docutils literal notranslate"><span class="pre">cast_to_16_bit_precision</span></code> with <code class="docutils literal notranslate"><span class="pre">cast_fp32_to_fp16</span></code> or <code class="docutils literal notranslate"><span class="pre">cast_int32_to_int16</span></code>.</p>
@@ -438,7 +438,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="35"><span class="n">converter</span><span class="o">.</span><span class="n">add_exported_program</span><span class="p">(</span><span class="n">exported_program</span><span class="p">)</span>
 </span><span data-line="36"><span class="n">ai_program</span> <span class="o">=</span> <span class="n">converter</span><span class="o">.</span><span class="n">to_coreai</span><span class="p">()</span>
 </span><span data-line="37"><span class="n">ai_program</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
-</span><span data-line="38"><span class="n">ai_program</span><span class="o">.</span><span class="n">save_asset</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;model.aimodel&quot;</span><span class="p">))</span>
+</span><span data-line="38"><span class="n">ai_program</span><span class="o">.</span><span class="n">save_asset</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">"model.aimodel"</span><span class="p">))</span>
 </span></pre></div>
 </div>
 </section>

@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -90,6 +90,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/overview.html">API Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/config.html">Config API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/advanced.html">Deeper Dive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quantization/composite_op_quantization.html">Quantization with Composite Ops</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../palettization/index.html">Palettization</a><ul>
@@ -110,7 +111,6 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/joint_compression.html">Joint Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/mixed_precision.html">Mixed-Precision Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/activation_comparison.html">Comparing Intermediate Activations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../utils/composite_op_quantization.html">Quantizing Models with Core AI Composite Ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/casting.html">16-bit PyTorch Model Casting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/coreai_compression.html">Compressing Core AI Models</a></li>
 </ul>
@@ -172,9 +172,13 @@ data-aria-dark="Switch to auto color mode">
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -322,31 +326,31 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="4"><span class="c1"># be found in the LICENSE file or at https://opensource.org/licenses/BSD-3-Clause</span>
 </span><span data-line="5">
 </span><span data-line="6">
-</span><span data-line="7"><span class="sd">&quot;&quot;&quot;Quantization formulation enum used by :class:`QuantizationSpec`.&quot;&quot;&quot;</span>
+</span><span data-line="7"><span class="sd">"""Quantization formulation enum used by :class:`QuantizationSpec`."""</span>
 </span><span data-line="8">
 </span><span data-line="9"><span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">auto</span>
 </span><span data-line="10">
 </span><span data-line="11"><span class="kn">from</span><span class="w"> </span><span class="nn">coreai_opt.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">_StrEnum</span>
 </span><span data-line="12">
-</span><span data-line="13"><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;QuantizationFormulation&quot;</span><span class="p">]</span>
+</span><span data-line="13"><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"QuantizationFormulation"</span><span class="p">]</span>
 </span><span data-line="14">
 </span><span data-line="15">
 <div class="viewcode-block" id="QuantizationFormulation">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.QuantizationFormulation.html#coreai_opt.quantization.spec.QuantizationFormulation">[docs]</a>
 </span><span data-line="16"><span class="k">class</span><span class="w"> </span><span class="nc">QuantizationFormulation</span><span class="p">(</span><span class="n">_StrEnum</span><span class="p">):</span>
-</span><span data-line="17"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Formula used to map between quantized integers and dequantized values.</span>
+</span><span data-line="17"><span class="w">    </span><span class="sd">"""Formula used to map between quantized integers and dequantized values.</span>
 </span><span data-line="18">
 </span><span data-line="19"><span class="sd">    Attributes:</span>
 </span><span data-line="20"><span class="sd">        ZP: Standard zero-point formulation.</span>
 </span><span data-line="21">
 </span><span data-line="22"><span class="sd">            - ``q  = clamp(round(x / scale) + zero_point, quant_min, quant_max)``</span>
-</span><span data-line="23"><span class="sd">            - ``x&#39; = (q - zero_point) * scale``</span>
+</span><span data-line="23"><span class="sd">            - ``x' = (q - zero_point) * scale``</span>
 </span><span data-line="24">
 </span><span data-line="25"><span class="sd">        MINVAL: Min-value formulation.</span>
 </span><span data-line="26">
 </span><span data-line="27"><span class="sd">            - ``q  = clamp(round((x - minval) / scale) + quant_min, quant_min, quant_max)``</span>
-</span><span data-line="28"><span class="sd">            - ``x&#39; = (q - quant_min) * scale + minval``</span>
-</span><span data-line="29"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="28"><span class="sd">            - ``x' = (q - quant_min) * scale + minval``</span>
+</span><span data-line="29"><span class="sd">    """</span>
 </span><span data-line="30">
 </span><span data-line="31">    <span class="n">MINVAL</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
 </span><span data-line="32">    <span class="n">ZP</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></div>

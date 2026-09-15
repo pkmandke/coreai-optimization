@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -173,12 +173,12 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.DefaultTrainingConfig.html">coreai_opt.palettization.spec.DefaultTrainingConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategyConfig.html">coreai_opt.palettization.spec.TrainingStrategyConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -366,7 +366,7 @@ A floating-point LUT causes operations to execute in floating-point regardless o
 </span><span data-line="12"><span class="n">lut_qspec</span> <span class="o">=</span> <span class="n">QuantizationSpec</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int8</span><span class="p">,</span> <span class="n">qscheme</span><span class="o">=</span><span class="n">QuantizationScheme</span><span class="o">.</span><span class="n">SYMMETRIC</span><span class="p">)</span>
 </span><span data-line="13"><span class="n">palett_config</span> <span class="o">=</span> <span class="n">KMeansPalettizerConfig</span><span class="p">(</span>
 </span><span data-line="14">    <span class="n">global_config</span><span class="o">=</span><span class="n">ModuleKMeansPalettizerConfig</span><span class="p">(</span>
-</span><span data-line="15">        <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">PalettizationSpec</span><span class="p">(</span><span class="n">n_bits</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">lut_qspec</span><span class="o">=</span><span class="n">lut_qspec</span><span class="p">)},</span>
+</span><span data-line="15">        <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"weight"</span><span class="p">:</span> <span class="n">PalettizationSpec</span><span class="p">(</span><span class="n">n_bits</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">lut_qspec</span><span class="o">=</span><span class="n">lut_qspec</span><span class="p">)},</span>
 </span><span data-line="16">    <span class="p">),</span>
 </span><span data-line="17"><span class="p">)</span>
 </span><span data-line="18">
@@ -398,8 +398,8 @@ Use a representative data sample for <code class="docutils literal notranslate">
 </span><span data-line="8"><span class="n">quant_config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="p">(</span>
 </span><span data-line="9">    <span class="n">global_config</span><span class="o">=</span><span class="n">ModuleQuantizerConfig</span><span class="p">(</span>
 </span><span data-line="10">        <span class="n">op_state_spec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-</span><span data-line="11">        <span class="n">op_input_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="n">act_spec</span><span class="p">},</span>
-</span><span data-line="12">        <span class="n">op_output_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="n">act_spec</span><span class="p">},</span>
+</span><span data-line="11">        <span class="n">op_input_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"*"</span><span class="p">:</span> <span class="n">act_spec</span><span class="p">},</span>
+</span><span data-line="12">        <span class="n">op_output_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"*"</span><span class="p">:</span> <span class="n">act_spec</span><span class="p">},</span>
 </span><span data-line="13">    <span class="p">),</span>
 </span><span data-line="14"><span class="p">)</span>
 </span><span data-line="15">
@@ -431,7 +431,7 @@ Refer to <a class="reference internal" href="../introduction/integration_coreai.
 <ul class="simple">
 <li><p>For a working end-to-end example, see <code class="docutils literal notranslate"><span class="pre">test_p4a8_compression_mnist_accuracy</span></code> in <code class="docutils literal notranslate"><span class="pre">tests/test_joint_compression.py</span></code>.</p></li>
 <li><p>For export-related tests, see <code class="docutils literal notranslate"><span class="pre">test_mnist_p4a8_compression_export</span></code> in <code class="docutils literal notranslate"><span class="pre">tests/export/test_pt2e_mlir_export.py</span></code>.</p></li>
-<li><p>We explore applying joint compression to the EDSR model <a class="reference internal" href="../examples/edsr.html"><span class="std std-doc">here</span></a>.</p></li>
+<li><p>We explore applying joint compression to the EDSR model <a class="reference internal" href="../examples/model_examples/edsr.html"><span class="std std-doc">here</span></a>.</p></li>
 </ul>
 </section>
 </section>

@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -90,6 +90,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/overview.html">API Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/config.html">Config API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/advanced.html">Deeper Dive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quantization/composite_op_quantization.html">Quantization with Composite Ops</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../palettization/index.html">Palettization</a><ul>
@@ -110,7 +111,6 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/joint_compression.html">Joint Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/mixed_precision.html">Mixed-Precision Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/activation_comparison.html">Comparing Intermediate Activations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../utils/composite_op_quantization.html">Quantizing Models with Core AI Composite Ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/casting.html">16-bit PyTorch Model Casting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/coreai_compression.html">Compressing Core AI Models</a></li>
 </ul>
@@ -172,9 +172,13 @@ data-aria-dark="Switch to auto color mode">
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -332,16 +336,16 @@ data-aria-dark="Switch to auto color mode">
 <div class="viewcode-block" id="SparsityScheduleBase">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.pruning.config.SparsityScheduleBase.html#coreai_opt.pruning.config.SparsityScheduleBase">[docs]</a>
 </span><span data-line="14"><span class="k">class</span><span class="w"> </span><span class="nc">SparsityScheduleBase</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">_ConfigRegistryMixin</span><span class="p">):</span>
-</span><span data-line="15"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base for sparsity schedules used by ``MagnitudePruner``.</span>
+</span><span data-line="15"><span class="w">    </span><span class="sd">"""Abstract base for sparsity schedules used by ``MagnitudePruner``.</span>
 </span><span data-line="16">
 </span><span data-line="17"><span class="sd">    A sparsity schedule defines how the sparsity applied during pruning</span>
 </span><span data-line="18"><span class="sd">    evolves over training steps. Instead of applying the full target sparsity</span>
 </span><span data-line="19"><span class="sd">    immediately, a schedule lets sparsity rise gradually so the model can</span>
 </span><span data-line="20"><span class="sd">    adapt to it during training. Each schedule is a pure function of the</span>
-</span><span data-line="21"><span class="sd">    pruner&#39;s step count and the spec&#39;s target sparsity.</span>
-</span><span data-line="22"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="21"><span class="sd">    pruner's step count and the spec's target sparsity.</span>
+</span><span data-line="22"><span class="sd">    """</span>
 </span><span data-line="23">
-</span><span data-line="24">    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
+</span><span data-line="24">    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">"forbid"</span><span class="p">)</span>
 </span><span data-line="25">
 <div class="viewcode-block" id="SparsityScheduleBase.compute_sparsity">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.pruning.config.SparsityScheduleBase.html#coreai_opt.pruning.config.SparsityScheduleBase.compute_sparsity">[docs]</a>
@@ -352,7 +356,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="30">        <span class="n">target_sparsity</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
 </span><span data-line="31">        <span class="n">prev_sparsity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span data-line="32">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-</span><span data-line="33"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the sparsity that should be applied at *step_count*.</span>
+</span><span data-line="33"><span class="w">        </span><span class="sd">"""Return the sparsity that should be applied at *step_count*.</span>
 </span><span data-line="34">
 </span><span data-line="35"><span class="sd">        Args:</span>
 </span><span data-line="36"><span class="sd">            step_count (int): The current step count of the pruner</span>
@@ -360,27 +364,27 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="38"><span class="sd">            target_sparsity (float): The final sparsity we want to reach at the</span>
 </span><span data-line="39"><span class="sd">                end of the pruning schedule.</span>
 </span><span data-line="40"><span class="sd">            prev_sparsity (float | None): Sparsity from the previous invocation.</span>
-</span><span data-line="41"><span class="sd">                Schedules that don&#39;t need this can ignore it; schedules that do</span>
+</span><span data-line="41"><span class="sd">                Schedules that don't need this can ignore it; schedules that do</span>
 </span><span data-line="42"><span class="sd">                (e.g. ``PolynomialDecaySchedule`` with an ``update_frequency``</span>
 </span><span data-line="43"><span class="sd">                gap) raise ``ValueError`` when omitted.</span>
 </span><span data-line="44">
 </span><span data-line="45"><span class="sd">        Returns:</span>
 </span><span data-line="46"><span class="sd">            float: The sparsity level to apply at the current step.</span>
-</span><span data-line="47"><span class="sd">        &quot;&quot;&quot;</span></div>
+</span><span data-line="47"><span class="sd">        """</span></div>
 </div>
 
 </span><span data-line="48">
 </span><span data-line="49">
 <div class="viewcode-block" id="ConstantSparsitySchedule">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.pruning.config.ConstantSparsitySchedule.html#coreai_opt.pruning.config.ConstantSparsitySchedule">[docs]</a>
-</span><span data-line="50"><span class="nd">@SparsityScheduleBase</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;constant&quot;</span><span class="p">)</span>
+</span><span data-line="50"><span class="nd">@SparsityScheduleBase</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"constant"</span><span class="p">)</span>
 </span><span data-line="51"><span class="k">class</span><span class="w"> </span><span class="nc">ConstantSparsitySchedule</span><span class="p">(</span><span class="n">SparsityScheduleBase</span><span class="p">):</span>
-</span><span data-line="52"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Step function: zero before ``begin_step``, ``target_sparsity`` at and after.</span>
+</span><span data-line="52"><span class="w">    </span><span class="sd">"""Step function: zero before ``begin_step``, ``target_sparsity`` at and after.</span>
 </span><span data-line="53">
 </span><span data-line="54"><span class="sd">    Attributes:</span>
 </span><span data-line="55"><span class="sd">        begin_step (int): Step at which to switch from 0 to ``target_sparsity``.</span>
 </span><span data-line="56"><span class="sd">            Default: 0.</span>
-</span><span data-line="57"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="57"><span class="sd">    """</span>
 </span><span data-line="58">
 </span><span data-line="59">    <span class="n">begin_step</span><span class="p">:</span> <span class="n">NonNegativeInt</span> <span class="o">=</span> <span class="mi">0</span>
 </span><span data-line="60">
@@ -399,12 +403,12 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="69">
 <div class="viewcode-block" id="PolynomialDecaySchedule">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.pruning.config.PolynomialDecaySchedule.html#coreai_opt.pruning.config.PolynomialDecaySchedule">[docs]</a>
-</span><span data-line="70"><span class="nd">@SparsityScheduleBase</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;polynomial_decay&quot;</span><span class="p">)</span>
+</span><span data-line="70"><span class="nd">@SparsityScheduleBase</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"polynomial_decay"</span><span class="p">)</span>
 </span><span data-line="71"><span class="k">class</span><span class="w"> </span><span class="nc">PolynomialDecaySchedule</span><span class="p">(</span><span class="n">SparsityScheduleBase</span><span class="p">):</span>
-</span><span data-line="72"><span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Polynomial schedule from ``initial_sparsity`` to ``target_sparsity``.</span>
+</span><span data-line="72"><span class="w">    </span><span class="sa">r</span><span class="sd">"""Polynomial schedule from ``initial_sparsity`` to ``target_sparsity``.</span>
 </span><span data-line="73">
-</span><span data-line="74"><span class="sd">    Inspired by PyTorch&#39;s ``torch.optim.lr_scheduler.PolynomialLR`` and the paper</span>
-</span><span data-line="75"><span class="sd">    `&quot;To prune or not to prune&quot; &lt;https://arxiv.org/pdf/1710.01878.pdf&gt;`_.</span>
+</span><span data-line="74"><span class="sd">    Inspired by PyTorch's ``torch.optim.lr_scheduler.PolynomialLR`` and the paper</span>
+</span><span data-line="75"><span class="sd">    `"To prune or not to prune" &lt;https://arxiv.org/pdf/1710.01878.pdf&gt;`_.</span>
 </span><span data-line="76">
 </span><span data-line="77"><span class="sd">    Behavior by step:</span>
 </span><span data-line="78">
@@ -429,7 +433,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="97"><span class="sd">            schedule, in ``[0, 1]``. Default: 0.0.</span>
 </span><span data-line="98"><span class="sd">        update_frequency (int): Steps between sparsity updates within the</span>
 </span><span data-line="99"><span class="sd">            schedule. Must be &gt;= 1. Default: 1 (update every step).</span>
-</span><span data-line="100"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="100"><span class="sd">    """</span>
 </span><span data-line="101">
 </span><span data-line="102">    <span class="n">begin_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </span><span data-line="103">    <span class="n">total_iters</span><span class="p">:</span> <span class="n">PositiveInt</span>
@@ -453,8 +457,8 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="119">        <span class="k">if</span> <span class="n">offset</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_frequency</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
 </span><span data-line="120">            <span class="k">if</span> <span class="n">prev_sparsity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="121">                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="122">                    <span class="s2">&quot;prev_sparsity is required for off-boundary steps when &quot;</span>
-</span><span data-line="123">                    <span class="sa">f</span><span class="s2">&quot;update_frequency=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">update_frequency</span><span class="si">}</span><span class="s2"> &gt; 1.&quot;</span>
+</span><span data-line="122">                    <span class="s2">"prev_sparsity is required for off-boundary steps when "</span>
+</span><span data-line="123">                    <span class="sa">f</span><span class="s2">"update_frequency=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">update_frequency</span><span class="si">}</span><span class="s2"> &gt; 1."</span>
 </span><span data-line="124">                <span class="p">)</span>
 </span><span data-line="125">            <span class="k">return</span> <span class="n">prev_sparsity</span>
 </span><span data-line="126">        <span class="n">n_updates</span> <span class="o">=</span> <span class="nb">max</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">total_iters</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_frequency</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>

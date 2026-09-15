@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -173,12 +173,12 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/coreai_opt.palettization.spec.DefaultTrainingConfig.html">coreai_opt.palettization.spec.DefaultTrainingConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/coreai_opt.palettization.spec.TrainingStrategyConfig.html">coreai_opt.palettization.spec.TrainingStrategyConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -546,7 +546,7 @@ data-aria-dark="Switch to auto color mode">
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/coreai_opt.palettization.spec.DefaultTrainingConfig.html#coreai_opt.palettization.spec.DefaultTrainingConfig" title="coreai_opt.palettization.spec.DefaultTrainingConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coreai_opt.palettization.spec.DefaultTrainingConfig</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html#coreai_opt.palettization.spec.DefaultTrainingSpec" title="coreai_opt.palettization.spec.DefaultTrainingSpec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coreai_opt.palettization.spec.DefaultTrainingSpec</span></code></a></p></td>
 <td><p>Settings for the default, post-training one-shot k-means strategy.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/coreai_opt.palettization.spec.PalettizationGranularity.html#coreai_opt.palettization.spec.PalettizationGranularity" title="coreai_opt.palettization.spec.PalettizationGranularity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coreai_opt.palettization.spec.PalettizationGranularity</span></code></a></p></td>
@@ -561,7 +561,7 @@ data-aria-dark="Switch to auto color mode">
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/coreai_opt.palettization.spec.TrainingStrategy.html#coreai_opt.palettization.spec.TrainingStrategy" title="coreai_opt.palettization.spec.TrainingStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coreai_opt.palettization.spec.TrainingStrategy</span></code></a>()</p></td>
 <td><p>Contract for a fake-palettize module's training-time forward pass.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/coreai_opt.palettization.spec.TrainingStrategyConfig.html#coreai_opt.palettization.spec.TrainingStrategyConfig" title="coreai_opt.palettization.spec.TrainingStrategyConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coreai_opt.palettization.spec.TrainingStrategyConfig</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/coreai_opt.palettization.spec.TrainingStrategySpec.html#coreai_opt.palettization.spec.TrainingStrategySpec" title="coreai_opt.palettization.spec.TrainingStrategySpec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coreai_opt.palettization.spec.TrainingStrategySpec</span></code></a></p></td>
 <td><p>Base class for a fake-palettize module's training-strategy settings.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html#coreai_opt.palettization.spec.default_weight_palettization_spec" title="coreai_opt.palettization.spec.default_weight_palettization_spec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coreai_opt.palettization.spec.default_weight_palettization_spec</span></code></a>()</p></td>

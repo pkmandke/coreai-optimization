@@ -49,16 +49,16 @@ When set to True, weights are normalized along the
 output channels using per-channel scales before being palettized.
 Default: False.
 
-#### training_strategy_config
+#### training_strategy_spec
 
 Which training-time behavior this weight’s
 fake-palettize module uses, and that strategy’s settings.
-`DefaultTrainingConfig()` is post-training, one-shot k-means
+`DefaultTrainingSpec()` is post-training, one-shot k-means
 (today’s KMeansPalettizer behavior). Additional strategies are added
-by subclassing `TrainingStrategyConfig` (registered via
-`TrainingStrategyConfig.register()`) and pointing its
+by subclassing `TrainingStrategySpec` (registered via
+`TrainingStrategySpec.register()`) and pointing its
 `_strategy_cls` at a `TrainingStrategy` subclass. Default:
-DefaultTrainingConfig().
+DefaultTrainingSpec().
 
 #### model_dump_preserve_objects()
 

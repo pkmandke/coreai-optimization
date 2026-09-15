@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -173,12 +173,12 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.DefaultTrainingConfig.html">coreai_opt.palettization.spec.DefaultTrainingConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategyConfig.html">coreai_opt.palettization.spec.TrainingStrategyConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -501,10 +501,10 @@ when the layers to configure depend on runtime conditions — for example, selec
 based on layer size or architecture. The examples throughout this section show both
 approaches side by side.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># From YAML file</span>
-</span><span data-line="2"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="s2">&quot;config.yaml&quot;</span><span class="p">)</span>
+</span><span data-line="2"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="s2">"config.yaml"</span><span class="p">)</span>
 </span><span data-line="3">
 </span><span data-line="4"><span class="c1"># From dict</span>
-</span><span data-line="5"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;quantization_config&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">}})</span>
+</span><span data-line="5"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">"quantization_config"</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">}})</span>
 </span><span data-line="6">
 </span><span data-line="7"><span class="c1"># Programmatic</span>
 </span><span data-line="8"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="p">(</span><span class="n">global_config</span><span class="o">=</span><span class="n">ModuleQuantizerConfig</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
@@ -534,18 +534,18 @@ approaches side by side.</p>
 </span><span data-line="5"><span class="c1"># which is equivalent to:</span>
 </span><span data-line="6"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="p">(</span>
 </span><span data-line="7">    <span class="n">global_config</span><span class="o">=</span><span class="n">ModuleQuantizerConfig</span><span class="p">(</span>
-</span><span data-line="8">        <span class="n">op_input_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="n">default_activation_quantization_spec</span><span class="p">()},</span>
-</span><span data-line="9">        <span class="n">op_output_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="n">default_activation_quantization_spec</span><span class="p">()},</span>
-</span><span data-line="10">        <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">default_weight_quantization_spec</span><span class="p">()},</span>
+</span><span data-line="8">        <span class="n">op_input_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"*"</span><span class="p">:</span> <span class="n">default_activation_quantization_spec</span><span class="p">()},</span>
+</span><span data-line="9">        <span class="n">op_output_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"*"</span><span class="p">:</span> <span class="n">default_activation_quantization_spec</span><span class="p">()},</span>
+</span><span data-line="10">        <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"weight"</span><span class="p">:</span> <span class="n">default_weight_quantization_spec</span><span class="p">()},</span>
 </span><span data-line="11">    <span class="p">)</span>
 </span><span data-line="12"><span class="p">)</span>
 </span><span data-line="13">
 </span><span data-line="14"><span class="n">op_config</span> <span class="o">=</span> <span class="n">OpQuantizerConfig</span><span class="p">()</span>
 </span><span data-line="15"><span class="c1"># is equivalent to:</span>
 </span><span data-line="16"><span class="n">op_config</span> <span class="o">=</span> <span class="n">OpQuantizerConfig</span><span class="p">(</span>
-</span><span data-line="17">    <span class="n">op_input_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="n">default_activation_quantization_spec</span><span class="p">()},</span>
-</span><span data-line="18">    <span class="n">op_output_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="n">default_activation_quantization_spec</span><span class="p">()},</span>
-</span><span data-line="19">    <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">default_weight_quantization_spec</span><span class="p">()},</span>
+</span><span data-line="17">    <span class="n">op_input_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"*"</span><span class="p">:</span> <span class="n">default_activation_quantization_spec</span><span class="p">()},</span>
+</span><span data-line="18">    <span class="n">op_output_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"*"</span><span class="p">:</span> <span class="n">default_activation_quantization_spec</span><span class="p">()},</span>
+</span><span data-line="19">    <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"weight"</span><span class="p">:</span> <span class="n">default_weight_quantization_spec</span><span class="p">()},</span>
 </span><span data-line="20"><span class="p">)</span>
 </span></pre></div>
 </div>
@@ -606,9 +606,9 @@ static qparam calculator.</p>
 </span><span data-line="19"><span class="c1"># Create configuration</span>
 </span><span data-line="20"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="p">(</span>
 </span><span data-line="21">    <span class="n">global_config</span><span class="o">=</span><span class="n">ModuleQuantizerConfig</span><span class="p">(</span>
-</span><span data-line="22">        <span class="n">op_input_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="n">fp8_activation</span><span class="p">},</span>
-</span><span data-line="23">        <span class="n">op_output_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="n">fp8_activation</span><span class="p">},</span>
-</span><span data-line="24">        <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">mxfp4_weight</span><span class="p">},</span>
+</span><span data-line="22">        <span class="n">op_input_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"*"</span><span class="p">:</span> <span class="n">fp8_activation</span><span class="p">},</span>
+</span><span data-line="23">        <span class="n">op_output_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"*"</span><span class="p">:</span> <span class="n">fp8_activation</span><span class="p">},</span>
+</span><span data-line="24">        <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"weight"</span><span class="p">:</span> <span class="n">mxfp4_weight</span><span class="p">},</span>
 </span><span data-line="25">    <span class="p">)</span>
 </span><span data-line="26"><span class="p">)</span>
 </span></pre></div>
@@ -626,9 +626,9 @@ static qparam calculator.</p>
 </span><span data-line="11"><span class="nt">quantization_config</span><span class="p">:</span>
 </span><span data-line="12"><span class="w">  </span><span class="nt">global_config</span><span class="p">:</span>
 </span><span data-line="13"><span class="w">    </span><span class="nt">op_input_spec</span><span class="p">:</span>
-</span><span data-line="14"><span class="w">      </span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*fp8_activation</span><span class="w"> </span><span class="c1"># Quantize all op inputs</span>
+</span><span data-line="14"><span class="w">      </span><span class="s">"*"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*fp8_activation</span><span class="w"> </span><span class="c1"># Quantize all op inputs</span>
 </span><span data-line="15"><span class="w">    </span><span class="nt">op_output_spec</span><span class="p">:</span>
-</span><span data-line="16"><span class="w">      </span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*fp8_activation</span><span class="w"> </span><span class="c1"># Quantize all op outputs</span>
+</span><span data-line="16"><span class="w">      </span><span class="s">"*"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*fp8_activation</span><span class="w"> </span><span class="c1"># Quantize all op outputs</span>
 </span><span data-line="17"><span class="w">    </span><span class="nt">op_state_spec</span><span class="p">:</span>
 </span><span data-line="18"><span class="w">      </span><span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="nv">*mxfp4_weight</span><span class="w"> </span><span class="c1"># Quantize weight tensors</span>
 </span></pre></div>
@@ -665,7 +665,7 @@ weight-only quantization sets <code class="docutils literal notranslate"><span c
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># programmatic</span>
 </span><span data-line="2"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="p">(</span>
 </span><span data-line="3">    <span class="n">global_config</span><span class="o">=</span><span class="n">ModuleQuantizerConfig</span><span class="p">(</span>
-</span><span data-line="4">        <span class="n">op_type_config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;linear&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+</span><span data-line="4">        <span class="n">op_type_config</span><span class="o">=</span><span class="p">{</span><span class="s2">"linear"</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
 </span><span data-line="5">    <span class="p">)</span>
 </span><span data-line="6"><span class="p">)</span>
 </span></pre></div>
@@ -683,7 +683,7 @@ precision.</p>
 <p><strong>2. Skip <code class="docutils literal notranslate"><span class="pre">linear</span></code> by targeting it as a “module”:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># programmatic</span>
 </span><span data-line="2"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="p">(</span>
-</span><span data-line="3">    <span class="n">module_type_configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;torch.nn.modules.linear.Linear&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+</span><span data-line="3">    <span class="n">module_type_configs</span><span class="o">=</span><span class="p">{</span><span class="s2">"torch.nn.modules.linear.Linear"</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
 </span><span data-line="4"><span class="p">)</span>
 </span></pre></div>
 </div>
@@ -703,8 +703,8 @@ path exactly.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># programmatic</span>
 </span><span data-line="2"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="p">(</span>
 </span><span data-line="3">    <span class="n">module_type_configs</span><span class="o">=</span><span class="p">{</span>
-</span><span data-line="4">        <span class="s2">&quot;mymodelSelfAttention&quot;</span><span class="p">:</span> <span class="n">ModuleQuantizerConfig</span><span class="p">(</span>
-</span><span data-line="5">            <span class="n">op_type_config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;softmax&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+</span><span data-line="4">        <span class="s2">"mymodelSelfAttention"</span><span class="p">:</span> <span class="n">ModuleQuantizerConfig</span><span class="p">(</span>
+</span><span data-line="5">            <span class="n">op_type_config</span><span class="o">=</span><span class="p">{</span><span class="s2">"softmax"</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
 </span><span data-line="6">        <span class="p">)</span>
 </span><span data-line="7">    <span class="p">},</span>
 </span><span data-line="8"><span class="p">)</span>
@@ -725,8 +725,8 @@ The above config will quantize the full model (W_INT8_A_INT8) except the softmax
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># programmatic</span>
 </span><span data-line="2"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="p">(</span>
 </span><span data-line="3">    <span class="n">module_name_configs</span><span class="o">=</span><span class="p">{</span>
-</span><span data-line="4">        <span class="s2">&quot;model.selfattention.layer.0&quot;</span><span class="p">:</span> <span class="n">ModuleQuantizerConfig</span><span class="p">(</span>
-</span><span data-line="5">            <span class="n">op_type_config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;softmax&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+</span><span data-line="4">        <span class="s2">"model.selfattention.layer.0"</span><span class="p">:</span> <span class="n">ModuleQuantizerConfig</span><span class="p">(</span>
+</span><span data-line="5">            <span class="n">op_type_config</span><span class="o">=</span><span class="p">{</span><span class="s2">"softmax"</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
 </span><span data-line="6">        <span class="p">)</span>
 </span><span data-line="7">    <span class="p">},</span>
 </span><span data-line="8"><span class="p">)</span>
@@ -754,9 +754,9 @@ The above config will quantize the full model (W_INT8_A_INT8) except the softmax
 </span><span data-line="10"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="p">(</span>
 </span><span data-line="11">    <span class="n">global_config</span><span class="o">=</span><span class="n">ModuleQuantizerConfig</span><span class="p">(</span>
 </span><span data-line="12">        <span class="n">op_type_config</span><span class="o">=</span><span class="p">{</span>
-</span><span data-line="13">            <span class="s2">&quot;concat&quot;</span><span class="p">:</span> <span class="n">OpQuantizerConfig</span><span class="p">(</span>
+</span><span data-line="13">            <span class="s2">"concat"</span><span class="p">:</span> <span class="n">OpQuantizerConfig</span><span class="p">(</span>
 </span><span data-line="14">                <span class="n">op_input_spec</span><span class="o">=</span><span class="p">{</span>
-</span><span data-line="15">                    <span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="n">activation_spec</span>
+</span><span data-line="15">                    <span class="s2">"*"</span><span class="p">:</span> <span class="n">activation_spec</span>
 </span><span data-line="16">                <span class="p">},</span>  <span class="c1"># all input tensors will get quantized</span>
 </span><span data-line="17">                <span class="n">op_output_spec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># output tensor is not quantized</span>
 </span><span data-line="18">            <span class="p">)</span>
@@ -777,7 +777,7 @@ The above config will quantize the full model (W_INT8_A_INT8) except the softmax
 </span><span data-line="10"><span class="w">    </span><span class="nt">op_type_config</span><span class="p">:</span>
 </span><span data-line="11"><span class="w">      </span><span class="nt">concat</span><span class="p">:</span>
 </span><span data-line="12"><span class="w">        </span><span class="nt">op_input_spec</span><span class="p">:</span>
-</span><span data-line="13"><span class="w">          </span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*activation_spec</span>
+</span><span data-line="13"><span class="w">          </span><span class="s">"*"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*activation_spec</span>
 </span><span data-line="14"><span class="w">        </span><span class="nt">op_output_spec</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
 </span></pre></div>
 </div>
@@ -791,17 +791,17 @@ The above config will quantize the full model (W_INT8_A_INT8) except the softmax
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># programmatic</span>
 </span><span data-line="2">
 </span><span data-line="3"><span class="c1"># Define quantization specs</span>
-</span><span data-line="4"><span class="n">int8_activation</span> <span class="o">=</span> <span class="n">QuantizationSpec</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int8&quot;</span><span class="p">,</span> <span class="n">granularity</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;per_tensor&quot;</span><span class="p">})</span>
-</span><span data-line="5"><span class="n">int8_weight</span> <span class="o">=</span> <span class="n">QuantizationSpec</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int8&quot;</span><span class="p">,</span> <span class="n">granularity</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;per_channel&quot;</span><span class="p">})</span>
+</span><span data-line="4"><span class="n">int8_activation</span> <span class="o">=</span> <span class="n">QuantizationSpec</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="s2">"int8"</span><span class="p">,</span> <span class="n">granularity</span><span class="o">=</span><span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"per_tensor"</span><span class="p">})</span>
+</span><span data-line="5"><span class="n">int8_weight</span> <span class="o">=</span> <span class="n">QuantizationSpec</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="s2">"int8"</span><span class="p">,</span> <span class="n">granularity</span><span class="o">=</span><span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"per_channel"</span><span class="p">})</span>
 </span><span data-line="6">
 </span><span data-line="7"><span class="c1"># Create configuration</span>
 </span><span data-line="8"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="p">(</span>
 </span><span data-line="9">    <span class="n">global_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># Disable global quantization</span>
 </span><span data-line="10">    <span class="n">module_type_configs</span><span class="o">=</span><span class="p">{</span>
-</span><span data-line="11">        <span class="s2">&quot;torch.nn.modules.linear.Linear&quot;</span><span class="p">:</span> <span class="n">ModuleQuantizerConfig</span><span class="p">(</span>
-</span><span data-line="12">            <span class="n">op_input_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="n">int8_activation</span><span class="p">},</span>
-</span><span data-line="13">            <span class="n">op_output_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="n">int8_activation</span><span class="p">},</span>
-</span><span data-line="14">            <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">int8_weight</span><span class="p">},</span>
+</span><span data-line="11">        <span class="s2">"torch.nn.modules.linear.Linear"</span><span class="p">:</span> <span class="n">ModuleQuantizerConfig</span><span class="p">(</span>
+</span><span data-line="12">            <span class="n">op_input_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"*"</span><span class="p">:</span> <span class="n">int8_activation</span><span class="p">},</span>
+</span><span data-line="13">            <span class="n">op_output_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"*"</span><span class="p">:</span> <span class="n">int8_activation</span><span class="p">},</span>
+</span><span data-line="14">            <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"weight"</span><span class="p">:</span> <span class="n">int8_weight</span><span class="p">},</span>
 </span><span data-line="15">        <span class="p">)</span>
 </span><span data-line="16">    <span class="p">},</span>
 </span><span data-line="17"><span class="p">)</span>
@@ -826,9 +826,9 @@ The above config will quantize the full model (W_INT8_A_INT8) except the softmax
 </span><span data-line="17"><span class="w">  </span><span class="nt">module_type_configs</span><span class="p">:</span>
 </span><span data-line="18"><span class="w">    </span><span class="nt">torch.nn.modules.linear.Linear</span><span class="p">:</span>
 </span><span data-line="19"><span class="w">      </span><span class="nt">op_input_spec</span><span class="p">:</span>
-</span><span data-line="20"><span class="w">        </span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*int8_activation</span>
+</span><span data-line="20"><span class="w">        </span><span class="s">"*"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*int8_activation</span>
 </span><span data-line="21"><span class="w">      </span><span class="nt">op_output_spec</span><span class="p">:</span>
-</span><span data-line="22"><span class="w">        </span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*int8_activation</span>
+</span><span data-line="22"><span class="w">        </span><span class="s">"*"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*int8_activation</span>
 </span><span data-line="23"><span class="w">      </span><span class="nt">op_state_spec</span><span class="p">:</span>
 </span><span data-line="24"><span class="w">        </span><span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="nv">*int8_weight</span>
 </span></pre></div>
@@ -838,8 +838,8 @@ The above config will quantize the full model (W_INT8_A_INT8) except the softmax
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># programmatic</span>
 </span><span data-line="2">
 </span><span data-line="3"><span class="c1"># Define quantization specs</span>
-</span><span data-line="4"><span class="n">int8_activation</span> <span class="o">=</span> <span class="n">QuantizationSpec</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int8&quot;</span><span class="p">,</span> <span class="n">granularity</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;per_tensor&quot;</span><span class="p">})</span>
-</span><span data-line="5"><span class="n">int8_weight</span> <span class="o">=</span> <span class="n">QuantizationSpec</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int8&quot;</span><span class="p">,</span> <span class="n">granularity</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;per_channel&quot;</span><span class="p">})</span>
+</span><span data-line="4"><span class="n">int8_activation</span> <span class="o">=</span> <span class="n">QuantizationSpec</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="s2">"int8"</span><span class="p">,</span> <span class="n">granularity</span><span class="o">=</span><span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"per_tensor"</span><span class="p">})</span>
+</span><span data-line="5"><span class="n">int8_weight</span> <span class="o">=</span> <span class="n">QuantizationSpec</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="s2">"int8"</span><span class="p">,</span> <span class="n">granularity</span><span class="o">=</span><span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"per_channel"</span><span class="p">})</span>
 </span><span data-line="6">
 </span><span data-line="7"><span class="c1"># Create configuration</span>
 </span><span data-line="8"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="p">(</span>
@@ -848,10 +848,10 @@ The above config will quantize the full model (W_INT8_A_INT8) except the softmax
 </span><span data-line="11">        <span class="n">op_output_spec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 </span><span data-line="12">        <span class="n">op_state_spec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 </span><span data-line="13">        <span class="n">op_name_config</span><span class="o">=</span><span class="p">{</span>
-</span><span data-line="14">            <span class="s2">&quot;linear_23&quot;</span><span class="p">:</span> <span class="n">OpQuantizerConfig</span><span class="p">(</span>
-</span><span data-line="15">                <span class="n">op_input_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="n">int8_activation</span><span class="p">},</span>
-</span><span data-line="16">                <span class="n">op_output_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="n">int8_activation</span><span class="p">},</span>
-</span><span data-line="17">                <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">int8_weight</span><span class="p">},</span>
+</span><span data-line="14">            <span class="s2">"linear_23"</span><span class="p">:</span> <span class="n">OpQuantizerConfig</span><span class="p">(</span>
+</span><span data-line="15">                <span class="n">op_input_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"*"</span><span class="p">:</span> <span class="n">int8_activation</span><span class="p">},</span>
+</span><span data-line="16">                <span class="n">op_output_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"*"</span><span class="p">:</span> <span class="n">int8_activation</span><span class="p">},</span>
+</span><span data-line="17">                <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"weight"</span><span class="p">:</span> <span class="n">int8_weight</span><span class="p">},</span>
 </span><span data-line="18">            <span class="p">)</span>
 </span><span data-line="19">        <span class="p">},</span>
 </span><span data-line="20">    <span class="p">)</span>
@@ -878,9 +878,9 @@ The above config will quantize the full model (W_INT8_A_INT8) except the softmax
 </span><span data-line="18"><span class="w">    </span><span class="nt">op_name_config</span><span class="p">:</span>
 </span><span data-line="19"><span class="w">      </span><span class="nt">linear_23</span><span class="p">:</span>
 </span><span data-line="20"><span class="w">        </span><span class="nt">op_input_spec</span><span class="p">:</span>
-</span><span data-line="21"><span class="w">          </span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*int8_activation</span>
+</span><span data-line="21"><span class="w">          </span><span class="s">"*"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*int8_activation</span>
 </span><span data-line="22"><span class="w">        </span><span class="nt">op_output_spec</span><span class="p">:</span>
-</span><span data-line="23"><span class="w">          </span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*int8_activation</span>
+</span><span data-line="23"><span class="w">          </span><span class="s">"*"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*int8_activation</span>
 </span><span data-line="24"><span class="w">        </span><span class="nt">op_state_spec</span><span class="p">:</span>
 </span><span data-line="25"><span class="w">          </span><span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="nv">*int8_weight</span>
 </span></pre></div>
@@ -894,7 +894,7 @@ The above config will quantize the full model (W_INT8_A_INT8) except the softmax
 </span><span data-line="3"><span class="kn">from</span><span class="w"> </span><span class="nn">coreai_opt.quantization</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantizerConfig</span>
 </span><span data-line="4"><span class="kn">from</span><span class="w"> </span><span class="nn">coreai_opt.quantization.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModuleQuantizerConfig</span>
 </span><span data-line="5">
-</span><span data-line="6"><span class="c1"># define a config that applies weight-only quant: INT4, per-block with block size=32, symmetric, to all supported layers, using one of the &quot;pre-defined&quot; presets.</span>
+</span><span data-line="6"><span class="c1"># define a config that applies weight-only quant: INT4, per-block with block size=32, symmetric, to all supported layers, using one of the "pre-defined" presets.</span>
 </span><span data-line="7"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="o">.</span><span class="n">presets</span><span class="o">.</span><span class="n">w4</span><span class="p">()</span>
 </span><span data-line="8">
 </span><span data-line="9"><span class="c1"># then update this config, to change the quantization for just the embedding layers: to INT8, per channel</span>
@@ -934,14 +934,14 @@ patterns. They perform the same operations as the underlying setters.</p>
 <p><strong><code class="docutils literal notranslate"><span class="pre">without</span></code></strong> excludes specific targets from quantization:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># With without</span>
 </span><span data-line="2"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="o">.</span><span class="n">presets</span><span class="o">.</span><span class="n">w4</span><span class="p">()</span><span class="o">.</span><span class="n">without</span><span class="p">(</span>
-</span><span data-line="3">    <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">,</span> <span class="s2">&quot;model.lm_head&quot;</span>
+</span><span data-line="3">    <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">,</span> <span class="s2">"model.lm_head"</span>
 </span><span data-line="4"><span class="p">)</span>
 </span><span data-line="5">
 </span><span data-line="6"><span class="c1"># Equivalent setter code</span>
 </span><span data-line="7"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="o">.</span><span class="n">presets</span><span class="o">.</span><span class="n">w4</span><span class="p">()</span>
 </span><span data-line="8"><span class="n">config</span><span class="o">.</span><span class="n">set_module_type</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 </span><span data-line="9"><span class="n">config</span><span class="o">.</span><span class="n">set_module_type</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</span><span data-line="10"><span class="n">config</span><span class="o">.</span><span class="n">set_module_name</span><span class="p">(</span><span class="s2">&quot;model.lm_head&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span data-line="10"><span class="n">config</span><span class="o">.</span><span class="n">set_module_name</span><span class="p">(</span><span class="s2">"model.lm_head"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 </span></pre></div>
 </div>
 <p>If you need finer control — for instance, different bit-widths for Linear vs Embedding
@@ -953,7 +953,7 @@ while leaving everything else uncompressed — use the explicit form:</p>
 </span><span data-line="5">    <span class="n">op_input_spec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 </span><span data-line="6">    <span class="n">op_output_spec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 </span><span data-line="7">    <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span>
-</span><span data-line="8">        <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">QuantizationSpec</span><span class="p">(</span>
+</span><span data-line="8">        <span class="s2">"weight"</span><span class="p">:</span> <span class="n">QuantizationSpec</span><span class="p">(</span>
 </span><span data-line="9">            <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int4</span><span class="p">,</span> <span class="n">granularity</span><span class="o">=</span><span class="n">PerBlockGranularity</span><span class="p">(</span><span class="n">block_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
 </span><span data-line="10">        <span class="p">)</span>
 </span><span data-line="11">    <span class="p">},</span>
@@ -962,14 +962,14 @@ while leaving everything else uncompressed — use the explicit form:</p>
 </span><span data-line="14">    <span class="n">op_input_spec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 </span><span data-line="15">    <span class="n">op_output_spec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 </span><span data-line="16">    <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span>
-</span><span data-line="17">        <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">QuantizationSpec</span><span class="p">(</span>
+</span><span data-line="17">        <span class="s2">"weight"</span><span class="p">:</span> <span class="n">QuantizationSpec</span><span class="p">(</span>
 </span><span data-line="18">            <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int8</span><span class="p">,</span> <span class="n">granularity</span><span class="o">=</span><span class="n">PerChannelGranularity</span><span class="p">()</span>
 </span><span data-line="19">        <span class="p">)</span>
 </span><span data-line="20">    <span class="p">},</span>
 </span><span data-line="21"><span class="p">)</span>
 </span><span data-line="22">
-</span><span data-line="23"><span class="n">config</span><span class="o">.</span><span class="n">set_module_type</span><span class="p">(</span><span class="s2">&quot;torch.nn.modules.linear.Linear&quot;</span><span class="p">,</span> <span class="n">linear_config</span><span class="p">)</span>
-</span><span data-line="24"><span class="n">config</span><span class="o">.</span><span class="n">set_module_type</span><span class="p">(</span><span class="s2">&quot;torch.nn.modules.sparse.Embedding&quot;</span><span class="p">,</span> <span class="n">embedding_config</span><span class="p">)</span>
+</span><span data-line="23"><span class="n">config</span><span class="o">.</span><span class="n">set_module_type</span><span class="p">(</span><span class="s2">"torch.nn.modules.linear.Linear"</span><span class="p">,</span> <span class="n">linear_config</span><span class="p">)</span>
+</span><span data-line="24"><span class="n">config</span><span class="o">.</span><span class="n">set_module_type</span><span class="p">(</span><span class="s2">"torch.nn.modules.sparse.Embedding"</span><span class="p">,</span> <span class="n">embedding_config</span><span class="p">)</span>
 </span></pre></div>
 </div>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># yaml</span>
@@ -1026,16 +1026,16 @@ and exit boundaries rather than at individual internal ops. Internal ops remain 
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># programmatic</span>
 </span><span data-line="2">
 </span><span data-line="3"><span class="c1"># Define quantization spec</span>
-</span><span data-line="4"><span class="n">int8_activation</span> <span class="o">=</span> <span class="n">QuantizationSpec</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int8&quot;</span><span class="p">,</span> <span class="n">granularity</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;per_tensor&quot;</span><span class="p">})</span>
+</span><span data-line="4"><span class="n">int8_activation</span> <span class="o">=</span> <span class="n">QuantizationSpec</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="s2">"int8"</span><span class="p">,</span> <span class="n">granularity</span><span class="o">=</span><span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"per_tensor"</span><span class="p">})</span>
 </span><span data-line="5">
 </span><span data-line="6"><span class="c1"># Create configuration</span>
 </span><span data-line="7"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="p">(</span>
 </span><span data-line="8">    <span class="n">global_config</span><span class="o">=</span><span class="n">ModuleQuantizerConfig</span><span class="p">(</span>
-</span><span data-line="9">        <span class="n">op_input_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="n">int8_activation</span><span class="p">},</span>
-</span><span data-line="10">        <span class="n">op_output_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="n">int8_activation</span><span class="p">},</span>
+</span><span data-line="9">        <span class="n">op_input_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"*"</span><span class="p">:</span> <span class="n">int8_activation</span><span class="p">},</span>
+</span><span data-line="10">        <span class="n">op_output_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"*"</span><span class="p">:</span> <span class="n">int8_activation</span><span class="p">},</span>
 </span><span data-line="11">    <span class="p">),</span>
 </span><span data-line="12">    <span class="n">module_type_configs</span><span class="o">=</span><span class="p">{</span>
-</span><span data-line="13">        <span class="s2">&quot;torch.nn.modules.activation.MultiheadAttention&quot;</span><span class="p">:</span> <span class="n">ModuleQuantizerConfig</span><span class="p">(</span>
+</span><span data-line="13">        <span class="s2">"torch.nn.modules.activation.MultiheadAttention"</span><span class="p">:</span> <span class="n">ModuleQuantizerConfig</span><span class="p">(</span>
 </span><span data-line="14">            <span class="c1"># Disable op-level config for all internal operations</span>
 </span><span data-line="15">            <span class="n">op_input_spec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 </span><span data-line="16">            <span class="n">op_output_spec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1045,7 +1045,7 @@ and exit boundaries rather than at individual internal ops. Internal ops remain 
 </span><span data-line="20">                <span class="mi">2</span><span class="p">:</span> <span class="n">int8_activation</span><span class="p">,</span>  <span class="c1"># value tensor</span>
 </span><span data-line="21">            <span class="p">},</span>
 </span><span data-line="22">            <span class="n">module_output_spec</span><span class="o">=</span><span class="p">{</span>
-</span><span data-line="23">                <span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="n">int8_activation</span><span class="p">,</span>  <span class="c1"># attention output</span>
+</span><span data-line="23">                <span class="s2">"*"</span><span class="p">:</span> <span class="n">int8_activation</span><span class="p">,</span>  <span class="c1"># attention output</span>
 </span><span data-line="24">            <span class="p">},</span>
 </span><span data-line="25">        <span class="p">)</span>
 </span><span data-line="26">    <span class="p">},</span>
@@ -1063,9 +1063,9 @@ and exit boundaries rather than at individual internal ops. Internal ops remain 
 </span><span data-line="9"><span class="nt">quantization_config</span><span class="p">:</span>
 </span><span data-line="10"><span class="w">  </span><span class="nt">global_config</span><span class="p">:</span>
 </span><span data-line="11"><span class="w">    </span><span class="nt">op_input_spec</span><span class="p">:</span>
-</span><span data-line="12"><span class="w">      </span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*int8_activation</span>
+</span><span data-line="12"><span class="w">      </span><span class="s">"*"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*int8_activation</span>
 </span><span data-line="13"><span class="w">    </span><span class="nt">op_output_spec</span><span class="p">:</span>
-</span><span data-line="14"><span class="w">      </span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*int8_activation</span>
+</span><span data-line="14"><span class="w">      </span><span class="s">"*"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*int8_activation</span>
 </span><span data-line="15">
 </span><span data-line="16"><span class="w">  </span><span class="c1"># Multi-Head Attention has many internal ops (Q, K, V projections, matmul, softmax, etc.)</span>
 </span><span data-line="17"><span class="w">  </span><span class="c1"># We only want to quantize tensors crossing module boundaries</span>
@@ -1082,7 +1082,7 @@ and exit boundaries rather than at individual internal ops. Internal ops remain 
 </span><span data-line="28"><span class="w">        </span><span class="nt">2</span><span class="p">:</span><span class="w"> </span><span class="nv">*int8_activation</span><span class="w"> </span><span class="c1"># value tensor</span>
 </span><span data-line="29"><span class="w">        </span><span class="c1"># Indices 3+ (key_padding_mask, attn_mask, flags) are not quantized</span>
 </span><span data-line="30"><span class="w">      </span><span class="nt">module_output_spec</span><span class="p">:</span>
-</span><span data-line="31"><span class="w">        </span><span class="s">&quot;*&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*int8_activation</span><span class="w"> </span><span class="c1"># attention output</span>
+</span><span data-line="31"><span class="w">        </span><span class="s">"*"</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="nv">*int8_activation</span><span class="w"> </span><span class="c1"># attention output</span>
 </span></pre></div>
 </div>
 </section>
@@ -1108,7 +1108,7 @@ apply automatically when <code class="docutils literal notranslate"><span class=
 </span><span data-line="15"><span class="n">config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="p">(</span>
 </span><span data-line="16">    <span class="n">global_config</span><span class="o">=</span><span class="n">ModuleQuantizerConfig</span><span class="p">(</span>
 </span><span data-line="17">        <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span>
-</span><span data-line="18">            <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">QuantizationSpec</span><span class="p">(</span>
+</span><span data-line="18">            <span class="s2">"weight"</span><span class="p">:</span> <span class="n">QuantizationSpec</span><span class="p">(</span>
 </span><span data-line="19">                <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int4</span><span class="p">,</span>
 </span><span data-line="20">                <span class="n">granularity</span><span class="o">=</span><span class="n">PerBlockGranularity</span><span class="p">(</span><span class="n">block_size</span><span class="o">=</span><span class="mi">32</span><span class="p">),</span>
 </span><span data-line="21">                <span class="c1"># axis omitted, resolved as per module type during prepare()</span>
@@ -1116,9 +1116,9 @@ apply automatically when <code class="docutils literal notranslate"><span class=
 </span><span data-line="23">        <span class="p">},</span>
 </span><span data-line="24">    <span class="p">),</span>
 </span><span data-line="25">    <span class="n">module_name_configs</span><span class="o">=</span><span class="p">{</span>
-</span><span data-line="26">        <span class="s2">&quot;decoder.deconv1&quot;</span><span class="p">:</span> <span class="n">ModuleQuantizerConfig</span><span class="p">(</span>
+</span><span data-line="26">        <span class="s2">"decoder.deconv1"</span><span class="p">:</span> <span class="n">ModuleQuantizerConfig</span><span class="p">(</span>
 </span><span data-line="27">            <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span>
-</span><span data-line="28">                <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">QuantizationSpec</span><span class="p">(</span>
+</span><span data-line="28">                <span class="s2">"weight"</span><span class="p">:</span> <span class="n">QuantizationSpec</span><span class="p">(</span>
 </span><span data-line="29">                    <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int4</span><span class="p">,</span>
 </span><span data-line="30">                    <span class="c1"># explicit axis=1 overrides the default for this ConvTranspose2d</span>
 </span><span data-line="31">                    <span class="n">granularity</span><span class="o">=</span><span class="n">PerBlockGranularity</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">block_size</span><span class="o">=</span><span class="mi">32</span><span class="p">),</span>
@@ -1209,10 +1209,10 @@ apply automatically when <code class="docutils literal notranslate"><span class=
 </span><span data-line="4">
 </span><span data-line="5"><span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 </span><span data-line="6"><span class="n">inspector</span> <span class="o">=</span> <span class="n">ModelInspector</span><span class="p">(</span>
-</span><span data-line="7">    <span class="c1"># Use execution_mode=&quot;eager&quot; for eager mode inspection.</span>
+</span><span data-line="7">    <span class="c1"># Use execution_mode="eager" for eager mode inspection.</span>
 </span><span data-line="8">    <span class="n">model</span><span class="p">,</span>
 </span><span data-line="9">    <span class="n">example_inputs</span><span class="o">=</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">),),</span>
-</span><span data-line="10">    <span class="n">execution_mode</span><span class="o">=</span><span class="s2">&quot;graph&quot;</span><span class="p">,</span>
+</span><span data-line="10">    <span class="n">execution_mode</span><span class="o">=</span><span class="s2">"graph"</span><span class="p">,</span>
 </span><span data-line="11"><span class="p">)</span>
 </span><span data-line="12"><span class="nb">print</span><span class="p">(</span><span class="n">inspector</span><span class="o">.</span><span class="n">format_summary</span><span class="p">())</span>
 </span></pre></div>

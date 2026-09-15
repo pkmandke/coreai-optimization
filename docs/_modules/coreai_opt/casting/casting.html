@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -90,6 +90,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../../../quantization/overview.html">API Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../quantization/config.html">Config API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../quantization/advanced.html">Deeper Dive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quantization/composite_op_quantization.html">Quantization with Composite Ops</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../palettization/index.html">Palettization</a><ul>
@@ -110,7 +111,6 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l1"><a class="reference internal" href="../../../utils/joint_compression.html">Joint Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../utils/mixed_precision.html">Mixed-Precision Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../utils/activation_comparison.html">Comparing Intermediate Activations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../utils/composite_op_quantization.html">Quantizing Models with Core AI Composite Ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../utils/casting.html">16-bit PyTorch Model Casting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../utils/coreai_compression.html">Compressing Core AI Models</a></li>
 </ul>
@@ -172,9 +172,13 @@ data-aria-dark="Switch to auto color mode">
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -321,7 +325,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="3"><span class="c1"># Use of this source code is governed by a BSD-3-Clause license that can</span>
 </span><span data-line="4"><span class="c1"># be found in the LICENSE file or at https://opensource.org/licenses/BSD-3-Clause</span>
 </span><span data-line="5">
-</span><span data-line="6"><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="6"><span class="sd">"""</span>
 </span><span data-line="7"><span class="sd">FP and INT 16-bit cast for torch exported programs.</span>
 </span><span data-line="8">
 </span><span data-line="9"><span class="sd">FP32→FP16: Convert parameters/inputs upfront, walk nodes topologically inserting</span>
@@ -336,7 +340,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="18"><span class="sd">    cast_fp32_to_fp16(exported_program) -&gt; ExportedProgram</span>
 </span><span data-line="19"><span class="sd">    cast_int32_to_int16(exported_program) -&gt; ExportedProgram</span>
 </span><span data-line="20"><span class="sd">    cast_to_16_bit_precision(exported_program) -&gt; ExportedProgram (performs FP and then INT casting)</span>
-</span><span data-line="21"><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="21"><span class="sd">"""</span>
 </span><span data-line="22">
 </span><span data-line="23"><span class="kn">import</span><span class="w"> </span><span class="nn">operator</span>
 </span><span data-line="24"><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
@@ -377,7 +381,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="59">
 </span><span data-line="60">
 </span><span data-line="61"><span class="k">class</span><span class="w"> </span><span class="nc">_CastPassBase</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-</span><span data-line="62"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base for FP16 and INT16 cast passes.&quot;&quot;&quot;</span>
+</span><span data-line="62"><span class="w">    </span><span class="sd">"""Abstract base for FP16 and INT16 cast passes."""</span>
 </span><span data-line="63">
 </span><span data-line="64">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exported_program</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">ExportedProgram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="65">        <span class="bp">self</span><span class="o">.</span><span class="n">_ep</span> <span class="o">=</span> <span class="n">exported_program</span>
@@ -393,29 +397,29 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="75">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ep</span>
 </span><span data-line="76">
 </span><span data-line="77">    <span class="k">def</span><span class="w"> </span><span class="nf">get_user_input_placeholders</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">]:</span>
-</span><span data-line="78"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a list of nodes corresponding to user inputs&quot;&quot;&quot;</span>
+</span><span data-line="78"><span class="w">        </span><span class="sd">"""Get a list of nodes corresponding to user inputs"""</span>
 </span><span data-line="79">        <span class="n">user_input_names</span> <span class="o">=</span> <span class="p">{</span>
 </span><span data-line="80">            <span class="n">spec</span><span class="o">.</span><span class="n">arg</span><span class="o">.</span><span class="n">name</span>
 </span><span data-line="81">            <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ep</span><span class="o">.</span><span class="n">graph_signature</span><span class="o">.</span><span class="n">input_specs</span>
-</span><span data-line="82">            <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">kind</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;USER_INPUT&quot;</span>
+</span><span data-line="82">            <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">kind</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"USER_INPUT"</span>
 </span><span data-line="83">        <span class="p">}</span>
 </span><span data-line="84">        <span class="k">return</span> <span class="p">[</span>
 </span><span data-line="85">            <span class="n">node</span>
 </span><span data-line="86">            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ep</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span>
-</span><span data-line="87">            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;placeholder&quot;</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">user_input_names</span>
+</span><span data-line="87">            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op</span> <span class="o">==</span> <span class="s2">"placeholder"</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">user_input_names</span>
 </span><span data-line="88">        <span class="p">]</span>
 </span><span data-line="89">
 </span><span data-line="90">    <span class="k">def</span><span class="w"> </span><span class="nf">get_param_name_to_placeholder_node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">]:</span>
-</span><span data-line="91"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a dictionary mapping param names to placeholder nodes.</span>
+</span><span data-line="91"><span class="w">        </span><span class="sd">"""Get a dictionary mapping param names to placeholder nodes.</span>
 </span><span data-line="92">
 </span><span data-line="93"><span class="sd">        This is a two step process where we</span>
 </span><span data-line="94"><span class="sd">        1. Use the graph input specs to get a mapping of target names to param names. Param names</span>
-</span><span data-line="95"><span class="sd">           are the typical Pytorch dot convention, e.g. &quot;conv.weight&quot;, whereas target names tend to</span>
-</span><span data-line="96"><span class="sd">           have underscores replacing the names along with a prefix, e.g. &quot;p_conv_weight&quot;.</span>
+</span><span data-line="95"><span class="sd">           are the typical Pytorch dot convention, e.g. "conv.weight", whereas target names tend to</span>
+</span><span data-line="96"><span class="sd">           have underscores replacing the names along with a prefix, e.g. "p_conv_weight".</span>
 </span><span data-line="97"><span class="sd">        2. Iterate through nodes in the graph and check if it is a placeholder with a target name</span>
 </span><span data-line="98"><span class="sd">           seen in step 1. If so, associate the param name with the node.</span>
-</span><span data-line="99"><span class="sd">        &quot;&quot;&quot;</span>
-</span><span data-line="100">        <span class="c1"># &quot;Target&quot; here refers to the name that node.target will return in step 2, not spec.target</span>
+</span><span data-line="99"><span class="sd">        """</span>
+</span><span data-line="100">        <span class="c1"># "Target" here refers to the name that node.target will return in step 2, not spec.target</span>
 </span><span data-line="101">        <span class="c1"># which is actually the param name with dot notation.</span>
 </span><span data-line="102">        <span class="c1"># Ex. spec.target = conv.weight, spec.arg.name = node.target = p_conv_weight</span>
 </span><span data-line="103">        <span class="n">_target_name_to_param_name</span> <span class="o">=</span> <span class="p">{</span>
@@ -426,7 +430,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="108">        <span class="k">return</span> <span class="p">{</span>
 </span><span data-line="109">            <span class="n">param_name</span><span class="p">:</span> <span class="n">node</span>
 </span><span data-line="110">            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ep</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span>
-</span><span data-line="111">            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;placeholder&quot;</span>
+</span><span data-line="111">            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op</span> <span class="o">==</span> <span class="s2">"placeholder"</span>
 </span><span data-line="112">            <span class="ow">and</span> <span class="p">(</span><span class="n">param_name</span> <span class="o">:=</span> <span class="n">_target_name_to_param_name</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">name</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 </span><span data-line="113">        <span class="p">}</span>
 </span><span data-line="114">
@@ -449,7 +453,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="131">
 </span><span data-line="132">
 </span><span data-line="133"><span class="k">class</span><span class="w"> </span><span class="nc">_FP16Casting</span><span class="p">(</span><span class="n">_CastPassBase</span><span class="p">):</span>
-</span><span data-line="134"><span class="w">    </span><span class="sd">&quot;&quot;&quot;FP32 to FP16 conversion for torch.export graphs.</span>
+</span><span data-line="134"><span class="w">    </span><span class="sd">"""FP32 to FP16 conversion for torch.export graphs.</span>
 </span><span data-line="135">
 </span><span data-line="136"><span class="sd">    High level idea:</span>
 </span><span data-line="137"><span class="sd">    FP32 to FP16 conversion tries to cast as much of the model to FP16 as</span>
@@ -465,8 +469,8 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="147">
 </span><span data-line="148"><span class="sd">    Algorithm:</span>
 </span><span data-line="149"><span class="sd">    1. Convert parameters and buffers: check all placeholder nodes which are</span>
-</span><span data-line="150"><span class="sd">       not user inputs. If all elements of the node&#39;s value satisfy</span>
-</span><span data-line="151"><span class="sd">       abs(value) &lt; FP16_MAX, cast the node&#39;s value to FP16. Otherwise leave</span>
+</span><span data-line="150"><span class="sd">       not user inputs. If all elements of the node's value satisfy</span>
+</span><span data-line="151"><span class="sd">       abs(value) &lt; FP16_MAX, cast the node's value to FP16. Otherwise leave</span>
 </span><span data-line="152"><span class="sd">       as FP32.</span>
 </span><span data-line="153">
 </span><span data-line="154"><span class="sd">       Corner case (tensor underflow):</span>
@@ -494,7 +498,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="176">
 </span><span data-line="177"><span class="sd">       If the node is to be run in FP32,</span>
 </span><span data-line="178"><span class="sd">       - insert FP16 -&gt; FP32 upcasts for any node inputs with FP16 dtype</span>
-</span><span data-line="179"><span class="sd">       - add a FP32 -&gt; FP16 downcast to the node&#39;s output</span>
+</span><span data-line="179"><span class="sd">       - add a FP32 -&gt; FP16 downcast to the node's output</span>
 </span><span data-line="180">
 </span><span data-line="181"><span class="sd">    4. Cleanup casts: Run various passes through the model continuously until</span>
 </span><span data-line="182"><span class="sd">       graph convergence. Passes include:</span>
@@ -512,14 +516,14 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="194"><span class="sd">       always be removed. In the narrowing cast chain case, we only eliminate</span>
 </span><span data-line="195"><span class="sd">       it if all casts involved are ones inserted by the algorithm. In the</span>
 </span><span data-line="196"><span class="sd">       widening cast chain case, existing model casts can also be removed.</span>
-</span><span data-line="197"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="197"><span class="sd">    """</span>
 </span><span data-line="198">
 </span><span data-line="199">    <span class="c1"># -------------------------------------------------------------------------</span>
 </span><span data-line="200">    <span class="c1"># Step 1: Convert parameters</span>
 </span><span data-line="201">    <span class="c1"># -------------------------------------------------------------------------</span>
 </span><span data-line="202">    <span class="k">def</span><span class="w"> </span><span class="nf">convert_placeholder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span data-line="203"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a single FP32 state_dict or constants entry to FP16.</span>
-</span><span data-line="204"><span class="sd">        Returns True if converted.&quot;&quot;&quot;</span>
+</span><span data-line="203"><span class="w">        </span><span class="sd">"""Convert a single FP32 state_dict or constants entry to FP16.</span>
+</span><span data-line="204"><span class="sd">        Returns True if converted."""</span>
 </span><span data-line="205">        <span class="n">result</span> <span class="o">=</span> <span class="n">_get_placeholder_store_and_tensor</span><span class="p">(</span><span class="n">param_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ep</span><span class="p">)</span>
 </span><span data-line="206">        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="207">            <span class="k">return</span> <span class="kc">False</span>
@@ -534,21 +538,21 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="216">        <span class="k">return</span> <span class="kc">True</span>
 </span><span data-line="217">
 </span><span data-line="218">    <span class="k">def</span><span class="w"> </span><span class="nf">convert_placeholders</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="219"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert all FP32 parameters/constants to FP16 and update placeholder metadata.&quot;&quot;&quot;</span>
+</span><span data-line="219"><span class="w">        </span><span class="sd">"""Convert all FP32 parameters/constants to FP16 and update placeholder metadata."""</span>
 </span><span data-line="220">        <span class="k">for</span> <span class="n">target</span><span class="p">,</span> <span class="n">placeholder</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target_to_placeholder</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 </span><span data-line="221">            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_placeholder</span><span class="p">(</span><span class="n">target</span><span class="p">):</span>
-</span><span data-line="222">                <span class="k">if</span> <span class="s2">&quot;val&quot;</span> <span class="ow">in</span> <span class="n">placeholder</span><span class="o">.</span><span class="n">meta</span><span class="p">:</span>
-</span><span data-line="223">                    <span class="n">placeholder</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;val&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">placeholder</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;val&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span>
+</span><span data-line="222">                <span class="k">if</span> <span class="s2">"val"</span> <span class="ow">in</span> <span class="n">placeholder</span><span class="o">.</span><span class="n">meta</span><span class="p">:</span>
+</span><span data-line="223">                    <span class="n">placeholder</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">"val"</span><span class="p">]</span> <span class="o">=</span> <span class="n">placeholder</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">"val"</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span>
 </span><span data-line="224">
 </span><span data-line="225">    <span class="c1"># -------------------------------------------------------------------------</span>
 </span><span data-line="226">    <span class="c1"># Step 2: Convert user inputs</span>
 </span><span data-line="227">    <span class="c1"># -------------------------------------------------------------------------</span>
 </span><span data-line="228">    <span class="k">def</span><span class="w"> </span><span class="nf">convert_user_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="229"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Change FP32 user input placeholders to FP16.&quot;&quot;&quot;</span>
+</span><span data-line="229"><span class="w">        </span><span class="sd">"""Change FP32 user input placeholders to FP16."""</span>
 </span><span data-line="230">        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_input_placeholders</span><span class="p">:</span>
-</span><span data-line="231">            <span class="n">val</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;val&quot;</span><span class="p">)</span>
-</span><span data-line="232">            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">val</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">:</span>
-</span><span data-line="233">                <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;val&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span>
+</span><span data-line="231">            <span class="n">val</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"val"</span><span class="p">)</span>
+</span><span data-line="232">            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s2">"dtype"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">val</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">:</span>
+</span><span data-line="233">                <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">"val"</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span>
 </span><span data-line="234">
 </span><span data-line="235">    <span class="c1"># -------------------------------------------------------------------------</span>
 </span><span data-line="236">    <span class="c1"># Step 3: Iterate nodes and insert casts</span>
@@ -558,7 +562,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="240">    <span class="c1">#   handlers</span>
 </span><span data-line="241">    <span class="c1"># - All other nodes:</span>
 </span><span data-line="242">    <span class="c1">#     - If there are no float args or node inputs, move on to next node</span>
-</span><span data-line="243">    <span class="c1">#     - Decide if node is &quot;overflow&quot; and should run in FP32 by looking at</span>
+</span><span data-line="243">    <span class="c1">#     - Decide if node is "overflow" and should run in FP32 by looking at</span>
 </span><span data-line="244">    <span class="c1">#       float args and node inputs</span>
 </span><span data-line="245">    <span class="c1">#     - Node is determined to run in FP32 if any node input has FP32 dtype,</span>
 </span><span data-line="246">    <span class="c1">#       or if any float scalar arg value is</span>
@@ -566,12 +570,12 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="248">    <span class="c1">#     - If node should run in FP32, insert FP16 -&gt; FP32 casts for any node</span>
 </span><span data-line="249">    <span class="c1">#       inputs in FP16 and insert FP32 -&gt; FP16 cast after the node</span>
 </span><span data-line="250">    <span class="c1">#     - Otherwise cast any float scalar args to FP16 values and update the</span>
-</span><span data-line="251">    <span class="c1">#       node&#39;s meta val dtype to FP16</span>
+</span><span data-line="251">    <span class="c1">#       node's meta val dtype to FP16</span>
 </span><span data-line="252">    <span class="c1"># -------------------------------------------------------------------------</span>
 </span><span data-line="253">    <span class="k">def</span><span class="w"> </span><span class="nf">handle_creation_op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-</span><span data-line="254"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Set dtype=fp16 on creation ops. Returns True if handled.&quot;&quot;&quot;</span>
-</span><span data-line="255">        <span class="n">val</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;val&quot;</span><span class="p">)</span>
-</span><span data-line="256">        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">val</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">):</span>
+</span><span data-line="254"><span class="w">        </span><span class="sd">"""Set dtype=fp16 on creation ops. Returns True if handled."""</span>
+</span><span data-line="255">        <span class="n">val</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"val"</span><span class="p">)</span>
+</span><span data-line="256">        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s2">"dtype"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">val</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">):</span>
 </span><span data-line="257">            <span class="k">return</span> <span class="kc">False</span>
 </span><span data-line="258">
 </span><span data-line="259">        <span class="c1"># Check and clamp float scalar args/kwargs; abort if any overflow fp16 range.</span>
@@ -595,26 +599,26 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="277">            <span class="n">new_kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">clamped</span>
 </span><span data-line="278">
 </span><span data-line="279">        <span class="n">node</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">new_args</span><span class="p">)</span>
-</span><span data-line="280">        <span class="n">node</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">new_kwargs</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">}</span>
+</span><span data-line="280">        <span class="n">node</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">new_kwargs</span><span class="p">,</span> <span class="s2">"dtype"</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">}</span>
 </span><span data-line="281">        <span class="n">_update_meta_dtype</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span> <span class="n">_FLOAT_DTYPES</span><span class="p">)</span>
 </span><span data-line="282">        <span class="k">return</span> <span class="kc">True</span>
 </span><span data-line="283">
 </span><span data-line="284">    <span class="k">def</span><span class="w"> </span><span class="nf">iterate_nodes_and_insert_casts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="285"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Walk graph topologically inserting casts only where needed.&quot;&quot;&quot;</span>
+</span><span data-line="285"><span class="w">        </span><span class="sd">"""Walk graph topologically inserting casts only where needed."""</span>
 </span><span data-line="286">        <span class="n">graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ep</span><span class="o">.</span><span class="n">graph</span>
 </span><span data-line="287">
 </span><span data-line="288">        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">):</span>
-</span><span data-line="289">            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op</span> <span class="o">!=</span> <span class="s2">&quot;call_function&quot;</span><span class="p">:</span>
+</span><span data-line="289">            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op</span> <span class="o">!=</span> <span class="s2">"call_function"</span><span class="p">:</span>
 </span><span data-line="290">                <span class="k">continue</span>
 </span><span data-line="291">
 </span><span data-line="292">            <span class="c1"># --- getitem: reuse dtype from container ---</span>
 </span><span data-line="293">            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">target</span> <span class="o">==</span> <span class="n">operator</span><span class="o">.</span><span class="n">getitem</span><span class="p">:</span>
 </span><span data-line="294">                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
-</span><span data-line="295">                <span class="n">container_val</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;val&quot;</span><span class="p">)</span>
+</span><span data-line="295">                <span class="n">container_val</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"val"</span><span class="p">)</span>
 </span><span data-line="296">                <span class="n">index</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 </span><span data-line="297">                <span class="n">element</span> <span class="o">=</span> <span class="n">container_val</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
-</span><span data-line="298">                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">):</span>
-</span><span data-line="299">                    <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;val&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">element</span>
+</span><span data-line="298">                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="s2">"dtype"</span><span class="p">):</span>
+</span><span data-line="299">                    <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">"val"</span><span class="p">]</span> <span class="o">=</span> <span class="n">element</span>
 </span><span data-line="300">                <span class="k">continue</span>
 </span><span data-line="301">
 </span><span data-line="302">            <span class="c1"># --- assert nodes: update dtype to match input ---</span>
@@ -640,13 +644,13 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="322">            <span class="bp">self</span><span class="o">.</span><span class="n">handle_compute_op</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 </span><span data-line="323">
 </span><span data-line="324">    <span class="k">def</span><span class="w"> </span><span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="325"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Eliminate redundant casts and dead code.&quot;&quot;&quot;</span>
+</span><span data-line="325"><span class="w">        </span><span class="sd">"""Eliminate redundant casts and dead code."""</span>
 </span><span data-line="326">        <span class="n">_cleanup_casts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ep</span><span class="o">.</span><span class="n">graph</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pass_inserted</span><span class="p">)</span>
 </span><span data-line="327">        <span class="bp">self</span><span class="o">.</span><span class="n">_ep</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">eliminate_dead_code</span><span class="p">()</span>
 </span><span data-line="328">        <span class="bp">self</span><span class="o">.</span><span class="n">_ep</span><span class="o">.</span><span class="n">graph_module</span><span class="o">.</span><span class="n">recompile</span><span class="p">()</span>
 </span><span data-line="329">
 </span><span data-line="330">    <span class="k">def</span><span class="w"> </span><span class="nf">handle_compute_op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="331"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle a general compute op.&quot;&quot;&quot;</span>
+</span><span data-line="331"><span class="w">        </span><span class="sd">"""Handle a general compute op."""</span>
 </span><span data-line="332">        <span class="n">has_float</span><span class="p">,</span> <span class="n">has_overflow_or_fp32_node</span> <span class="o">=</span> <span class="n">_classify_float_args</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 </span><span data-line="333">        <span class="k">if</span> <span class="ow">not</span> <span class="n">has_float</span><span class="p">:</span>
 </span><span data-line="334">            <span class="k">return</span>
@@ -657,7 +661,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="339">            <span class="bp">self</span><span class="o">.</span><span class="n">handle_non_overflow_op</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 </span><span data-line="340">
 </span><span data-line="341">    <span class="k">def</span><span class="w"> </span><span class="nf">handle_overflow_op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="342"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Op stays FP32: insert fp16-&gt;fp32 casts before, fp32-&gt;fp16 after.&quot;&quot;&quot;</span>
+</span><span data-line="342"><span class="w">        </span><span class="sd">"""Op stays FP32: insert fp16-&gt;fp32 casts before, fp32-&gt;fp16 after."""</span>
 </span><span data-line="343">
 </span><span data-line="344">        <span class="c1"># Cast any fp16 Node inputs to fp32</span>
 </span><span data-line="345">        <span class="k">def</span><span class="w"> </span><span class="nf">_cast_up</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
@@ -673,14 +677,14 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="355">        <span class="n">node</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">_cast_up</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 </span><span data-line="356">
 </span><span data-line="357">        <span class="c1"># Output stays fp32 — but insert fp16 cast-back for downstream consumers</span>
-</span><span data-line="358">        <span class="n">out_val</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;val&quot;</span><span class="p">)</span>
-</span><span data-line="359">        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">out_val</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">out_val</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">in</span> <span class="n">_FLOAT_DTYPES</span><span class="p">):</span>
+</span><span data-line="358">        <span class="n">out_val</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"val"</span><span class="p">)</span>
+</span><span data-line="359">        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">out_val</span><span class="p">,</span> <span class="s2">"dtype"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">out_val</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">in</span> <span class="n">_FLOAT_DTYPES</span><span class="p">):</span>
 </span><span data-line="360">            <span class="k">return</span>
 </span><span data-line="361">
 </span><span data-line="362">        <span class="n">_insert_cast_after</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ep</span><span class="o">.</span><span class="n">graph</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span> <span class="n">pass_inserted</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_pass_inserted</span><span class="p">)</span>
 </span><span data-line="363">
 </span><span data-line="364">    <span class="k">def</span><span class="w"> </span><span class="nf">handle_non_overflow_op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="365"><span class="w">        </span><span class="sd">&quot;&quot;&quot;No overflow: inputs are fp16, clamp inf-like scalars, update metadata.&quot;&quot;&quot;</span>
+</span><span data-line="365"><span class="w">        </span><span class="sd">"""No overflow: inputs are fp16, clamp inf-like scalars, update metadata."""</span>
 </span><span data-line="366">
 </span><span data-line="367">        <span class="k">def</span><span class="w"> </span><span class="nf">_update_arg</span><span class="p">(</span><span class="n">arg</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
 </span><span data-line="368">            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
@@ -707,7 +711,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="389">
 </span><span data-line="390">
 </span><span data-line="391"><span class="k">class</span><span class="w"> </span><span class="nc">_INT16Casting</span><span class="p">(</span><span class="n">_CastPassBase</span><span class="p">):</span>
-</span><span data-line="392"><span class="w">    </span><span class="sd">&quot;&quot;&quot;INT32/INT64 to INT16 conversion for torch.export graphs.</span>
+</span><span data-line="392"><span class="w">    </span><span class="sd">"""INT32/INT64 to INT16 conversion for torch.export graphs.</span>
 </span><span data-line="393">
 </span><span data-line="394"><span class="sd">    High level idea:</span>
 </span><span data-line="395"><span class="sd">    INT32 to INT16 casting shares the same high level workflow as FP32 to</span>
@@ -786,7 +790,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="468">
 </span><span data-line="469"><span class="sd">       The same logic as that of FP32-&gt;FP16 casting regarding when chains of</span>
 </span><span data-line="470"><span class="sd">       casts can be eliminated applies.</span>
-</span><span data-line="471"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="471"><span class="sd">    """</span>
 </span><span data-line="472">
 </span><span data-line="473">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exported_program</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">ExportedProgram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="474">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">exported_program</span><span class="p">)</span>
@@ -797,7 +801,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="479">        <span class="p">)</span>
 </span><span data-line="480">
 </span><span data-line="481">    <span class="k">def</span><span class="w"> </span><span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="482"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Eliminate redundant casts, anchor reshape inputs, then recompile.&quot;&quot;&quot;</span>
+</span><span data-line="482"><span class="w">        </span><span class="sd">"""Eliminate redundant casts, anchor reshape inputs, then recompile."""</span>
 </span><span data-line="483">        <span class="n">_cleanup_casts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ep</span><span class="o">.</span><span class="n">graph</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pass_inserted</span><span class="p">)</span>
 </span><span data-line="484">        <span class="n">_anchor_int16_reshape_inputs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ep</span><span class="o">.</span><span class="n">graph</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pass_inserted</span><span class="p">)</span>
 </span><span data-line="485">        <span class="bp">self</span><span class="o">.</span><span class="n">_ep</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">eliminate_dead_code</span><span class="p">()</span>
@@ -829,12 +833,12 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="511">    <span class="c1"># -------------------------------------------------------------------------</span>
 </span><span data-line="512">
 </span><span data-line="513">    <span class="k">def</span><span class="w"> </span><span class="nf">convert_user_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="514"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Change int32/int64 user input placeholders to int16 where castable.&quot;&quot;&quot;</span>
+</span><span data-line="514"><span class="w">        </span><span class="sd">"""Change int32/int64 user input placeholders to int16 where castable."""</span>
 </span><span data-line="515">        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_input_placeholders</span><span class="p">:</span>
-</span><span data-line="516">            <span class="n">val</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;val&quot;</span><span class="p">)</span>
-</span><span data-line="517">            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">val</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">in</span> <span class="n">_INT_DTYPES</span><span class="p">:</span>
+</span><span data-line="516">            <span class="n">val</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"val"</span><span class="p">)</span>
+</span><span data-line="517">            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="s2">"dtype"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">val</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">in</span> <span class="n">_INT_DTYPES</span><span class="p">:</span>
 </span><span data-line="518">                <span class="k">if</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_castable_nodes</span><span class="p">:</span>
-</span><span data-line="519">                    <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;val&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
+</span><span data-line="519">                    <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">"val"</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int16</span><span class="p">)</span>
 </span><span data-line="520">
 </span><span data-line="521">    <span class="c1"># -------------------------------------------------------------------------</span>
 </span><span data-line="522">    <span class="c1"># Step 3: Iterate nodes and insert casts</span>
@@ -847,11 +851,11 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="529">    <span class="c1">#     - Insert an INT16 -&gt; INT32 cast after the node</span>
 </span><span data-line="530">    <span class="c1"># -------------------------------------------------------------------------</span>
 </span><span data-line="531">    <span class="k">def</span><span class="w"> </span><span class="nf">iterate_nodes_and_insert_casts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="532"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Walk topologically, inserting int16 casts at castable nodes.&quot;&quot;&quot;</span>
+</span><span data-line="532"><span class="w">        </span><span class="sd">"""Walk topologically, inserting int16 casts at castable nodes."""</span>
 </span><span data-line="533">        <span class="n">graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ep</span><span class="o">.</span><span class="n">graph</span>
 </span><span data-line="534">
 </span><span data-line="535">        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">):</span>
-</span><span data-line="536">            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op</span> <span class="o">!=</span> <span class="s2">&quot;call_function&quot;</span><span class="p">:</span>
+</span><span data-line="536">            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">op</span> <span class="o">!=</span> <span class="s2">"call_function"</span><span class="p">:</span>
 </span><span data-line="537">                <span class="k">continue</span>
 </span><span data-line="538">
 </span><span data-line="539">            <span class="c1"># Assert nodes: update dtype to match input</span>
@@ -874,7 +878,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="556">                <span class="bp">self</span><span class="o">.</span><span class="n">handle_cast_to_int16_op</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 </span><span data-line="557">
 </span><span data-line="558">    <span class="k">def</span><span class="w"> </span><span class="nf">handle_cast_to_int16_op</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="559"><span class="w">        </span><span class="sd">&quot;&quot;&quot;For a castable node, cast int32 data args to int16 and insert cast-back.&quot;&quot;&quot;</span>
+</span><span data-line="559"><span class="w">        </span><span class="sd">"""For a castable node, cast int32 data args to int16 and insert cast-back."""</span>
 </span><span data-line="560">        <span class="n">graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ep</span><span class="o">.</span><span class="n">graph</span>
 </span><span data-line="561">
 </span><span data-line="562">        <span class="c1"># Check if any Node input or output is int16/int32/int64 (worth processing)</span>
@@ -895,7 +899,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="577">                <span class="k">return</span> <span class="n">arg</span>
 </span><span data-line="578">            <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unsafe_nodes</span><span class="p">:</span>
 </span><span data-line="579">                <span class="k">return</span> <span class="n">arg</span>
-</span><span data-line="580">            <span class="k">if</span> <span class="n">arg</span><span class="o">.</span><span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;placeholder&quot;</span> <span class="ow">and</span> <span class="n">arg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_castable_nodes</span><span class="p">:</span>
+</span><span data-line="580">            <span class="k">if</span> <span class="n">arg</span><span class="o">.</span><span class="n">op</span> <span class="o">==</span> <span class="s2">"placeholder"</span> <span class="ow">and</span> <span class="n">arg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_castable_nodes</span><span class="p">:</span>
 </span><span data-line="581">                <span class="k">return</span> <span class="n">arg</span>
 </span><span data-line="582">            <span class="k">return</span> <span class="n">_insert_cast</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">arg</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">int16</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">pass_inserted</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_pass_inserted</span><span class="p">)</span>
 </span><span data-line="583">
@@ -912,8 +916,8 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="594">        <span class="n">_update_meta_dtype</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">int16</span><span class="p">,</span> <span class="n">_INT_DTYPES_EXTENDED</span><span class="p">)</span>
 </span><span data-line="595">
 </span><span data-line="596">        <span class="c1"># Insert int16→int32 cast-back for downstream consumers</span>
-</span><span data-line="597">        <span class="n">out_val</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;val&quot;</span><span class="p">)</span>
-</span><span data-line="598">        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">out_val</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">out_val</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">int16</span><span class="p">):</span>
+</span><span data-line="597">        <span class="n">out_val</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"val"</span><span class="p">)</span>
+</span><span data-line="598">        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">out_val</span><span class="p">,</span> <span class="s2">"dtype"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">out_val</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">int16</span><span class="p">):</span>
 </span><span data-line="599">            <span class="k">return</span>
 </span><span data-line="600">
 </span><span data-line="601">        <span class="n">_insert_cast_after</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">pass_inserted</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_pass_inserted</span><span class="p">)</span>
@@ -927,11 +931,11 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="607"><span class="k">def</span><span class="w"> </span><span class="nf">cast_fp32_to_fp16</span><span class="p">(</span>
 </span><span data-line="608">    <span class="n">exported_program</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">ExportedProgram</span><span class="p">,</span>
 </span><span data-line="609"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">ExportedProgram</span><span class="p">:</span>
-</span><span data-line="610"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a torch exported program from FP32 to FP16 where applicable.</span>
+</span><span data-line="610"><span class="w">    </span><span class="sd">"""Convert a torch exported program from FP32 to FP16 where applicable.</span>
 </span><span data-line="611">
 </span><span data-line="612"><span class="sd">    Converts parameters, user inputs, and compute ops to FP16, inserting</span>
 </span><span data-line="613"><span class="sd">    casts only where values would overflow FP16 range.</span>
-</span><span data-line="614"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="614"><span class="sd">    """</span>
 </span><span data-line="615">    <span class="k">return</span> <span class="n">_FP16Casting</span><span class="p">(</span><span class="n">exported_program</span><span class="p">)()</span></div>
 
 </span><span data-line="616">
@@ -941,11 +945,11 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="618"><span class="k">def</span><span class="w"> </span><span class="nf">cast_int32_to_int16</span><span class="p">(</span>
 </span><span data-line="619">    <span class="n">exported_program</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">ExportedProgram</span><span class="p">,</span>
 </span><span data-line="620"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">ExportedProgram</span><span class="p">:</span>
-</span><span data-line="621"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert INT32/INT64 tensors to INT16 in a torch exported program.</span>
+</span><span data-line="621"><span class="w">    </span><span class="sd">"""Convert INT32/INT64 tensors to INT16 in a torch exported program.</span>
 </span><span data-line="622">
 </span><span data-line="623"><span class="sd">    Only designated ops (data operations) are converted. Positional values</span>
 </span><span data-line="624"><span class="sd">    (indices, strides, dimensions) are left as int32/int64.</span>
-</span><span data-line="625"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="625"><span class="sd">    """</span>
 </span><span data-line="626">    <span class="k">return</span> <span class="n">_INT16Casting</span><span class="p">(</span><span class="n">exported_program</span><span class="p">)()</span></div>
 
 </span><span data-line="627">
@@ -955,12 +959,12 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="629"><span class="k">def</span><span class="w"> </span><span class="nf">cast_to_16_bit_precision</span><span class="p">(</span>
 </span><span data-line="630">    <span class="n">exported_program</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">ExportedProgram</span><span class="p">,</span>
 </span><span data-line="631"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">ExportedProgram</span><span class="p">:</span>
-</span><span data-line="632"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a torch exported program to 16-bit precision: FP32→FP16 and INT32/64→INT16.</span>
+</span><span data-line="632"><span class="w">    </span><span class="sd">"""Convert a torch exported program to 16-bit precision: FP32→FP16 and INT32/64→INT16.</span>
 </span><span data-line="633">
 </span><span data-line="634"><span class="sd">    Runs both cast passes sequentially:</span>
 </span><span data-line="635"><span class="sd">    1. cast_fp32_to_fp16: FP32→FP16</span>
 </span><span data-line="636"><span class="sd">    2. cast_int32_to_int16: INT32/INT64→INT16</span>
-</span><span data-line="637"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="637"><span class="sd">    """</span>
 </span><span data-line="638">    <span class="n">cast_fp32_to_fp16</span><span class="p">(</span><span class="n">exported_program</span><span class="p">)</span>
 </span><span data-line="639">    <span class="n">cast_int32_to_int16</span><span class="p">(</span><span class="n">exported_program</span><span class="p">)</span>
 </span><span data-line="640">    <span class="k">return</span> <span class="n">exported_program</span></div>

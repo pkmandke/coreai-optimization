@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -90,6 +90,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/overview.html">API Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/config.html">Config API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/advanced.html">Deeper Dive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quantization/composite_op_quantization.html">Quantization with Composite Ops</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../palettization/index.html">Palettization</a><ul>
@@ -110,7 +111,6 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/joint_compression.html">Joint Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/mixed_precision.html">Mixed-Precision Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/activation_comparison.html">Comparing Intermediate Activations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../utils/composite_op_quantization.html">Quantizing Models with Core AI Composite Ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/casting.html">16-bit PyTorch Model Casting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/coreai_compression.html">Compressing Core AI Models</a></li>
 </ul>
@@ -172,9 +172,13 @@ data-aria-dark="Switch to auto color mode">
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -349,7 +353,7 @@ data-aria-dark="Switch to auto color mode">
 <div class="viewcode-block" id="QParamsCalculatorBase">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.QParamsCalculatorBase.html#coreai_opt.quantization.spec.QParamsCalculatorBase">[docs]</a>
 </span><span data-line="31"><span class="k">class</span><span class="w"> </span><span class="nc">QParamsCalculatorBase</span><span class="p">(</span><span class="n">_ClassRegistryMixin</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-</span><span data-line="32"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base for qparams calculators — common configuration and helpers.</span>
+</span><span data-line="32"><span class="w">    </span><span class="sd">"""Abstract base for qparams calculators — common configuration and helpers.</span>
 </span><span data-line="33">
 </span><span data-line="34"><span class="sd">    Concrete subclasses inherit from either:</span>
 </span><span data-line="35">
@@ -361,7 +365,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="41"><span class="sd">      export.</span>
 </span><span data-line="42">
 </span><span data-line="43"><span class="sd">    Subclasses must implement ``forward(tensor) -&gt; (scale, zero_point, minval)``.</span>
-</span><span data-line="44"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="44"><span class="sd">    """</span>
 </span><span data-line="45">
 <div class="viewcode-block" id="QParamsCalculatorBase.__init__">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.QParamsCalculatorBase.html#coreai_opt.quantization.spec.QParamsCalculatorBase.__init__">[docs]</a>
@@ -402,30 +406,30 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="79">
 </span><span data-line="80">    <span class="nd">@property</span>
 </span><span data-line="81">    <span class="k">def</span><span class="w"> </span><span class="nf">granularity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">QuantizationGranularity</span><span class="p">:</span>
-</span><span data-line="82"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Getter for granularity.&quot;&quot;&quot;</span>
+</span><span data-line="82"><span class="w">        </span><span class="sd">"""Getter for granularity."""</span>
 </span><span data-line="83">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_granularity</span>
 </span><span data-line="84">
 </span><span data-line="85">    <span class="nd">@property</span>
 </span><span data-line="86">    <span class="k">def</span><span class="w"> </span><span class="nf">quantization_target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span data-line="87"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether the quantized tensor is a weight or an activation.&quot;&quot;&quot;</span>
+</span><span data-line="87"><span class="w">        </span><span class="sd">"""Whether the quantized tensor is a weight or an activation."""</span>
 </span><span data-line="88">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_calculator</span><span class="o">.</span><span class="n">quantization_target</span>
 </span><span data-line="89">
 </span><span data-line="90">    <span class="nd">@granularity</span><span class="o">.</span><span class="n">setter</span>
 </span><span data-line="91">    <span class="k">def</span><span class="w"> </span><span class="nf">granularity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">granularity</span><span class="p">:</span> <span class="n">QuantizationGranularity</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="92"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Update granularity for this calculator and its range calculator.</span>
+</span><span data-line="92"><span class="w">        </span><span class="sd">"""Update granularity for this calculator and its range calculator.</span>
 </span><span data-line="93">
 </span><span data-line="94"><span class="sd">        Can only be performed before the first forward pass.</span>
-</span><span data-line="95"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="95"><span class="sd">        """</span>
 </span><span data-line="96">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initialized</span><span class="p">:</span>
 </span><span data-line="97">            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-</span><span data-line="98">                <span class="s2">&quot;Cannot change granularity after observer has been initialized. &quot;</span>
-</span><span data-line="99">                <span class="s2">&quot;Granularity must be set before the first forward pass.&quot;</span>
+</span><span data-line="98">                <span class="s2">"Cannot change granularity after observer has been initialized. "</span>
+</span><span data-line="99">                <span class="s2">"Granularity must be set before the first forward pass."</span>
 </span><span data-line="100">            <span class="p">)</span>
 </span><span data-line="101">        <span class="bp">self</span><span class="o">.</span><span class="n">_granularity</span> <span class="o">=</span> <span class="n">granularity</span>
 </span><span data-line="102">        <span class="bp">self</span><span class="o">.</span><span class="n">range_calculator</span><span class="o">.</span><span class="n">granularity</span> <span class="o">=</span> <span class="n">granularity</span>
 </span><span data-line="103">
 </span><span data-line="104">    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor_ndim</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="105"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve axis to non-negative on first call, delegating to granularity.</span>
+</span><span data-line="105"><span class="w">        </span><span class="sd">"""Resolve axis to non-negative on first call, delegating to granularity.</span>
 </span><span data-line="106">
 </span><span data-line="107"><span class="sd">        Caches the result in ``_resolved_axis``. Each QParamsCalculator instance</span>
 </span><span data-line="108"><span class="sd">        is per-node, so tensor rank is consistent across calls.</span>
@@ -433,7 +437,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="110"><span class="sd">        Args:</span>
 </span><span data-line="111"><span class="sd">            tensor_ndim: Rank of the input tensor.</span>
 </span><span data-line="112">
-</span><span data-line="113"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="113"><span class="sd">        """</span>
 </span><span data-line="114">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolved_axis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="o">...</span><span class="p">:</span>
 </span><span data-line="115">            <span class="k">return</span>
 </span><span data-line="116">        <span class="bp">self</span><span class="o">.</span><span class="n">_resolved_axis</span> <span class="o">=</span> <span class="n">QuantizationGranularity</span><span class="o">.</span><span class="n">_resolve_axis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">granularity</span><span class="p">,</span> <span class="n">tensor_ndim</span><span class="p">)</span>
@@ -441,10 +445,10 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="118">    <span class="k">def</span><span class="w"> </span><span class="nf">_get_tensor_with_granularity_from_scalar</span><span class="p">(</span>
 </span><span data-line="119">        <span class="bp">self</span><span class="p">,</span> <span class="n">scalar</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">input_tensor</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
 </span><span data-line="120">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-</span><span data-line="121"><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="121"><span class="w">        </span><span class="sd">"""</span>
 </span><span data-line="122"><span class="sd">        Return a tensor with dimensions equal to num blocks in each dimension, comprised</span>
 </span><span data-line="123"><span class="sd">        of values equal to scalar.</span>
-</span><span data-line="124"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="124"><span class="sd">        """</span>
 </span><span data-line="125">        <span class="n">block_size_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">granularity</span><span class="o">.</span><span class="n">get_block_size</span><span class="p">(</span>
 </span><span data-line="126">            <span class="n">input_tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantization_target</span>
 </span><span data-line="127">        <span class="p">)</span>
@@ -455,10 +459,10 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="132">        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">num_blocks_list</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">scalar</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">input_tensor</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 </span><span data-line="133">
 </span><span data-line="134">    <span class="k">def</span><span class="w"> </span><span class="nf">_get_min_and_max_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
-</span><span data-line="135"><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="135"><span class="w">        </span><span class="sd">"""</span>
 </span><span data-line="136"><span class="sd">        Return min and max tensors computed from range calculator statistics and/or</span>
 </span><span data-line="137"><span class="sd">        taken from float_range setting.</span>
-</span><span data-line="138"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="138"><span class="sd">        """</span>
 </span><span data-line="139">        <span class="n">min_val</span> <span class="o">=</span> <span class="p">(</span>
 </span><span data-line="140">            <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span>
 </span><span data-line="141">                <span class="bp">self</span><span class="o">.</span><span class="n">_get_tensor_with_granularity_from_scalar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">float_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tensor</span><span class="p">),</span> <span class="nb">max</span><span class="o">=</span><span class="mi">0</span>
@@ -489,19 +493,19 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="166">        <span class="k">return</span> <span class="n">min_val</span><span class="p">,</span> <span class="n">max_val</span>
 </span><span data-line="167">
 </span><span data-line="168">    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_e8m0_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_abs</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-</span><span data-line="169"><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="169"><span class="w">        </span><span class="sd">"""</span>
 </span><span data-line="170"><span class="sd">        Compute power-of-2 scale in e8m0 format using FLOOR mode.</span>
 </span><span data-line="171"><span class="sd">        References:</span>
 </span><span data-line="172"><span class="sd">            - OCP Microscaling Formats (MX) Specification:</span>
 </span><span data-line="173"><span class="sd">              https://www.opencompute.org/documents/ocp-microscaling-formats-mx-v1-0-spec-final-pdf</span>
 </span><span data-line="174"><span class="sd">            - torchao implementation:</span>
 </span><span data-line="175"><span class="sd">              https://github.com/pytorch/ao/blob/main/torchao/prototype/mx_formats/mx_tensor.py</span>
-</span><span data-line="176"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="176"><span class="sd">        """</span>
 </span><span data-line="177">        <span class="n">target_max_pow2</span> <span class="o">=</span> <span class="n">_FP_DTYPE_TO_MAX_POW2</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
 </span><span data-line="178">        <span class="k">if</span> <span class="n">target_max_pow2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="179">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="180">                <span class="sa">f</span><span class="s2">&quot;Unsupported dtype for e8m0 scale computation: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">. &quot;</span>
-</span><span data-line="181">                <span class="sa">f</span><span class="s2">&quot;Supported: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">_FP_DTYPE_TO_MAX_POW2</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span data-line="180">                <span class="sa">f</span><span class="s2">"Unsupported dtype for e8m0 scale computation: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">. "</span>
+</span><span data-line="181">                <span class="sa">f</span><span class="s2">"Supported: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">_FP_DTYPE_TO_MAX_POW2</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span>
 </span><span data-line="182">            <span class="p">)</span>
 </span><span data-line="183">
 </span><span data-line="184">        <span class="n">max_abs_fp32</span> <span class="o">=</span> <span class="n">max_abs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
@@ -532,9 +536,9 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="209">    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_scale_zero_point_minval</span><span class="p">(</span>
 </span><span data-line="210">        <span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">min_val</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">max_val</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
 </span><span data-line="211">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-</span><span data-line="212"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Supports two scale computation modes based on ``scale_dtype``:</span>
+</span><span data-line="212"><span class="w">        </span><span class="sd">"""Supports two scale computation modes based on ``scale_dtype``:</span>
 </span><span data-line="213">
-</span><span data-line="214"><span class="sd">        1. **Default (``scale_dtype=None``)**: Uses torchao&#39;s</span>
+</span><span data-line="214"><span class="sd">        1. **Default (``scale_dtype=None``)**: Uses torchao's</span>
 </span><span data-line="215"><span class="sd">        ``choose_qparams_affine_with_min_max`` custom op to compute scale and</span>
 </span><span data-line="216"><span class="sd">        zero point. Supports integer dtypes and FP8 dtypes.</span>
 </span><span data-line="217">
@@ -543,11 +547,11 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="220"><span class="sd">        specification (FLOOR mode):</span>
 </span><span data-line="221"><span class="sd">            scale = 2^(floor(log2(max_abs)) - target_max_pow2)</span>
 </span><span data-line="222"><span class="sd">            where ``target_max_pow2`` is the largest power-of-2 component of the</span>
-</span><span data-line="223"><span class="sd">            target dtype&#39;s maximum representable value:</span>
+</span><span data-line="223"><span class="sd">            target dtype's maximum representable value:</span>
 </span><span data-line="224"><span class="sd">                - FP4 E2M1:  max = 6.0     = 1.5  * 2^2,  target_max_pow2 = 2</span>
 </span><span data-line="225"><span class="sd">                - FP8 E4M3:  max = 448.0   = 1.75 * 2^8,  target_max_pow2 = 8</span>
 </span><span data-line="226"><span class="sd">                - FP8 E5M2:  max = 57344.0 = 1.75 * 2^15, target_max_pow2 = 15</span>
-</span><span data-line="227"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="227"><span class="sd">        """</span>
 </span><span data-line="228">
 </span><span data-line="229">        <span class="c1"># e8m0 path: power-of-2 scales</span>
 </span><span data-line="230">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_dtype</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">float8_e8m0fnu</span><span class="p">:</span>
@@ -600,11 +604,11 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="277">        <span class="n">min_val</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
 </span><span data-line="278">        <span class="n">max_val</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
 </span><span data-line="279">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="280"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Hook for subclass-specific initialization on the first forward pass.</span>
+</span><span data-line="280"><span class="w">        </span><span class="sd">"""Hook for subclass-specific initialization on the first forward pass.</span>
 </span><span data-line="281">
 </span><span data-line="282"><span class="sd">        Tensor shape and device are not known at construction time, so stateful</span>
 </span><span data-line="283"><span class="sd">        subclasses override this to resize their buffers (e.g.</span>
-</span><span data-line="284"><span class="sd">        ``running_min``/``running_max``) to match the observed input.&quot;&quot;&quot;</span>
+</span><span data-line="284"><span class="sd">        ``running_min``/``running_max``) to match the observed input."""</span>
 </span><span data-line="285">
 <div class="viewcode-block" id="QParamsCalculatorBase.compute_qparams">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.QParamsCalculatorBase.html#coreai_opt.quantization.spec.QParamsCalculatorBase.compute_qparams">[docs]</a>
@@ -614,12 +618,12 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="289">        <span class="n">min_val</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
 </span><span data-line="290">        <span class="n">max_val</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
 </span><span data-line="291">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-</span><span data-line="292"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Given the observed min/max range, return ``(scale, zero_point, minval)``.</span>
+</span><span data-line="292"><span class="w">        </span><span class="sd">"""Given the observed min/max range, return ``(scale, zero_point, minval)``.</span>
 </span><span data-line="293">
 </span><span data-line="294"><span class="sd">        Default implementation: pure function of the supplied range, no running state.</span>
 </span><span data-line="295"><span class="sd">        ``RunningRangeMixin`` overrides this to apply a running-range smoothing rule</span>
 </span><span data-line="296"><span class="sd">        before computing qparams.</span>
-</span><span data-line="297"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="297"><span class="sd">        """</span>
 </span><span data-line="298">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_scale_zero_point_minval</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">min_val</span><span class="p">,</span> <span class="n">max_val</span><span class="p">)</span></div>
 
 </span><span data-line="299">
@@ -629,7 +633,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="301">    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span>
 </span><span data-line="302">        <span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
 </span><span data-line="303">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-</span><span data-line="304"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute and return ``(scale, zero_point, minval)`` for ``tensor``.&quot;&quot;&quot;</span></div>
+</span><span data-line="304"><span class="w">        </span><span class="sd">"""Compute and return ``(scale, zero_point, minval)`` for ``tensor``."""</span></div>
 </div>
 
 </span><span data-line="305">
@@ -637,13 +641,13 @@ data-aria-dark="Switch to auto color mode">
 <div class="viewcode-block" id="StatefulQParamsCalculatorBase">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.StatefulQParamsCalculatorBase.html#coreai_opt.quantization.spec.StatefulQParamsCalculatorBase">[docs]</a>
 </span><span data-line="307"><span class="k">class</span><span class="w"> </span><span class="nc">StatefulQParamsCalculatorBase</span><span class="p">(</span><span class="n">QParamsCalculatorBase</span><span class="p">):</span>
-</span><span data-line="308"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Stateful base: maintains scale/zero_point/minval as nn.Module buffers</span>
+</span><span data-line="308"><span class="w">    </span><span class="sd">"""Stateful base: maintains scale/zero_point/minval as nn.Module buffers</span>
 </span><span data-line="309"><span class="sd">    across forwards.</span>
 </span><span data-line="310">
 </span><span data-line="311"><span class="sd">    Buffer shapes are allocated on first forward and must remain stable</span>
 </span><span data-line="312"><span class="sd">    (``copy_`` requires shape compatibility) — use</span>
 </span><span data-line="313"><span class="sd">    ``StatelessQParamsCalculatorBase`` for variable-shape scales.</span>
-</span><span data-line="314"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="314"><span class="sd">    """</span>
 </span><span data-line="315">
 </span><span data-line="316">    <span class="n">scale</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
 </span><span data-line="317">    <span class="n">zero_point</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span>
@@ -654,14 +658,14 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="320">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 </span><span data-line="321">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </span><span data-line="322">
-</span><span data-line="323">        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;scale&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+</span><span data-line="323">        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">"scale"</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
 </span><span data-line="324">
 </span><span data-line="325">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">is_floating_point</span><span class="p">:</span>
-</span><span data-line="326">            <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;zero_point&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</span><span data-line="327">            <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;minval&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span data-line="326">            <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">"zero_point"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span data-line="327">            <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">"minval"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 </span><span data-line="328">        <span class="k">else</span><span class="p">:</span>
-</span><span data-line="329">            <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;zero_point&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">))</span>
-</span><span data-line="330">            <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;minval&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+</span><span data-line="329">            <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">"zero_point"</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">))</span>
+</span><span data-line="330">            <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">"minval"</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
 </span><span data-line="331">
 </span><span data-line="332">        <span class="bp">self</span><span class="o">.</span><span class="n">_export_mode</span> <span class="o">=</span> <span class="kc">False</span></div>
 
@@ -671,12 +675,12 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="334">    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span>
 </span><span data-line="335">        <span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
 </span><span data-line="336">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-</span><span data-line="337"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute qparams from ``tensor``; cache to buffers; return.</span>
+</span><span data-line="337"><span class="w">        </span><span class="sd">"""Compute qparams from ``tensor``; cache to buffers; return.</span>
 </span><span data-line="338">
 </span><span data-line="339"><span class="sd">        On the first forward pass, initializes internal buffers using the</span>
 </span><span data-line="340"><span class="sd">        observed tensor shape and device. Delegates the actual qparams</span>
 </span><span data-line="341"><span class="sd">        calculation to ``compute_qparams``.</span>
-</span><span data-line="342"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="342"><span class="sd">        """</span>
 </span><span data-line="343">        <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_axis</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
 </span><span data-line="344">
 </span><span data-line="345">        <span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
@@ -733,13 +737,13 @@ data-aria-dark="Switch to auto color mode">
 <div class="viewcode-block" id="StatefulQParamsCalculatorBase.get_qparams">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.StatefulQParamsCalculatorBase.html#coreai_opt.quantization.spec.StatefulQParamsCalculatorBase.get_qparams">[docs]</a>
 </span><span data-line="395">    <span class="k">def</span><span class="w"> </span><span class="nf">get_qparams</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-</span><span data-line="396"><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="396"><span class="w">        </span><span class="sd">"""</span>
 </span><span data-line="397"><span class="sd">        Return the computed scale, zero point and minval.</span>
 </span><span data-line="398"><span class="sd">        For FP4/FP8/floating-point quantization, zero_point and minval are None.</span>
-</span><span data-line="399"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="399"><span class="sd">        """</span>
 </span><span data-line="400">        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initialized</span><span class="p">:</span>
 </span><span data-line="401">            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-</span><span data-line="402">                <span class="s2">&quot;Using default scale and zero point. Call forward pass to compute actual values.&quot;</span><span class="p">,</span>
+</span><span data-line="402">                <span class="s2">"Using default scale and zero point. Call forward pass to compute actual values."</span><span class="p">,</span>
 </span><span data-line="403">                <span class="n">stacklevel</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
 </span><span data-line="404">            <span class="p">)</span>
 </span><span data-line="405">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zero_point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minval</span></div>
@@ -755,8 +759,8 @@ data-aria-dark="Switch to auto color mode">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.StatefulQParamsCalculatorBase.html#coreai_opt.quantization.spec.StatefulQParamsCalculatorBase.extra_repr">[docs]</a>
 </span><span data-line="410">    <span class="k">def</span><span class="w"> </span><span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 </span><span data-line="411">        <span class="k">return</span> <span class="p">(</span>
-</span><span data-line="412">            <span class="sa">f</span><span class="s2">&quot;scale=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="si">}</span><span class="s2">, zero_point=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">zero_point</span><span class="si">}</span><span class="s2">, &quot;</span>
-</span><span data-line="413">            <span class="sa">f</span><span class="s2">&quot;minval=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">minval</span><span class="si">}</span><span class="s2">, export_mode=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_export_mode</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span data-line="412">            <span class="sa">f</span><span class="s2">"scale=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="si">}</span><span class="s2">, zero_point=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">zero_point</span><span class="si">}</span><span class="s2">, "</span>
+</span><span data-line="413">            <span class="sa">f</span><span class="s2">"minval=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">minval</span><span class="si">}</span><span class="s2">, export_mode=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_export_mode</span><span class="si">}</span><span class="s2">"</span>
 </span><span data-line="414">        <span class="p">)</span></div>
 </div>
 
@@ -765,7 +769,7 @@ data-aria-dark="Switch to auto color mode">
 <div class="viewcode-block" id="StatelessQParamsCalculatorBase">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.StatelessQParamsCalculatorBase.html#coreai_opt.quantization.spec.StatelessQParamsCalculatorBase">[docs]</a>
 </span><span data-line="417"><span class="k">class</span><span class="w"> </span><span class="nc">StatelessQParamsCalculatorBase</span><span class="p">(</span><span class="n">QParamsCalculatorBase</span><span class="p">):</span>
-</span><span data-line="418"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Stateless base: no cached qparams; recomputed every forward.</span>
+</span><span data-line="418"><span class="w">    </span><span class="sd">"""Stateless base: no cached qparams; recomputed every forward.</span>
 </span><span data-line="419">
 </span><span data-line="420"><span class="sd">    Used for dynamic quantization where activations vary per inference and the</span>
 </span><span data-line="421"><span class="sd">    scale shape may change across forwards (e.g. LLM token-wise with variable</span>
@@ -777,17 +781,17 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="427"><span class="sd">      so the recompute path stays live.</span>
 </span><span data-line="428"><span class="sd">    - ``get_qparams`` is undefined; ``set_export_mode(True)`` raises;</span>
 </span><span data-line="429"><span class="sd">      ``float_range=[None, None]`` is required.</span>
-</span><span data-line="430"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="430"><span class="sd">    """</span>
 </span><span data-line="431">
 <div class="viewcode-block" id="StatelessQParamsCalculatorBase.__init__">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.StatelessQParamsCalculatorBase.html#coreai_opt.quantization.spec.StatelessQParamsCalculatorBase.__init__">[docs]</a>
 </span><span data-line="432">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span data-line="433">        <span class="n">float_range</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;float_range&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+</span><span data-line="433">        <span class="n">float_range</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"float_range"</span><span class="p">,</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
 </span><span data-line="434">        <span class="k">if</span> <span class="n">float_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">float_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="435">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="436">                <span class="sa">f</span><span class="s2">&quot;StatelessQParamsCalculatorBase requires float_range=[None, None]; &quot;</span>
-</span><span data-line="437">                <span class="sa">f</span><span class="s2">&quot;got </span><span class="si">{</span><span class="n">float_range</span><span class="si">}</span><span class="s2">. Bounded ranges contradict the per-forward &quot;</span>
-</span><span data-line="438">                <span class="sa">f</span><span class="s2">&quot;recompute contract.&quot;</span>
+</span><span data-line="436">                <span class="sa">f</span><span class="s2">"StatelessQParamsCalculatorBase requires float_range=[None, None]; "</span>
+</span><span data-line="437">                <span class="sa">f</span><span class="s2">"got </span><span class="si">{</span><span class="n">float_range</span><span class="si">}</span><span class="s2">. Bounded ranges contradict the per-forward "</span>
+</span><span data-line="438">                <span class="sa">f</span><span class="s2">"recompute contract."</span>
 </span><span data-line="439">            <span class="p">)</span>
 </span><span data-line="440">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
@@ -797,7 +801,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="442">    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span>
 </span><span data-line="443">        <span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
 </span><span data-line="444">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-</span><span data-line="445"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute qparams from ``tensor`` and return; no buffer state.&quot;&quot;&quot;</span>
+</span><span data-line="445"><span class="w">        </span><span class="sd">"""Compute qparams from ``tensor`` and return; no buffer state."""</span>
 </span><span data-line="446">        <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_axis</span><span class="p">(</span><span class="n">tensor</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
 </span><span data-line="447">
 </span><span data-line="448">        <span class="n">min_val</span><span class="p">,</span> <span class="n">max_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_min_and_max_val</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
@@ -822,8 +826,8 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="464">    <span class="k">def</span><span class="w"> </span><span class="nf">set_export_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enabled</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="465">        <span class="k">if</span> <span class="n">enabled</span><span class="p">:</span>
 </span><span data-line="466">            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-</span><span data-line="467">                <span class="s2">&quot;Stateless quantization (e.g. dynamic) does not support export mode; &quot;</span>
-</span><span data-line="468">                <span class="s2">&quot;qparams are input-dependent and cannot be frozen for export.&quot;</span>
+</span><span data-line="467">                <span class="s2">"Stateless quantization (e.g. dynamic) does not support export mode; "</span>
+</span><span data-line="468">                <span class="s2">"qparams are input-dependent and cannot be frozen for export."</span>
 </span><span data-line="469">            <span class="p">)</span></div>
 </div>
 
@@ -832,43 +836,43 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="472">        <span class="c1"># and there is nothing to disable.</span>
 </span><span data-line="473">
 </span><span data-line="474">
-</span><span data-line="475"><span class="nd">@QParamsCalculatorBase</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
+</span><span data-line="475"><span class="nd">@QParamsCalculatorBase</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"default"</span><span class="p">)</span>
 </span><span data-line="476"><span class="k">class</span><span class="w"> </span><span class="nc">_DefaultQParamsCalculator</span><span class="p">(</span><span class="n">QParamsCalculatorBase</span><span class="p">):</span>
-</span><span data-line="477"><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="477"><span class="w">    </span><span class="sd">"""</span>
 </span><span data-line="478"><span class="sd">    Marker class for context-dependent qparam calculator resolution.</span>
 </span><span data-line="479">
-</span><span data-line="480"><span class="sd">    This class should not be used directly. When &quot;default&quot; is specified for</span>
+</span><span data-line="480"><span class="sd">    This class should not be used directly. When "default" is specified for</span>
 </span><span data-line="481"><span class="sd">    qparam_calculator_cls, the QuantizationComponentFactory will resolve it to:</span>
 </span><span data-line="482"><span class="sd">    - StaticQParamsCalculator for weight quantization</span>
 </span><span data-line="483"><span class="sd">    - MovingAverageQParamsCalculator for activation quantization</span>
 </span><span data-line="484">
 </span><span data-line="485"><span class="sd">    Raises:</span>
-</span><span data-line="486"><span class="sd">        RuntimeError: If __init__ is called, indicating the factory didn&#39;t resolve it</span>
-</span><span data-line="487"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="486"><span class="sd">        RuntimeError: If __init__ is called, indicating the factory didn't resolve it</span>
+</span><span data-line="487"><span class="sd">    """</span>
 </span><span data-line="488">
 </span><span data-line="489">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 </span><span data-line="490">        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-</span><span data-line="491">            <span class="s2">&quot;_DefaultQParamsCalculator is a marker class and must be resolved by &quot;</span>
-</span><span data-line="492">            <span class="s2">&quot;QuantizationComponentFactory before use. This error indicates the factory &quot;</span>
-</span><span data-line="493">            <span class="s2">&quot;did not properly resolve &#39;default&#39; to the appropriate qparam calculator &quot;</span>
-</span><span data-line="494">            <span class="s2">&quot;based on quantization target (weight or activation).&quot;</span>
+</span><span data-line="491">            <span class="s2">"_DefaultQParamsCalculator is a marker class and must be resolved by "</span>
+</span><span data-line="492">            <span class="s2">"QuantizationComponentFactory before use. This error indicates the factory "</span>
+</span><span data-line="493">            <span class="s2">"did not properly resolve 'default' to the appropriate qparam calculator "</span>
+</span><span data-line="494">            <span class="s2">"based on quantization target (weight or activation)."</span>
 </span><span data-line="495">        <span class="p">)</span>
 </span><span data-line="496">
 </span><span data-line="497">    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span>
 </span><span data-line="498">        <span class="bp">self</span><span class="p">,</span> <span class="n">tensor</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
 </span><span data-line="499">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-</span><span data-line="500">        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;_DefaultQParamsCalculator.forward() should never be called&quot;</span><span class="p">)</span>
+</span><span data-line="500">        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"_DefaultQParamsCalculator.forward() should never be called"</span><span class="p">)</span>
 </span><span data-line="501">
 </span><span data-line="502">
 <div class="viewcode-block" id="StaticQParamsCalculator">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.StaticQParamsCalculator.html#coreai_opt.quantization.spec.StaticQParamsCalculator">[docs]</a>
-</span><span data-line="503"><span class="nd">@QParamsCalculatorBase</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;static&quot;</span><span class="p">)</span>
+</span><span data-line="503"><span class="nd">@QParamsCalculatorBase</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"static"</span><span class="p">)</span>
 </span><span data-line="504"><span class="k">class</span><span class="w"> </span><span class="nc">StaticQParamsCalculator</span><span class="p">(</span><span class="n">StatefulQParamsCalculatorBase</span><span class="p">):</span>
-</span><span data-line="505"><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="505"><span class="w">    </span><span class="sd">"""</span>
 </span><span data-line="506"><span class="sd">    Computes scale/zero-point/minval using min/max values from the current tensor.</span>
 </span><span data-line="507">
 </span><span data-line="508"><span class="sd">    This QParamsCalculator directly uses the min/max range from each forward pass to compute</span>
-</span><span data-line="509"><span class="sd">    quantization parameters. So in that sense, it does not maintain any &quot;history&quot; and</span>
+</span><span data-line="509"><span class="sd">    quantization parameters. So in that sense, it does not maintain any "history" and</span>
 </span><span data-line="510"><span class="sd">    only computes the min/max based off of the current (most recent) tensor input.</span>
 </span><span data-line="511">
 </span><span data-line="512"><span class="sd">    This QParamsCalculator is typically used for weight quantization. In case of PTQ based</span>
@@ -877,18 +881,18 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="515">
 </span><span data-line="516"><span class="sd">    Uses the base-class default ``compute_qparams`` which</span>
 </span><span data-line="517"><span class="sd">    directly delegates to ``_compute_scale_zero_point_minval`` without any running state.</span>
-</span><span data-line="518"><span class="sd">    &quot;&quot;&quot;</span></div>
+</span><span data-line="518"><span class="sd">    """</span></div>
 
 </span><span data-line="519">
-</span><span data-line="520">    <span class="c1"># Inherits base-class&#39; default: compute_qparams</span>
+</span><span data-line="520">    <span class="c1"># Inherits base-class' default: compute_qparams</span>
 </span><span data-line="521">    <span class="c1"># which directly computes qparams from current min/max with no running state.</span>
 </span><span data-line="522">
 </span><span data-line="523">
 <div class="viewcode-block" id="DynamicQParamsCalculator">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.DynamicQParamsCalculator.html#coreai_opt.quantization.spec.DynamicQParamsCalculator">[docs]</a>
-</span><span data-line="524"><span class="nd">@QParamsCalculatorBase</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;dynamic&quot;</span><span class="p">)</span>
+</span><span data-line="524"><span class="nd">@QParamsCalculatorBase</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"dynamic"</span><span class="p">)</span>
 </span><span data-line="525"><span class="k">class</span><span class="w"> </span><span class="nc">DynamicQParamsCalculator</span><span class="p">(</span><span class="n">StatelessQParamsCalculatorBase</span><span class="p">):</span>
-</span><span data-line="526"><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="526"><span class="w">    </span><span class="sd">"""</span>
 </span><span data-line="527"><span class="sd">    Dynamically computes scale/zero-point/minval from the current tensor every forward.</span>
 </span><span data-line="528">
 </span><span data-line="529"><span class="sd">    Typically used for activation quantization where activations vary per</span>
@@ -896,7 +900,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="531"><span class="sd">    (e.g. LLM token-wise quantization with variable sequence length) since no</span>
 </span><span data-line="532"><span class="sd">    nn.Module buffers are allocated — see ``StatelessQParamsCalculatorBase``</span>
 </span><span data-line="533"><span class="sd">    for the full stateless contract.</span>
-</span><span data-line="534"><span class="sd">    &quot;&quot;&quot;</span></div>
+</span><span data-line="534"><span class="sd">    """</span></div>
 
 </span><span data-line="535">
 </span><span data-line="536">
@@ -906,7 +910,7 @@ data-aria-dark="Switch to auto color mode">
 <div class="viewcode-block" id="RunningRangeMixin">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.RunningRangeMixin.html#coreai_opt.quantization.spec.RunningRangeMixin">[docs]</a>
 </span><span data-line="540"><span class="k">class</span><span class="w"> </span><span class="nc">RunningRangeMixin</span><span class="p">:</span>
-</span><span data-line="541"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Mixin for calculators that maintain running min/max range buffers.</span>
+</span><span data-line="541"><span class="w">    </span><span class="sd">"""Mixin for calculators that maintain running min/max range buffers.</span>
 </span><span data-line="542">
 </span><span data-line="543"><span class="sd">    Provides ``running_min`` and ``running_max`` buffers, first-forward</span>
 </span><span data-line="544"><span class="sd">    initialization via ``_initialize_state``, and a</span>
@@ -920,7 +924,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="552"><span class="sd">    Must appear before ``StatefulQParamsCalculatorBase`` in the MRO so that its</span>
 </span><span data-line="553"><span class="sd">    ``compute_qparams`` and ``_initialize_state``</span>
 </span><span data-line="554"><span class="sd">    take precedence over the base-class defaults.</span>
-</span><span data-line="555"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="555"><span class="sd">    """</span>
 </span><span data-line="556">
 </span><span data-line="557">    <span class="n">running_min</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
 </span><span data-line="558">    <span class="n">running_max</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
@@ -929,8 +933,8 @@ data-aria-dark="Switch to auto color mode">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.RunningRangeMixin.html#coreai_opt.quantization.spec.RunningRangeMixin.__init__">[docs]</a>
 </span><span data-line="560">    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="561">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</span><span data-line="562">        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;running_min&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  <span class="c1"># type: ignore[attr-defined]</span>
-</span><span data-line="563">        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">&quot;running_max&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  <span class="c1"># type: ignore[attr-defined]</span></div>
+</span><span data-line="562">        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">"running_min"</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  <span class="c1"># type: ignore[attr-defined]</span>
+</span><span data-line="563">        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s2">"running_max"</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  <span class="c1"># type: ignore[attr-defined]</span></div>
 
 </span><span data-line="564">
 </span><span data-line="565">    <span class="k">def</span><span class="w"> </span><span class="nf">_initialize_state</span><span class="p">(</span>
@@ -939,8 +943,8 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="568">        <span class="n">min_val</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
 </span><span data-line="569">        <span class="n">max_val</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
 </span><span data-line="570">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="571"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Resize and move running_min/running_max buffers to match input</span>
-</span><span data-line="572"><span class="sd">        tensor shape and device on the first forward pass.&quot;&quot;&quot;</span>
+</span><span data-line="571"><span class="w">        </span><span class="sd">"""Resize and move running_min/running_max buffers to match input</span>
+</span><span data-line="572"><span class="sd">        tensor shape and device on the first forward pass."""</span>
 </span><span data-line="573">        <span class="bp">self</span><span class="o">.</span><span class="n">running_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_min</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">tensor</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">min_val</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
 </span><span data-line="574">        <span class="bp">self</span><span class="o">.</span><span class="n">running_min</span><span class="o">.</span><span class="n">resize_</span><span class="p">(</span><span class="n">min_val</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </span><span data-line="575">
@@ -955,7 +959,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="582">        <span class="n">min_val</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
 </span><span data-line="583">        <span class="n">max_val</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
 </span><span data-line="584">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-</span><span data-line="585"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Update running range, persist to buffers, then compute qparams.&quot;&quot;&quot;</span>
+</span><span data-line="585"><span class="w">        </span><span class="sd">"""Update running range, persist to buffers, then compute qparams."""</span>
 </span><span data-line="586">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initialized</span><span class="p">:</span>  <span class="c1"># type: ignore[attr-defined]</span>
 </span><span data-line="587">            <span class="n">running_min</span><span class="p">,</span> <span class="n">running_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_running_range</span><span class="p">(</span><span class="n">min_val</span><span class="p">,</span> <span class="n">max_val</span><span class="p">)</span>
 </span><span data-line="588">        <span class="k">else</span><span class="p">:</span>
@@ -972,14 +976,14 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="596">    <span class="k">def</span><span class="w"> </span><span class="nf">update_running_range</span><span class="p">(</span>
 </span><span data-line="597">        <span class="bp">self</span><span class="p">,</span> <span class="n">min_val</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">max_val</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
 </span><span data-line="598">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
-</span><span data-line="599"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return ``(updated_min, updated_max)`` using subclass-specific rule.&quot;&quot;&quot;</span></div>
+</span><span data-line="599"><span class="w">        </span><span class="sd">"""Return ``(updated_min, updated_max)`` using subclass-specific rule."""</span></div>
 
 </span><span data-line="600">
 <div class="viewcode-block" id="RunningRangeMixin.extra_repr">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.RunningRangeMixin.html#coreai_opt.quantization.spec.RunningRangeMixin.extra_repr">[docs]</a>
 </span><span data-line="601">    <span class="k">def</span><span class="w"> </span><span class="nf">extra_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 </span><span data-line="602">        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">extra_repr</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span>  <span class="c1"># type: ignore[misc, no-any-return]</span>
-</span><span data-line="603">            <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">running_min=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">running_min</span><span class="si">}</span><span class="s2">, running_max=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">running_max</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span data-line="603">            <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">running_min=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">running_min</span><span class="si">}</span><span class="s2">, running_max=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">running_max</span><span class="si">}</span><span class="s2">"</span>
 </span><span data-line="604">        <span class="p">)</span></div>
 </div>
 
@@ -987,9 +991,9 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="606">
 <div class="viewcode-block" id="MovingAverageQParamsCalculator">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.MovingAverageQParamsCalculator.html#coreai_opt.quantization.spec.MovingAverageQParamsCalculator">[docs]</a>
-</span><span data-line="607"><span class="nd">@QParamsCalculatorBase</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;moving_average&quot;</span><span class="p">)</span>
+</span><span data-line="607"><span class="nd">@QParamsCalculatorBase</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"moving_average"</span><span class="p">)</span>
 </span><span data-line="608"><span class="k">class</span><span class="w"> </span><span class="nc">MovingAverageQParamsCalculator</span><span class="p">(</span><span class="n">RunningRangeMixin</span><span class="p">,</span> <span class="n">StatefulQParamsCalculatorBase</span><span class="p">):</span>
-</span><span data-line="609"><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="609"><span class="w">    </span><span class="sd">"""</span>
 </span><span data-line="610"><span class="sd">    Computes the scale and zero point using a moving average of the range.</span>
 </span><span data-line="611">
 </span><span data-line="612"><span class="sd">    Maintains ``running_min`` and ``running_max`` buffers that are updated each</span>
@@ -998,7 +1002,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="615"><span class="sd">        a_{i} = c * x_{i} + (1 - c) * a_{i-1}</span>
 </span><span data-line="616">
 </span><span data-line="617"><span class="sd">    where ``c`` is the ``averaging_constant``.</span>
-</span><span data-line="618"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="618"><span class="sd">    """</span>
 </span><span data-line="619">
 <div class="viewcode-block" id="MovingAverageQParamsCalculator.__init__">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.MovingAverageQParamsCalculator.html#coreai_opt.quantization.spec.MovingAverageQParamsCalculator.__init__">[docs]</a>
@@ -1050,16 +1054,16 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="660">
 <div class="viewcode-block" id="GlobalMinMaxQParamsCalculator">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.GlobalMinMaxQParamsCalculator.html#coreai_opt.quantization.spec.GlobalMinMaxQParamsCalculator">[docs]</a>
-</span><span data-line="661"><span class="nd">@QParamsCalculatorBase</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;global_minmax&quot;</span><span class="p">)</span>
+</span><span data-line="661"><span class="nd">@QParamsCalculatorBase</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"global_minmax"</span><span class="p">)</span>
 </span><span data-line="662"><span class="k">class</span><span class="w"> </span><span class="nc">GlobalMinMaxQParamsCalculator</span><span class="p">(</span><span class="n">RunningRangeMixin</span><span class="p">,</span> <span class="n">StatefulQParamsCalculatorBase</span><span class="p">):</span>
-</span><span data-line="663"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes scale and zero point by tracking the running min/max.</span>
+</span><span data-line="663"><span class="w">    </span><span class="sd">"""Computes scale and zero point by tracking the running min/max.</span>
 </span><span data-line="664">
 </span><span data-line="665"><span class="sd">    Maintains ``running_min`` and ``running_max`` buffers that are updated each</span>
 </span><span data-line="666"><span class="sd">    forward pass via element-wise minimum and maximum:</span>
 </span><span data-line="667">
 </span><span data-line="668"><span class="sd">        running_min = min(running_min, x_min)</span>
 </span><span data-line="669"><span class="sd">        running_max = max(running_max, x_max)</span>
-</span><span data-line="670"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="670"><span class="sd">    """</span>
 </span><span data-line="671">
 <div class="viewcode-block" id="GlobalMinMaxQParamsCalculator.update_running_range">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.GlobalMinMaxQParamsCalculator.html#coreai_opt.quantization.spec.GlobalMinMaxQParamsCalculator.update_running_range">[docs]</a>

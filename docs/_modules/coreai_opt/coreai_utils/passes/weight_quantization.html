@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -90,6 +90,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/overview.html">API Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/config.html">Config API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/advanced.html">Deeper Dive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quantization/composite_op_quantization.html">Quantization with Composite Ops</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../palettization/index.html">Palettization</a><ul>
@@ -110,7 +111,6 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/joint_compression.html">Joint Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/mixed_precision.html">Mixed-Precision Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/activation_comparison.html">Comparing Intermediate Activations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../utils/composite_op_quantization.html">Quantizing Models with Core AI Composite Ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/casting.html">16-bit PyTorch Model Casting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/coreai_compression.html">Compressing Core AI Models</a></li>
 </ul>
@@ -172,9 +172,13 @@ data-aria-dark="Switch to auto color mode">
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -321,7 +325,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="3"><span class="c1"># Use of this source code is governed by a BSD-3-Clause license that can</span>
 </span><span data-line="4"><span class="c1"># be found in the LICENSE file or at https://opensource.org/licenses/BSD-3-Clause</span>
 </span><span data-line="5">
-</span><span data-line="6"><span class="sd">&quot;&quot;&quot;Weight quantization pass for Core AI AIProgram.&quot;&quot;&quot;</span>
+</span><span data-line="6"><span class="sd">"""Weight quantization pass for Core AI AIProgram."""</span>
 </span><span data-line="7">
 </span><span data-line="8"><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 </span><span data-line="9">
@@ -393,7 +397,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="75">    <span class="n">quantized_mlir_type</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 </span><span data-line="76">    <span class="n">weight_element_type</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 </span><span data-line="77"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-</span><span data-line="78"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the IR value for integer-quantized weights via blockwise_shift_scale.&quot;&quot;&quot;</span>
+</span><span data-line="78"><span class="w">    </span><span class="sd">"""Create the IR value for integer-quantized weights via blockwise_shift_scale."""</span>
 </span><span data-line="79">    <span class="n">quantized_data_val</span> <span class="o">=</span> <span class="n">_create_constant_value_from_np_array</span><span class="p">(</span><span class="n">quantized_data</span><span class="p">,</span> <span class="n">quantized_mlir_type</span><span class="p">)</span>
 </span><span data-line="80">    <span class="n">scale_val</span> <span class="o">=</span> <span class="n">_create_constant_value_from_np_array</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">weight_element_type</span><span class="p">)</span>
 </span><span data-line="81">    <span class="n">zero_point_val</span> <span class="o">=</span> <span class="n">_create_constant_value_from_np_array</span><span class="p">(</span><span class="n">zero_point</span><span class="p">,</span> <span class="n">quantized_mlir_type</span><span class="p">)</span>
@@ -416,28 +420,28 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="98">    <span class="n">scale_mlir_type</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span data-line="99">    <span class="n">scale_np_dtype</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span data-line="100"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-</span><span data-line="101"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the IR value for FP-quantized weights via blockwise_shift_scale.</span>
+</span><span data-line="101"><span class="w">    </span><span class="sd">"""Create the IR value for FP-quantized weights via blockwise_shift_scale.</span>
 </span><span data-line="102">
 </span><span data-line="103"><span class="sd">    When ``scale_mlir_type`` and ``scale_np_dtype`` are provided (FP8_E8M0FNU scale),</span>
 </span><span data-line="104"><span class="sd">    the scale constant is created in that dtype using DenseResourceElementsAttr.</span>
 </span><span data-line="105"><span class="sd">    Otherwise the scale uses the uncompressed weight element type (default behavior).</span>
-</span><span data-line="106"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="106"><span class="sd">    """</span>
 </span><span data-line="107">    <span class="n">tensor_type</span> <span class="o">=</span> <span class="n">_RankedTensorType</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">quantized_data</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="n">fp_mlir_type</span><span class="p">)</span>
 </span><span data-line="108">    <span class="n">data_attr</span> <span class="o">=</span> <span class="n">_DenseResourceElementsAttr</span><span class="o">.</span><span class="n">get_from_buffer</span><span class="p">(</span>
 </span><span data-line="109">        <span class="n">quantized_data</span><span class="p">,</span>
-</span><span data-line="110">        <span class="s2">&quot;dense_resource&quot;</span><span class="p">,</span>
+</span><span data-line="110">        <span class="s2">"dense_resource"</span><span class="p">,</span>
 </span><span data-line="111">        <span class="n">tensor_type</span><span class="p">,</span>
 </span><span data-line="112">    <span class="p">)</span>
-</span><span data-line="113">    <span class="n">quantized_data_val</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="s2">&quot;Any&quot;</span><span class="p">,</span> <span class="n">_coreai</span><span class="o">.</span><span class="n">ConstantOp</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">data_attr</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
+</span><span data-line="113">    <span class="n">quantized_data_val</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="s2">"Any"</span><span class="p">,</span> <span class="n">_coreai</span><span class="o">.</span><span class="n">ConstantOp</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">data_attr</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
 </span><span data-line="114">
 </span><span data-line="115">    <span class="k">if</span> <span class="n">scale_mlir_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="116">        <span class="n">scale_cast</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">scale</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">scale_np_dtype</span><span class="p">))</span>
 </span><span data-line="117">        <span class="n">scale_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">scale_cast</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </span><span data-line="118">        <span class="n">scale_tensor_type</span> <span class="o">=</span> <span class="n">_RankedTensorType</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">scale_shape</span><span class="p">,</span> <span class="n">scale_mlir_type</span><span class="p">)</span>
 </span><span data-line="119">        <span class="n">scale_attr</span> <span class="o">=</span> <span class="n">_DenseResourceElementsAttr</span><span class="o">.</span><span class="n">get_from_buffer</span><span class="p">(</span>
-</span><span data-line="120">            <span class="n">scale_cast</span><span class="p">,</span> <span class="s2">&quot;dense_resource&quot;</span><span class="p">,</span> <span class="n">scale_tensor_type</span>
+</span><span data-line="120">            <span class="n">scale_cast</span><span class="p">,</span> <span class="s2">"dense_resource"</span><span class="p">,</span> <span class="n">scale_tensor_type</span>
 </span><span data-line="121">        <span class="p">)</span>
-</span><span data-line="122">        <span class="n">scale_val</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="s2">&quot;Any&quot;</span><span class="p">,</span> <span class="n">_coreai</span><span class="o">.</span><span class="n">ConstantOp</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">scale_attr</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
+</span><span data-line="122">        <span class="n">scale_val</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="s2">"Any"</span><span class="p">,</span> <span class="n">_coreai</span><span class="o">.</span><span class="n">ConstantOp</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">scale_attr</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
 </span><span data-line="123">
 </span><span data-line="124">        <span class="c1"># offset2 must be in the output (weight) dtype so blockwise_shift_scale</span>
 </span><span data-line="125">        <span class="c1"># returns a tensor in the original weight precision, not f8E8M0FNU.</span>
@@ -456,7 +460,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="138">    <span class="n">zero_point_attr</span> <span class="o">=</span> <span class="n">_DenseElementsAttr</span><span class="o">.</span><span class="n">get_splat</span><span class="p">(</span>
 </span><span data-line="139">        <span class="n">zero_point_tensor_type</span><span class="p">,</span> <span class="n">_FloatAttr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fp_mlir_type</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
 </span><span data-line="140">    <span class="p">)</span>
-</span><span data-line="141">    <span class="n">zero_point_val</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="s2">&quot;Any&quot;</span><span class="p">,</span> <span class="n">_coreai</span><span class="o">.</span><span class="n">ConstantOp</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">zero_point_attr</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
+</span><span data-line="141">    <span class="n">zero_point_val</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="s2">"Any"</span><span class="p">,</span> <span class="n">_coreai</span><span class="o">.</span><span class="n">ConstantOp</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">zero_point_attr</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
 </span><span data-line="142">
 </span><span data-line="143">    <span class="k">return</span> <span class="n">_coreai</span><span class="o">.</span><span class="n">blockwise_shift_scale</span><span class="p">(</span>
 </span><span data-line="144">        <span class="n">data</span><span class="o">=</span><span class="n">quantized_data_val</span><span class="p">,</span>
@@ -478,7 +482,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="158">    <span class="n">scale_dtype</span><span class="p">:</span> <span class="n">DType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span data-line="159">    <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 </span><span data-line="160"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_AIProgram</span><span class="p">:</span>
-</span><span data-line="161"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Quantize weights in a Core AI AIProgram (MLIR&lt;CoreAI&gt; IR) by using Core AI ops.</span>
+</span><span data-line="161"><span class="w">    </span><span class="sd">"""Quantize weights in a Core AI AIProgram (MLIR&lt;CoreAI&gt; IR) by using Core AI ops.</span>
 </span><span data-line="162">
 </span><span data-line="163"><span class="sd">    Walks through the IR and quantizes each coreai.constant op that needs to be</span>
 </span><span data-line="164"><span class="sd">    compressed. Only constants consumed by ops in ``_OPS_WEIGHT_NEED_COMPRESSION``</span>
@@ -551,44 +555,44 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="231"><span class="sd">            ``CompressionGranularity.PER_BLOCK`` or ``block_size`` is not ``32``.</span>
 </span><span data-line="232"><span class="sd">            FP4 weights must use per-block quantization with a block size of 32</span>
 </span><span data-line="233"><span class="sd">            to produce a valid MXFP4 encoding.</span>
-</span><span data-line="234"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="234"><span class="sd">    """</span>
 </span><span data-line="235">    <span class="k">if</span> <span class="n">dtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_VALID_WEIGHT_DTYPES</span><span class="p">:</span>
 </span><span data-line="236">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="237">            <span class="sa">f</span><span class="s2">&quot;Unsupported weight dtype </span><span class="si">{</span><span class="n">dtype</span><span class="si">!r}</span><span class="s2">. &quot;</span>
-</span><span data-line="238">            <span class="sa">f</span><span class="s2">&quot;Valid weight dtypes: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">_VALID_WEIGHT_DTYPES</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+</span><span data-line="237">            <span class="sa">f</span><span class="s2">"Unsupported weight dtype </span><span class="si">{</span><span class="n">dtype</span><span class="si">!r}</span><span class="s2">. "</span>
+</span><span data-line="238">            <span class="sa">f</span><span class="s2">"Valid weight dtypes: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">_VALID_WEIGHT_DTYPES</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
 </span><span data-line="239">        <span class="p">)</span>
 </span><span data-line="240">
 </span><span data-line="241">    <span class="k">if</span> <span class="n">dtype</span><span class="o">.</span><span class="n">is_int</span><span class="p">():</span>
 </span><span data-line="242">        <span class="k">if</span> <span class="n">scale_dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="243">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="244">                <span class="sa">f</span><span class="s2">&quot;scale_dtype must be None for integer dtype </span><span class="si">{</span><span class="n">dtype</span><span class="si">!r}</span><span class="s2">, got </span><span class="si">{</span><span class="n">scale_dtype</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+</span><span data-line="244">                <span class="sa">f</span><span class="s2">"scale_dtype must be None for integer dtype </span><span class="si">{</span><span class="n">dtype</span><span class="si">!r}</span><span class="s2">, got </span><span class="si">{</span><span class="n">scale_dtype</span><span class="si">!r}</span><span class="s2">."</span>
 </span><span data-line="245">            <span class="p">)</span>
 </span><span data-line="246">    <span class="k">else</span><span class="p">:</span>
 </span><span data-line="247">        <span class="k">if</span> <span class="n">qscheme</span> <span class="o">!=</span> <span class="n">QScheme</span><span class="o">.</span><span class="n">SYMMETRIC</span><span class="p">:</span>
 </span><span data-line="248">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="249">                <span class="sa">f</span><span class="s2">&quot;Asymmetric quantization is not supported for FP dtype </span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s2">. &quot;</span>
-</span><span data-line="250">                <span class="s2">&quot;Use QScheme.SYMMETRIC for FP dtypes.&quot;</span>
+</span><span data-line="249">                <span class="sa">f</span><span class="s2">"Asymmetric quantization is not supported for FP dtype </span><span class="si">{</span><span class="n">dtype</span><span class="si">}</span><span class="s2">. "</span>
+</span><span data-line="250">                <span class="s2">"Use QScheme.SYMMETRIC for FP dtypes."</span>
 </span><span data-line="251">            <span class="p">)</span>
 </span><span data-line="252">        <span class="k">if</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">DType</span><span class="o">.</span><span class="n">FP4_E2M1FN</span><span class="p">:</span>
 </span><span data-line="253">            <span class="k">if</span> <span class="n">scale_dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="254">                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="255">                    <span class="sa">f</span><span class="s2">&quot;scale_dtype must be None for FP4 dtype </span><span class="si">{</span><span class="n">dtype</span><span class="si">!r}</span><span class="s2">, got </span><span class="si">{</span><span class="n">scale_dtype</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+</span><span data-line="255">                    <span class="sa">f</span><span class="s2">"scale_dtype must be None for FP4 dtype </span><span class="si">{</span><span class="n">dtype</span><span class="si">!r}</span><span class="s2">, got </span><span class="si">{</span><span class="n">scale_dtype</span><span class="si">!r}</span><span class="s2">."</span>
 </span><span data-line="256">                <span class="p">)</span>
 </span><span data-line="257">            <span class="k">if</span> <span class="n">granularity</span> <span class="o">!=</span> <span class="n">CompressionGranularity</span><span class="o">.</span><span class="n">PER_BLOCK</span> <span class="ow">or</span> <span class="n">block_size</span> <span class="o">!=</span> <span class="mi">32</span><span class="p">:</span>
 </span><span data-line="258">                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="259">                    <span class="sa">f</span><span class="s2">&quot;DType.FP4_E2M1FN requires &quot;</span>
-</span><span data-line="260">                    <span class="sa">f</span><span class="s2">&quot;granularity=CompressionGranularity.PER_BLOCK &quot;</span>
-</span><span data-line="261">                    <span class="sa">f</span><span class="s2">&quot;and block_size=32 for a valid MXFP4 encoding, &quot;</span>
-</span><span data-line="262">                    <span class="sa">f</span><span class="s2">&quot;got granularity=</span><span class="si">{</span><span class="n">granularity</span><span class="si">!r}</span><span class="s2"> and block_size=</span><span class="si">{</span><span class="n">block_size</span><span class="si">}</span><span class="s2">.&quot;</span>
+</span><span data-line="259">                    <span class="sa">f</span><span class="s2">"DType.FP4_E2M1FN requires "</span>
+</span><span data-line="260">                    <span class="sa">f</span><span class="s2">"granularity=CompressionGranularity.PER_BLOCK "</span>
+</span><span data-line="261">                    <span class="sa">f</span><span class="s2">"and block_size=32 for a valid MXFP4 encoding, "</span>
+</span><span data-line="262">                    <span class="sa">f</span><span class="s2">"got granularity=</span><span class="si">{</span><span class="n">granularity</span><span class="si">!r}</span><span class="s2"> and block_size=</span><span class="si">{</span><span class="n">block_size</span><span class="si">}</span><span class="s2">."</span>
 </span><span data-line="263">                <span class="p">)</span>
 </span><span data-line="264">        <span class="k">elif</span> <span class="n">scale_dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">scale_dtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_VALID_FP8_SCALE_DTYPES</span><span class="p">:</span>
 </span><span data-line="265">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="266">                <span class="sa">f</span><span class="s2">&quot;Invalid scale_dtype </span><span class="si">{</span><span class="n">scale_dtype</span><span class="si">!r}</span><span class="s2"> for FP8 weight dtype </span><span class="si">{</span><span class="n">dtype</span><span class="si">!r}</span><span class="s2">. &quot;</span>
-</span><span data-line="267">                <span class="sa">f</span><span class="s2">&quot;Valid scale dtypes: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">_VALID_FP8_SCALE_DTYPES</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+</span><span data-line="266">                <span class="sa">f</span><span class="s2">"Invalid scale_dtype </span><span class="si">{</span><span class="n">scale_dtype</span><span class="si">!r}</span><span class="s2"> for FP8 weight dtype </span><span class="si">{</span><span class="n">dtype</span><span class="si">!r}</span><span class="s2">. "</span>
+</span><span data-line="267">                <span class="sa">f</span><span class="s2">"Valid scale dtypes: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">_VALID_FP8_SCALE_DTYPES</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
 </span><span data-line="268">            <span class="p">)</span>
 </span><span data-line="269">
 </span><span data-line="270">    <span class="k">def</span><span class="w"> </span><span class="nf">replace_weight_with_compression_op</span><span class="p">(</span><span class="n">op</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-</span><span data-line="271"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply quantization to a single op.</span>
+</span><span data-line="271"><span class="w">        </span><span class="sd">"""Apply quantization to a single op.</span>
 </span><span data-line="272">
 </span><span data-line="273"><span class="sd">        Op Chaining</span>
 </span><span data-line="274"><span class="sd">        -----------</span>
@@ -598,7 +602,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="278"><span class="sd">                                               ├─&gt; coreai.blockwise_shift_scale -&gt; output</span>
 </span><span data-line="279"><span class="sd">            coreai.constant (scale) ───────────┤</span>
 </span><span data-line="280"><span class="sd">            coreai.constant (zero_point) ──────┘</span>
-</span><span data-line="281"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="281"><span class="sd">        """</span>
 </span><span data-line="282">        <span class="k">if</span> <span class="ow">not</span> <span class="n">_should_compress_op</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">weight_num_threshold</span><span class="p">,</span> <span class="n">_OPS_WEIGHT_NEED_COMPRESSION</span><span class="p">):</span>
 </span><span data-line="283">            <span class="k">return</span> <span class="n">_WalkResult</span><span class="o">.</span><span class="n">ADVANCE</span>
 </span><span data-line="284">
@@ -629,7 +633,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="309">                <span class="p">)</span>
 </span><span data-line="310">            <span class="k">if</span> <span class="n">quant_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="311">                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-</span><span data-line="312">                    <span class="s2">&quot;Failed to quantize op </span><span class="si">%s</span><span class="s2">. Skipped this op.&quot;</span><span class="p">,</span>
+</span><span data-line="312">                    <span class="s2">"Failed to quantize op </span><span class="si">%s</span><span class="s2">. Skipped this op."</span><span class="p">,</span>
 </span><span data-line="313">                    <span class="n">const_weight</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
 </span><span data-line="314">                <span class="p">)</span>
 </span><span data-line="315">                <span class="k">return</span> <span class="n">_WalkResult</span><span class="o">.</span><span class="n">ADVANCE</span>
@@ -637,7 +641,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="317">            <span class="k">raise</span>
 </span><span data-line="318">        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 </span><span data-line="319">            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-</span><span data-line="320">                <span class="s2">&quot;Failed to quantize op </span><span class="si">%s</span><span class="s2">. Skipped this op. Detailed reason:</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+</span><span data-line="320">                <span class="s2">"Failed to quantize op </span><span class="si">%s</span><span class="s2">. Skipped this op. Detailed reason:</span><span class="se">\n</span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
 </span><span data-line="321">                <span class="n">const_weight</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
 </span><span data-line="322">                <span class="n">e</span><span class="p">,</span>
 </span><span data-line="323">            <span class="p">)</span>
@@ -646,7 +650,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="326">        <span class="n">quantized_data</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">zero_point</span> <span class="o">=</span> <span class="n">quant_params</span>
 </span><span data-line="327">
 </span><span data-line="328">        <span class="k">with</span> <span class="n">const_weight</span><span class="o">.</span><span class="n">context</span><span class="p">,</span> <span class="n">const_weight</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="n">_InsertionPoint</span><span class="p">(</span><span class="n">const_weight</span><span class="p">):</span>
-</span><span data-line="329">            <span class="n">weight_element_type</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="s2">&quot;Any&quot;</span><span class="p">,</span> <span class="n">const_weight</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">type</span><span class="p">)</span><span class="o">.</span><span class="n">element_type</span>
+</span><span data-line="329">            <span class="n">weight_element_type</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="s2">"Any"</span><span class="p">,</span> <span class="n">const_weight</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">type</span><span class="p">)</span><span class="o">.</span><span class="n">element_type</span>
 </span><span data-line="330">
 </span><span data-line="331">            <span class="k">if</span> <span class="n">dtype</span><span class="o">.</span><span class="n">is_int</span><span class="p">():</span>
 </span><span data-line="332">                <span class="n">ref_mlir_type</span> <span class="o">=</span> <span class="n">_get_string_to_mlir_type</span><span class="p">()[</span><span class="n">dtype</span><span class="p">]</span>

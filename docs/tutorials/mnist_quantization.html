@@ -78,9 +78,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -174,12 +174,12 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.DefaultTrainingConfig.html">coreai_opt.palettization.spec.DefaultTrainingConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategyConfig.html">coreai_opt.palettization.spec.TrainingStrategyConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -397,9 +397,9 @@ data-aria-dark="Switch to auto color mode">
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># Use the MPS (Apple Silicon GPU) backend when available; otherwise fall back to CPU.</span>
 </span><span data-line="2"><span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">mps</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
-</span><span data-line="3">    <span class="n">DEVICE</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;mps&quot;</span><span class="p">)</span>
+</span><span data-line="3">    <span class="n">DEVICE</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"mps"</span><span class="p">)</span>
 </span><span data-line="4"><span class="k">else</span><span class="p">:</span>
-</span><span data-line="5">    <span class="n">DEVICE</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+</span><span data-line="5">    <span class="n">DEVICE</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"cpu"</span><span class="p">)</span>
 </span></pre></div>
 </div>
 </div>
@@ -429,7 +429,7 @@ data-aria-dark="Switch to auto color mode">
 </span></pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># Used to save intermediate results and datasets</span>
-</span><span data-line="2"><span class="n">SAVE_DIRECTORY</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span>
+</span><span data-line="2"><span class="n">SAVE_DIRECTORY</span> <span class="o">=</span> <span class="s2">"."</span>
 </span></pre></div>
 </div>
 </div>
@@ -536,7 +536,7 @@ data-aria-dark="Switch to auto color mode">
 </span></pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># Download and instantiate datasets</span>
-</span><span data-line="2"><span class="n">DOWNLOAD_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">SAVE_DIRECTORY</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;.mnist_dataset&quot;</span>
+</span><span data-line="2"><span class="n">DOWNLOAD_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">SAVE_DIRECTORY</span><span class="p">)</span> <span class="o">/</span> <span class="s2">".mnist_dataset"</span>
 </span><span data-line="3">
 </span><span data-line="4"><span class="n">train_dataset</span><span class="p">,</span> <span class="n">test_dataset</span> <span class="o">=</span> <span class="n">download_mnist_dataset</span><span class="p">(</span>
 </span><span data-line="5">    <span class="n">download_path</span><span class="o">=</span><span class="n">DOWNLOAD_PATH</span>
@@ -617,10 +617,10 @@ Estimated Total Size (MB): 0.17
 </span><span data-line="10">    <span class="n">epoch_avg_loss</span> <span class="o">=</span> <span class="n">train_epoch</span><span class="p">(</span>
 </span><span data-line="11">        <span class="n">model</span><span class="o">=</span><span class="n">basic_cnn_model</span><span class="p">,</span> <span class="n">train_loader</span><span class="o">=</span><span class="n">train_loader</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">loss_fn</span><span class="o">=</span><span class="n">loss_fn</span>
 </span><span data-line="12">    <span class="p">)</span>
-</span><span data-line="13">    <span class="n">epoch_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">: loss=</span><span class="si">{</span><span class="n">epoch_avg_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span data-line="13">    <span class="n">epoch_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">: loss=</span><span class="si">{</span><span class="n">epoch_avg_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </span><span data-line="14">
 </span><span data-line="15"><span class="n">basic_cnn_model</span> <span class="o">=</span> <span class="n">basic_cnn_model</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-</span><span data-line="16"><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">epoch_results</span><span class="p">))</span>
+</span><span data-line="16"><span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">epoch_results</span><span class="p">))</span>
 </span><span data-line="17">
 </span><span data-line="18"><span class="c1"># Save trained weights for reuse in quantization sections</span>
 </span><span data-line="19"><span class="n">pretrained_state_dict</span> <span class="o">=</span> <span class="n">basic_cnn_model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
@@ -649,7 +649,7 @@ Estimated Total Size (MB): 0.17
 </span></pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">accuracy</span> <span class="o">=</span> <span class="n">eval_model</span><span class="p">(</span><span class="n">basic_cnn_model</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">)</span>
-</span><span data-line="2"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Baseline accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span data-line="2"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Baseline accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </span></pre></div>
 </div>
 </div>
@@ -686,7 +686,7 @@ Baseline accuracy: 0.9799
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span><span data-line="1">[35]:
 </span></pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">WEIGHT_DTYPE</span> <span class="o">=</span> <span class="s2">&quot;int8&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">WEIGHT_DTYPE</span> <span class="o">=</span> <span class="s2">"int8"</span>
 </span></pre></div>
 </div>
 </div>
@@ -708,7 +708,7 @@ Baseline accuracy: 0.9799
 </span><span data-line="5">
 </span><span data-line="6"><span class="n">wo_config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="p">(</span>
 </span><span data-line="7">    <span class="n">global_config</span><span class="o">=</span><span class="n">ModuleQuantizerConfig</span><span class="p">(</span>
-</span><span data-line="8">        <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">weight_spec</span><span class="p">},</span>
+</span><span data-line="8">        <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"weight"</span><span class="p">:</span> <span class="n">weight_spec</span><span class="p">},</span>
 </span><span data-line="9">        <span class="n">op_input_spec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 </span><span data-line="10">        <span class="n">op_output_spec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 </span><span data-line="11">    <span class="p">)</span>
@@ -716,7 +716,7 @@ Baseline accuracy: 0.9799
 </span><span data-line="13">
 </span><span data-line="14"><span class="n">wo_quantizer</span> <span class="o">=</span> <span class="n">Quantizer</span><span class="p">(</span><span class="n">wo_model</span><span class="p">,</span> <span class="n">wo_config</span><span class="p">)</span>
 </span><span data-line="15"><span class="n">wo_prepared</span> <span class="o">=</span> <span class="n">wo_quantizer</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">example_inputs</span><span class="p">)</span>
-</span><span data-line="16"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Prepared weight-only quantization with dtype=</span><span class="si">{</span><span class="n">WEIGHT_DTYPE</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span data-line="16"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Prepared weight-only quantization with dtype=</span><span class="si">{</span><span class="n">WEIGHT_DTYPE</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </span></pre></div>
 </div>
 </div>
@@ -737,7 +737,7 @@ Prepared weight-only quantization with dtype=int8
 </span></pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">wo_accuracy</span> <span class="o">=</span> <span class="n">eval_model</span><span class="p">(</span><span class="n">wo_prepared</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">)</span>
-</span><span data-line="2"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weight-only PTQ accuracy: </span><span class="si">{</span><span class="n">wo_accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span data-line="2"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Weight-only PTQ accuracy: </span><span class="si">{</span><span class="n">wo_accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </span></pre></div>
 </div>
 </div>
@@ -759,7 +759,7 @@ Weight-only PTQ accuracy: 0.9800
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span><span data-line="1">[38]:
 </span></pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">ACTIVATION_DTYPE</span> <span class="o">=</span> <span class="s2">&quot;int8&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">ACTIVATION_DTYPE</span> <span class="o">=</span> <span class="s2">"int8"</span>
 </span></pre></div>
 </div>
 </div>
@@ -779,16 +779,16 @@ Weight-only PTQ accuracy: 0.9800
 </span><span data-line="5">
 </span><span data-line="6"><span class="n">wa_config</span> <span class="o">=</span> <span class="n">QuantizerConfig</span><span class="p">(</span>
 </span><span data-line="7">    <span class="n">global_config</span><span class="o">=</span><span class="n">ModuleQuantizerConfig</span><span class="p">(</span>
-</span><span data-line="8">        <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">weight_spec</span><span class="p">},</span>
-</span><span data-line="9">        <span class="n">op_input_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="n">activation_spec</span><span class="p">},</span>
-</span><span data-line="10">        <span class="n">op_output_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="n">activation_spec</span><span class="p">},</span>
+</span><span data-line="8">        <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"weight"</span><span class="p">:</span> <span class="n">weight_spec</span><span class="p">},</span>
+</span><span data-line="9">        <span class="n">op_input_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"*"</span><span class="p">:</span> <span class="n">activation_spec</span><span class="p">},</span>
+</span><span data-line="10">        <span class="n">op_output_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"*"</span><span class="p">:</span> <span class="n">activation_spec</span><span class="p">},</span>
 </span><span data-line="11">    <span class="p">)</span>
 </span><span data-line="12"><span class="p">)</span>
 </span><span data-line="13">
 </span><span data-line="14"><span class="n">wa_quantizer</span> <span class="o">=</span> <span class="n">Quantizer</span><span class="p">(</span><span class="n">wa_model</span><span class="p">,</span> <span class="n">wa_config</span><span class="p">)</span>
 </span><span data-line="15"><span class="n">wa_prepared</span> <span class="o">=</span> <span class="n">wa_quantizer</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">example_inputs</span><span class="p">)</span>
 </span><span data-line="16"><span class="nb">print</span><span class="p">(</span>
-</span><span data-line="17">    <span class="sa">f</span><span class="s2">&quot;Prepared weight + activation quantization (weight=</span><span class="si">{</span><span class="n">WEIGHT_DTYPE</span><span class="si">}</span><span class="s2">, activation=</span><span class="si">{</span><span class="n">ACTIVATION_DTYPE</span><span class="si">}</span><span class="s2">)&quot;</span>
+</span><span data-line="17">    <span class="sa">f</span><span class="s2">"Prepared weight + activation quantization (weight=</span><span class="si">{</span><span class="n">WEIGHT_DTYPE</span><span class="si">}</span><span class="s2">, activation=</span><span class="si">{</span><span class="n">ACTIVATION_DTYPE</span><span class="si">}</span><span class="s2">)"</span>
 </span><span data-line="18"><span class="p">)</span>
 </span></pre></div>
 </div>
@@ -816,7 +816,7 @@ Prepared weight + activation quantization (weight=int8, activation=int8)
 </span><span data-line="7">        <span class="n">wa_prepared</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </span><span data-line="8">
 </span><span data-line="9"><span class="nb">print</span><span class="p">(</span>
-</span><span data-line="10">    <span class="sa">f</span><span class="s2">&quot;Calibrated with </span><span class="si">{</span><span class="n">NUM_CALIBRATION_BATCHES</span><span class="si">}</span><span class="s2"> batch(es) (</span><span class="si">{</span><span class="n">NUM_CALIBRATION_BATCHES</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">BATCH_SIZE</span><span class="si">}</span><span class="s2"> samples)&quot;</span>
+</span><span data-line="10">    <span class="sa">f</span><span class="s2">"Calibrated with </span><span class="si">{</span><span class="n">NUM_CALIBRATION_BATCHES</span><span class="si">}</span><span class="s2"> batch(es) (</span><span class="si">{</span><span class="n">NUM_CALIBRATION_BATCHES</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">BATCH_SIZE</span><span class="si">}</span><span class="s2"> samples)"</span>
 </span><span data-line="11"><span class="p">)</span>
 </span></pre></div>
 </div>
@@ -834,7 +834,7 @@ Calibrated with 1 batch(es) (128 samples)
 </span></pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="n">wa_accuracy</span> <span class="o">=</span> <span class="n">eval_model</span><span class="p">(</span><span class="n">wa_prepared</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">)</span>
-</span><span data-line="2"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Weight + Activation accuracy after prepare + calibration: </span><span class="si">{</span><span class="n">wa_accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span data-line="2"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Weight + Activation accuracy after prepare + calibration: </span><span class="si">{</span><span class="n">wa_accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </span></pre></div>
 </div>
 </div>
@@ -874,10 +874,10 @@ Weight + Activation accuracy after prepare + calibration: 0.9798
 </span><span data-line="13">        <span class="p">)</span>
 </span><span data-line="14">
 </span><span data-line="15">    <span class="n">qat_acc</span> <span class="o">=</span> <span class="n">eval_model</span><span class="p">(</span><span class="n">wa_prepared</span><span class="p">,</span> <span class="n">test_loader</span><span class="p">)</span>
-</span><span data-line="16">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">: loss=</span><span class="si">{</span><span class="n">epoch_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, accuracy=</span><span class="si">{</span><span class="n">qat_acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span data-line="16">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">: loss=</span><span class="si">{</span><span class="n">epoch_loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, accuracy=</span><span class="si">{</span><span class="n">qat_acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </span><span data-line="17">
 </span><span data-line="18"><span class="n">qat_prepared</span> <span class="o">=</span> <span class="n">wa_prepared</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
-</span><span data-line="19"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">QAT final accuracy: </span><span class="si">{</span><span class="n">qat_acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span data-line="19"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">QAT final accuracy: </span><span class="si">{</span><span class="n">qat_acc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </span></pre></div>
 </div>
 </div>
@@ -933,11 +933,11 @@ QAT final accuracy: 0.9830
 </span><span data-line="10"><span class="n">coreai_program</span> <span class="o">=</span> <span class="n">TorchConverter</span><span class="p">()</span><span class="o">.</span><span class="n">add_exported_program</span><span class="p">(</span><span class="n">exported_program</span><span class="p">)</span><span class="o">.</span><span class="n">to_coreai</span><span class="p">()</span>
 </span><span data-line="11"><span class="n">coreai_program</span><span class="o">.</span><span class="n">optimize</span><span class="p">()</span>
 </span><span data-line="12">
-</span><span data-line="13"><span class="n">output_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">SAVE_DIRECTORY</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;exported_model.aimodel&quot;</span>
+</span><span data-line="13"><span class="n">output_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">SAVE_DIRECTORY</span><span class="p">)</span> <span class="o">/</span> <span class="s2">"exported_model.aimodel"</span>
 </span><span data-line="14"><span class="k">if</span> <span class="n">output_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
 </span><span data-line="15">    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
 </span><span data-line="16"><span class="n">coreai_program</span><span class="o">.</span><span class="n">save_asset</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
-</span><span data-line="17"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exported: </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span data-line="17"><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Exported: </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </span></pre></div>
 </div>
 </div>

@@ -7,7 +7,7 @@
     setColorMode(localStorage._theme||"auto");
   </script><link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d88b86f9" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/shibuya.css?v=9454f7d5" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css?v=a0a71c94" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=2d1dc041" />
     <link media="print" rel="stylesheet" type="text/css" href="../../../../_static/print.css?v=20ff2c19" />
@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -90,6 +90,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/overview.html">API Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/config.html">Config API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/advanced.html">Deeper Dive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quantization/composite_op_quantization.html">Quantization with Composite Ops</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../palettization/index.html">Palettization</a><ul>
@@ -112,7 +113,6 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/activation_comparison.html">Comparing Intermediate Activations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/casting.html">16-bit PyTorch Model Casting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/coreai_compression.html">Compressing Core AI Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../utils/composite_op_quantization.html">Quantizing Models with Core AI Composite Ops in Graph Mode</a></li>
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Debugging</span></p>
 <ul>
@@ -173,12 +173,12 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.DefaultTrainingConfig.html">coreai_opt.palettization.spec.DefaultTrainingConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategyConfig.html">coreai_opt.palettization.spec.TrainingStrategyConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -345,7 +345,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="23"><span class="p">)</span>
 </span><span data-line="24">
 </span><span data-line="25"><span class="kn">from</span><span class="w"> </span><span class="nn">.granularity</span><span class="w"> </span><span class="kn">import</span> <span class="n">PalettizationGranularity</span><span class="p">,</span> <span class="n">PerTensorGranularity</span>
-</span><span data-line="26"><span class="kn">from</span><span class="w"> </span><span class="nn">.training_strategy</span><span class="w"> </span><span class="kn">import</span> <span class="n">DefaultTrainingConfig</span><span class="p">,</span> <span class="n">TrainingStrategyConfig</span>
+</span><span data-line="26"><span class="kn">from</span><span class="w"> </span><span class="nn">.training_strategy</span><span class="w"> </span><span class="kn">import</span> <span class="n">DefaultTrainingSpec</span><span class="p">,</span> <span class="n">TrainingStrategySpec</span>
 </span><span data-line="27">
 </span><span data-line="28"><span class="n">_SUPPORTED_LUT_DTYPES</span> <span class="o">=</span> <span class="p">{</span><span class="n">torch</span><span class="o">.</span><span class="n">int8</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">float8_e4m3fn</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">float8_e5m2</span><span class="p">}</span>
 </span><span data-line="29">
@@ -353,7 +353,7 @@ data-aria-dark="Switch to auto color mode">
 <div class="viewcode-block" id="PalettizationSpec">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.palettization.PalettizationSpec.html#coreai_opt.palettization.PalettizationSpec">[docs]</a>
 </span><span data-line="31"><span class="k">class</span><span class="w"> </span><span class="nc">PalettizationSpec</span><span class="p">(</span><span class="n">CompressionSpec</span><span class="p">):</span>
-</span><span data-line="32"><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="32"><span class="w">    </span><span class="sd">"""</span>
 </span><span data-line="33"><span class="sd">    Specification for palettization compression of neural network weights.</span>
 </span><span data-line="34">
 </span><span data-line="35"><span class="sd">    Palettization is a compression technique that reduces memory usage by representing</span>
@@ -385,14 +385,14 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="61"><span class="sd">        enable_per_channel_scale: When set to True, weights are normalized along the</span>
 </span><span data-line="62"><span class="sd">            output channels using per-channel scales before being palettized.</span>
 </span><span data-line="63"><span class="sd">            Default: False.</span>
-</span><span data-line="64"><span class="sd">        training_strategy_config: Which training-time behavior this weight&#39;s</span>
-</span><span data-line="65"><span class="sd">            fake-palettize module uses, and that strategy&#39;s settings.</span>
-</span><span data-line="66"><span class="sd">            ``DefaultTrainingConfig()`` is post-training, one-shot k-means</span>
-</span><span data-line="67"><span class="sd">            (today&#39;s KMeansPalettizer behavior). Additional strategies are added</span>
-</span><span data-line="68"><span class="sd">            by subclassing ``TrainingStrategyConfig`` (registered via</span>
-</span><span data-line="69"><span class="sd">            ``TrainingStrategyConfig.register()``) and pointing its</span>
+</span><span data-line="64"><span class="sd">        training_strategy_spec: Which training-time behavior this weight's</span>
+</span><span data-line="65"><span class="sd">            fake-palettize module uses, and that strategy's settings.</span>
+</span><span data-line="66"><span class="sd">            ``DefaultTrainingSpec()`` is post-training, one-shot k-means</span>
+</span><span data-line="67"><span class="sd">            (today's KMeansPalettizer behavior). Additional strategies are added</span>
+</span><span data-line="68"><span class="sd">            by subclassing ``TrainingStrategySpec`` (registered via</span>
+</span><span data-line="69"><span class="sd">            ``TrainingStrategySpec.register()``) and pointing its</span>
 </span><span data-line="70"><span class="sd">            ``_strategy_cls`` at a ``TrainingStrategy`` subclass. Default:</span>
-</span><span data-line="71"><span class="sd">            DefaultTrainingConfig().</span>
+</span><span data-line="71"><span class="sd">            DefaultTrainingSpec().</span>
 </span><span data-line="72">
 </span><span data-line="73"><span class="sd">    Example:</span>
 </span><span data-line="74"><span class="sd">        &gt;&gt;&gt; # Basic 4-bit palettization</span>
@@ -414,7 +414,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="90"><span class="sd">        ...     granularity=PerGroupedChannelGranularity(axis=0, group_size=32),</span>
 </span><span data-line="91"><span class="sd">        ...     enable_per_channel_scale=True</span>
 </span><span data-line="92"><span class="sd">        ... )</span>
-</span><span data-line="93"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="93"><span class="sd">    """</span>
 </span><span data-line="94">
 </span><span data-line="95">    <span class="n">n_bits</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
 </span><span data-line="96">    <span class="n">lut_qspec</span><span class="p">:</span> <span class="n">QuantizationSpec</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
@@ -424,36 +424,36 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="100">    <span class="p">]</span> <span class="o">=</span> <span class="n">PerTensorGranularity</span><span class="p">()</span>
 </span><span data-line="101">    <span class="n">cluster_dim</span><span class="p">:</span> <span class="n">PositiveInt</span> <span class="o">=</span> <span class="mi">1</span>
 </span><span data-line="102">    <span class="n">enable_per_channel_scale</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-</span><span data-line="103">    <span class="n">training_strategy_config</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-</span><span data-line="104">        <span class="n">TrainingStrategyConfig</span><span class="p">,</span>
-</span><span data-line="105">        <span class="n">BeforeValidator</span><span class="p">(</span><span class="n">TrainingStrategyConfig</span><span class="o">.</span><span class="n">maybe_build_from_dict</span><span class="p">),</span>
-</span><span data-line="106">    <span class="p">]</span> <span class="o">=</span> <span class="n">DefaultTrainingConfig</span><span class="p">()</span>
+</span><span data-line="103">    <span class="n">training_strategy_spec</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+</span><span data-line="104">        <span class="n">TrainingStrategySpec</span><span class="p">,</span>
+</span><span data-line="105">        <span class="n">BeforeValidator</span><span class="p">(</span><span class="n">TrainingStrategySpec</span><span class="o">.</span><span class="n">maybe_build_from_dict</span><span class="p">),</span>
+</span><span data-line="106">    <span class="p">]</span> <span class="o">=</span> <span class="n">DefaultTrainingSpec</span><span class="p">()</span>
 </span><span data-line="107">
 </span><span data-line="108">    <span class="c1"># Private attribute for compression type</span>
 </span><span data-line="109">    <span class="n">_compression_type</span><span class="p">:</span> <span class="n">CompressionType</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">CompressionType</span><span class="o">.</span><span class="n">PALETTIZATION</span><span class="p">)</span>
 </span><span data-line="110">
-</span><span data-line="111">    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;after&quot;</span><span class="p">)</span>
-</span><span data-line="112">    <span class="k">def</span><span class="w"> </span><span class="nf">validate_lut_qspec</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;PalettizationSpec&quot;</span><span class="p">:</span>
-</span><span data-line="113"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate that lut_qspec only uses supported configurations.&quot;&quot;&quot;</span>
+</span><span data-line="111">    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+</span><span data-line="112">    <span class="k">def</span><span class="w"> </span><span class="nf">validate_lut_qspec</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"PalettizationSpec"</span><span class="p">:</span>
+</span><span data-line="113"><span class="w">        </span><span class="sd">"""Validate that lut_qspec only uses supported configurations."""</span>
 </span><span data-line="114">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lut_qspec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="115">            <span class="k">return</span> <span class="bp">self</span>
 </span><span data-line="116">
 </span><span data-line="117">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lut_qspec</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_SUPPORTED_LUT_DTYPES</span><span class="p">:</span>
 </span><span data-line="118">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="119">                <span class="sa">f</span><span class="s2">&quot;lut_qspec.dtype must be one of </span><span class="si">{</span><span class="n">_SUPPORTED_LUT_DTYPES</span><span class="si">}</span><span class="s2">, &quot;</span>
-</span><span data-line="120">                <span class="sa">f</span><span class="s2">&quot;got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lut_qspec</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span data-line="119">                <span class="sa">f</span><span class="s2">"lut_qspec.dtype must be one of </span><span class="si">{</span><span class="n">_SUPPORTED_LUT_DTYPES</span><span class="si">}</span><span class="s2">, "</span>
+</span><span data-line="120">                <span class="sa">f</span><span class="s2">"got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lut_qspec</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">"</span>
 </span><span data-line="121">            <span class="p">)</span>
 </span><span data-line="122">
 </span><span data-line="123">        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lut_qspec</span><span class="o">.</span><span class="n">granularity</span><span class="p">,</span> <span class="n">QuantPerTensorGranularity</span><span class="p">):</span>
 </span><span data-line="124">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="125">                <span class="sa">f</span><span class="s2">&quot;lut_qspec.granularity must be PerTensorGranularity, &quot;</span>
-</span><span data-line="126">                <span class="sa">f</span><span class="s2">&quot;got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lut_qspec</span><span class="o">.</span><span class="n">granularity</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span data-line="125">                <span class="sa">f</span><span class="s2">"lut_qspec.granularity must be PerTensorGranularity, "</span>
+</span><span data-line="126">                <span class="sa">f</span><span class="s2">"got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lut_qspec</span><span class="o">.</span><span class="n">granularity</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
 </span><span data-line="127">            <span class="p">)</span>
 </span><span data-line="128">
 </span><span data-line="129">        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lut_qspec</span><span class="o">.</span><span class="n">qformulation</span> <span class="o">==</span> <span class="n">QuantizationFormulation</span><span class="o">.</span><span class="n">MINVAL</span><span class="p">:</span>
 </span><span data-line="130">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="131">                <span class="s2">&quot;lut_qspec.qformulation=MINVAL is not supported for palettization. &quot;</span>
-</span><span data-line="132">                <span class="s2">&quot;Use lut_qspec.qformulation=ZP instead.&quot;</span>
+</span><span data-line="131">                <span class="s2">"lut_qspec.qformulation=MINVAL is not supported for palettization. "</span>
+</span><span data-line="132">                <span class="s2">"Use lut_qspec.qformulation=ZP instead."</span>
 </span><span data-line="133">            <span class="p">)</span>
 </span><span data-line="134">
 </span><span data-line="135">        <span class="k">return</span> <span class="bp">self</span>
@@ -461,7 +461,7 @@ data-aria-dark="Switch to auto color mode">
 <div class="viewcode-block" id="PalettizationSpec.model_dump_preserve_objects">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.palettization.PalettizationSpec.html#coreai_opt.palettization.PalettizationSpec.model_dump_preserve_objects">[docs]</a>
 </span><span data-line="137">    <span class="k">def</span><span class="w"> </span><span class="nf">model_dump_preserve_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span data-line="138"><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="138"><span class="w">        </span><span class="sd">"""</span>
 </span><span data-line="139"><span class="sd">        Custom model dump that preserves Pydantic BaseModel instances as objects</span>
 </span><span data-line="140"><span class="sd">        instead of serializing them.</span>
 </span><span data-line="141">
@@ -473,7 +473,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="147">
 </span><span data-line="148"><span class="sd">        Returns:</span>
 </span><span data-line="149"><span class="sd">            Dictionary with serialized non-Pydantic fields and preserved Pydantic objs.</span>
-</span><span data-line="150"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="150"><span class="sd">        """</span>
 </span><span data-line="151">
 </span><span data-line="152">        <span class="c1"># Find all fields that contain Pydantic BaseModel instances</span>
 </span><span data-line="153">        <span class="n">exclude_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>

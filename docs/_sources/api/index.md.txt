@@ -133,12 +133,12 @@ Palettization specs, granularity classes, and factory functions.
 .. autosummary::
    :toctree: generated
 
-   coreai_opt.palettization.spec.DefaultTrainingConfig
+   coreai_opt.palettization.spec.DefaultTrainingSpec
    coreai_opt.palettization.spec.PalettizationGranularity
    coreai_opt.palettization.spec.PerGroupedChannelGranularity
    coreai_opt.palettization.spec.PerTensorGranularity
    coreai_opt.palettization.spec.TrainingStrategy
-   coreai_opt.palettization.spec.TrainingStrategyConfig
+   coreai_opt.palettization.spec.TrainingStrategySpec
    coreai_opt.palettization.spec.default_weight_palettization_spec
 ```
 

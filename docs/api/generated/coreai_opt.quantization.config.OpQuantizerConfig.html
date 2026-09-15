@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -173,12 +173,12 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.spec.DefaultTrainingConfig.html">coreai_opt.palettization.spec.DefaultTrainingConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.spec.TrainingStrategyConfig.html">coreai_opt.palettization.spec.TrainingStrategyConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -420,24 +420,24 @@ quantization for weight inputs)</p>
 </span><span data-line="3"><span class="gp">... </span>    <span class="n">op_input_spec</span><span class="o">=</span><span class="p">{</span>
 </span><span data-line="4"><span class="gp">... </span>        <span class="mi">0</span><span class="p">:</span> <span class="n">QuantizationSpec</span><span class="p">(</span>
 </span><span data-line="5"><span class="gp">... </span>            <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int8</span><span class="p">,</span>
-</span><span data-line="6"><span class="gp">... </span>            <span class="n">qscheme</span><span class="o">=</span><span class="s2">&quot;symmetric&quot;</span><span class="p">,</span>
-</span><span data-line="7"><span class="gp">... </span>            <span class="n">granularity</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;per_tensor&quot;</span><span class="p">},</span>
-</span><span data-line="8"><span class="gp">... </span>            <span class="n">fake_quantize_cls</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span>
-</span><span data-line="9"><span class="gp">... </span>            <span class="n">qparam_calculator_cls</span><span class="o">=</span><span class="s2">&quot;moving_average&quot;</span><span class="p">,</span>
-</span><span data-line="10"><span class="gp">... </span>            <span class="n">range_calculator_cls</span><span class="o">=</span><span class="s2">&quot;minmax&quot;</span><span class="p">,</span>
+</span><span data-line="6"><span class="gp">... </span>            <span class="n">qscheme</span><span class="o">=</span><span class="s2">"symmetric"</span><span class="p">,</span>
+</span><span data-line="7"><span class="gp">... </span>            <span class="n">granularity</span><span class="o">=</span><span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"per_tensor"</span><span class="p">},</span>
+</span><span data-line="8"><span class="gp">... </span>            <span class="n">fake_quantize_cls</span><span class="o">=</span><span class="s2">"default"</span><span class="p">,</span>
+</span><span data-line="9"><span class="gp">... </span>            <span class="n">qparam_calculator_cls</span><span class="o">=</span><span class="s2">"moving_average"</span><span class="p">,</span>
+</span><span data-line="10"><span class="gp">... </span>            <span class="n">range_calculator_cls</span><span class="o">=</span><span class="s2">"minmax"</span><span class="p">,</span>
 </span><span data-line="11"><span class="gp">... </span>        <span class="p">)</span>
 </span><span data-line="12"><span class="gp">... </span>    <span class="p">},</span>
 </span><span data-line="13"><span class="gp">... </span>    <span class="n">op_output_spec</span><span class="o">=</span><span class="p">{</span>
 </span><span data-line="14"><span class="gp">... </span>        <span class="mi">0</span><span class="p">:</span> <span class="kc">None</span>
 </span><span data-line="15"><span class="gp">... </span>    <span class="p">},</span>
 </span><span data-line="16"><span class="gp">... </span>    <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span>
-</span><span data-line="17"><span class="gp">... </span>        <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">QuantizationSpec</span><span class="p">(</span>
+</span><span data-line="17"><span class="gp">... </span>        <span class="s2">"weight"</span><span class="p">:</span> <span class="n">QuantizationSpec</span><span class="p">(</span>
 </span><span data-line="18"><span class="gp">... </span>            <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int4</span><span class="p">,</span>
-</span><span data-line="19"><span class="gp">... </span>            <span class="n">qscheme</span><span class="o">=</span><span class="s2">&quot;symmetric&quot;</span><span class="p">,</span>
-</span><span data-line="20"><span class="gp">... </span>            <span class="n">granularity</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;per_channel&quot;</span><span class="p">,</span> <span class="s2">&quot;axis&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
-</span><span data-line="21"><span class="gp">... </span>            <span class="n">fake_quantize_cls</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span>
-</span><span data-line="22"><span class="gp">... </span>            <span class="n">qparam_calculator_cls</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span>
-</span><span data-line="23"><span class="gp">... </span>            <span class="n">range_calculator_cls</span><span class="o">=</span><span class="s2">&quot;minmax&quot;</span><span class="p">,</span>
+</span><span data-line="19"><span class="gp">... </span>            <span class="n">qscheme</span><span class="o">=</span><span class="s2">"symmetric"</span><span class="p">,</span>
+</span><span data-line="20"><span class="gp">... </span>            <span class="n">granularity</span><span class="o">=</span><span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"per_channel"</span><span class="p">,</span> <span class="s2">"axis"</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+</span><span data-line="21"><span class="gp">... </span>            <span class="n">fake_quantize_cls</span><span class="o">=</span><span class="s2">"default"</span><span class="p">,</span>
+</span><span data-line="22"><span class="gp">... </span>            <span class="n">qparam_calculator_cls</span><span class="o">=</span><span class="s2">"default"</span><span class="p">,</span>
+</span><span data-line="23"><span class="gp">... </span>            <span class="n">range_calculator_cls</span><span class="o">=</span><span class="s2">"minmax"</span><span class="p">,</span>
 </span><span data-line="24"><span class="gp">... </span>        <span class="p">)</span>
 </span><span data-line="25"><span class="gp">... </span>    <span class="p">}</span>
 </span><span data-line="26"><span class="gp">... </span><span class="p">)</span>

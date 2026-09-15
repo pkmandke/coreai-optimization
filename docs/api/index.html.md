@@ -93,13 +93,13 @@ Palettization configuration classes.
 
 Palettization specs, granularity classes, and factory functions.
 
-| [`coreai_opt.palettization.spec.DefaultTrainingConfig`](generated/coreai_opt.palettization.spec.DefaultTrainingConfig.md#coreai_opt.palettization.spec.DefaultTrainingConfig)                                       | Settings for the default, post-training one-shot k-means strategy.   |
+| [`coreai_opt.palettization.spec.DefaultTrainingSpec`](generated/coreai_opt.palettization.spec.DefaultTrainingSpec.md#coreai_opt.palettization.spec.DefaultTrainingSpec)                                             | Settings for the default, post-training one-shot k-means strategy.   |
 |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
 | [`coreai_opt.palettization.spec.PalettizationGranularity`](generated/coreai_opt.palettization.spec.PalettizationGranularity.md#coreai_opt.palettization.spec.PalettizationGranularity)                              | Base class for palettization granularity specifications.             |
 | [`coreai_opt.palettization.spec.PerGroupedChannelGranularity`](generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.md#coreai_opt.palettization.spec.PerGroupedChannelGranularity)                  | Per-grouped-channel palettization granularity.                       |
 | [`coreai_opt.palettization.spec.PerTensorGranularity`](generated/coreai_opt.palettization.spec.PerTensorGranularity.md#coreai_opt.palettization.spec.PerTensorGranularity)                                          | Per-tensor palettization granularity.                                |
 | [`coreai_opt.palettization.spec.TrainingStrategy`](generated/coreai_opt.palettization.spec.TrainingStrategy.md#coreai_opt.palettization.spec.TrainingStrategy)()                                                    | Contract for a fake-palettize module's training-time forward pass.   |
-| [`coreai_opt.palettization.spec.TrainingStrategyConfig`](generated/coreai_opt.palettization.spec.TrainingStrategyConfig.md#coreai_opt.palettization.spec.TrainingStrategyConfig)                                    | Base class for a fake-palettize module's training-strategy settings. |
+| [`coreai_opt.palettization.spec.TrainingStrategySpec`](generated/coreai_opt.palettization.spec.TrainingStrategySpec.md#coreai_opt.palettization.spec.TrainingStrategySpec)                                          | Base class for a fake-palettize module's training-strategy settings. |
 | [`coreai_opt.palettization.spec.default_weight_palettization_spec`](generated/coreai_opt.palettization.spec.default_weight_palettization_spec.md#coreai_opt.palettization.spec.default_weight_palettization_spec)() |                                                                      |
 
 ## coreai_opt.pruning

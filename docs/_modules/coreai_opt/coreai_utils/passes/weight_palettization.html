@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -90,6 +90,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/overview.html">API Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/config.html">Config API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/advanced.html">Deeper Dive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quantization/composite_op_quantization.html">Quantization with Composite Ops</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../palettization/index.html">Palettization</a><ul>
@@ -110,7 +111,6 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/joint_compression.html">Joint Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/mixed_precision.html">Mixed-Precision Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/activation_comparison.html">Comparing Intermediate Activations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../utils/composite_op_quantization.html">Quantizing Models with Core AI Composite Ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/casting.html">16-bit PyTorch Model Casting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/coreai_compression.html">Compressing Core AI Models</a></li>
 </ul>
@@ -172,9 +172,13 @@ data-aria-dark="Switch to auto color mode">
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -321,7 +325,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="3"><span class="c1"># Use of this source code is governed by a BSD-3-Clause license that can</span>
 </span><span data-line="4"><span class="c1"># be found in the LICENSE file or at https://opensource.org/licenses/BSD-3-Clause</span>
 </span><span data-line="5">
-</span><span data-line="6"><span class="sd">&quot;&quot;&quot;Weight palettization pass for Core AI AIProgram.&quot;&quot;&quot;</span>
+</span><span data-line="6"><span class="sd">"""Weight palettization pass for Core AI AIProgram."""</span>
 </span><span data-line="7">
 </span><span data-line="8"><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 </span><span data-line="9">
@@ -394,7 +398,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="74">    <span class="n">rounding_precision</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
 </span><span data-line="75">    <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 </span><span data-line="76"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_AIProgram</span><span class="p">:</span>
-</span><span data-line="77"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Palettize weights in a Core AI AIProgram (MLIR&lt;CoreAI&gt; IR) by using Core AI ops.</span>
+</span><span data-line="77"><span class="w">    </span><span class="sd">"""Palettize weights in a Core AI AIProgram (MLIR&lt;CoreAI&gt; IR) by using Core AI ops.</span>
 </span><span data-line="78">
 </span><span data-line="79"><span class="sd">    Walks through the IR and palettizes each coreai.constant op that needs to be</span>
 </span><span data-line="80"><span class="sd">    compressed. Only constants consumed by ops in ``_OPS_WEIGHT_NEED_COMPRESSION``</span>
@@ -436,26 +440,26 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="116">
 </span><span data-line="117"><span class="sd">    Returns:</span>
 </span><span data-line="118"><span class="sd">        AIProgram: A palettized Core AI program.</span>
-</span><span data-line="119"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="119"><span class="sd">    """</span>
 </span><span data-line="120">    <span class="k">if</span> <span class="n">enable_per_channel_scale</span> <span class="ow">and</span> <span class="n">cluster_dim</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-</span><span data-line="121">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`enable_per_channel_scale=True` is not supported with `cluster_dim &gt; 1`.&quot;</span><span class="p">)</span>
+</span><span data-line="121">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"`enable_per_channel_scale=True` is not supported with `cluster_dim &gt; 1`."</span><span class="p">)</span>
 </span><span data-line="122">    <span class="k">if</span> <span class="n">lut_dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">lut_dtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_VALID_LUT_DTYPES</span><span class="p">:</span>
 </span><span data-line="123">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="124">            <span class="sa">f</span><span class="s2">&quot;`lut_dtype` must be one of &quot;</span>
-</span><span data-line="125">            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">_VALID_LUT_DTYPES</span><span class="p">)</span><span class="si">}</span><span class="s2"> or None, got </span><span class="si">{</span><span class="n">lut_dtype</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+</span><span data-line="124">            <span class="sa">f</span><span class="s2">"`lut_dtype` must be one of "</span>
+</span><span data-line="125">            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">_VALID_LUT_DTYPES</span><span class="p">)</span><span class="si">}</span><span class="s2"> or None, got </span><span class="si">{</span><span class="n">lut_dtype</span><span class="si">!r}</span><span class="s2">."</span>
 </span><span data-line="126">        <span class="p">)</span>
 </span><span data-line="127">    <span class="k">if</span> <span class="n">n_bits</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_VALID_N_BITS</span><span class="p">:</span>
-</span><span data-line="128">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`n_bits` must be one of </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">_VALID_N_BITS</span><span class="p">)</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">n_bits</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+</span><span data-line="128">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"`n_bits` must be one of </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">_VALID_N_BITS</span><span class="p">)</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">n_bits</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
 </span><span data-line="129">    <span class="k">if</span> <span class="n">granularity</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_VALID_PALETTIZATION_GRANULARITIES</span><span class="p">:</span>
 </span><span data-line="130">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-</span><span data-line="131">            <span class="sa">f</span><span class="s2">&quot;`granularity` must be one of &quot;</span>
-</span><span data-line="132">            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">_VALID_PALETTIZATION_GRANULARITIES</span><span class="p">)</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">granularity</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+</span><span data-line="131">            <span class="sa">f</span><span class="s2">"`granularity` must be one of "</span>
+</span><span data-line="132">            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">_VALID_PALETTIZATION_GRANULARITIES</span><span class="p">)</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">granularity</span><span class="si">!r}</span><span class="s2">."</span>
 </span><span data-line="133">        <span class="p">)</span>
 </span><span data-line="134">
 </span><span data-line="135">    <span class="k">def</span><span class="w"> </span><span class="nf">replace_weight_with_compression_op</span><span class="p">(</span>
 </span><span data-line="136">        <span class="n">op</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 </span><span data-line="137">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-</span><span data-line="138"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply palettization to a single op, creating the appropriate op chain.</span>
+</span><span data-line="138"><span class="w">        </span><span class="sd">"""Apply palettization to a single op, creating the appropriate op chain.</span>
 </span><span data-line="139">
 </span><span data-line="140"><span class="sd">        Op Chaining Rules</span>
 </span><span data-line="141"><span class="sd">        -----------------</span>
@@ -496,7 +500,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="176"><span class="sd">            In case 4, the two blockwise_shift_scale operations from cases 2 and 3 are</span>
 </span><span data-line="177"><span class="sd">            fused into one. The fused scale = lut_scale * per_channel_scale, and</span>
 </span><span data-line="178"><span class="sd">            fused zero_point = lut_zero_point * per_channel_scale.</span>
-</span><span data-line="179"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="179"><span class="sd">        """</span>
 </span><span data-line="180">        <span class="k">if</span> <span class="ow">not</span> <span class="n">_should_compress_op</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">weight_num_threshold</span><span class="p">,</span> <span class="n">_OPS_WEIGHT_NEED_COMPRESSION</span><span class="p">):</span>
 </span><span data-line="181">            <span class="k">return</span> <span class="n">_WalkResult</span><span class="o">.</span><span class="n">ADVANCE</span>
 </span><span data-line="182">
@@ -511,7 +515,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="191">
 </span><span data-line="192">        <span class="k">if</span> <span class="n">cluster_dim</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_is_cluster_dim_valid</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">cluster_dim</span><span class="p">,</span> <span class="n">channel_axis</span><span class="p">):</span>
 </span><span data-line="193">            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-</span><span data-line="194">                <span class="s2">&quot;The `cluster_dim` is invalid for </span><span class="si">%s</span><span class="s2">. Skipped this op.&quot;</span><span class="p">,</span>
+</span><span data-line="194">                <span class="s2">"The `cluster_dim` is invalid for </span><span class="si">%s</span><span class="s2">. Skipped this op."</span><span class="p">,</span>
 </span><span data-line="195">                <span class="n">const_weight</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
 </span><span data-line="196">            <span class="p">)</span>
 </span><span data-line="197">            <span class="k">return</span> <span class="n">_WalkResult</span><span class="o">.</span><span class="n">ADVANCE</span>
@@ -530,7 +534,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="210">        <span class="k">try</span><span class="p">:</span>
 </span><span data-line="211">            <span class="n">lut_params</span> <span class="o">=</span> <span class="n">_blockwise_compress</span><span class="p">(</span>
 </span><span data-line="212">                <span class="n">weight</span><span class="p">,</span>
-</span><span data-line="213">                <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;KMEANS&quot;</span><span class="p">,</span>
+</span><span data-line="213">                <span class="n">mode</span><span class="o">=</span><span class="s2">"KMEANS"</span><span class="p">,</span>
 </span><span data-line="214">                <span class="n">nbits</span><span class="o">=</span><span class="n">n_bits</span><span class="p">,</span>
 </span><span data-line="215">                <span class="n">block_sizes</span><span class="o">=</span><span class="n">block_sizes</span><span class="p">,</span>
 </span><span data-line="216">                <span class="n">cluster_dim</span><span class="o">=</span><span class="n">cluster_dim</span><span class="p">,</span>
@@ -539,7 +543,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="219">            <span class="p">)</span>
 </span><span data-line="220">            <span class="k">if</span> <span class="n">lut_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="221">                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-</span><span data-line="222">                    <span class="s2">&quot;Cannot perform palettization on </span><span class="si">%s</span><span class="s2">. Skipped this op.&quot;</span><span class="p">,</span>
+</span><span data-line="222">                    <span class="s2">"Cannot perform palettization on </span><span class="si">%s</span><span class="s2">. Skipped this op."</span><span class="p">,</span>
 </span><span data-line="223">                    <span class="n">const_weight</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
 </span><span data-line="224">                <span class="p">)</span>
 </span><span data-line="225">                <span class="k">return</span> <span class="n">_WalkResult</span><span class="o">.</span><span class="n">ADVANCE</span>
@@ -547,8 +551,8 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="227">            <span class="k">raise</span>
 </span><span data-line="228">        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 </span><span data-line="229">            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-</span><span data-line="230">                <span class="s2">&quot;Failed to palettize op </span><span class="si">%s</span><span class="s2">. Skipped this op. &quot;</span>
-</span><span data-line="231">                <span class="s2">&quot;Detailed reason about palettization failure:</span><span class="se">\n</span><span class="si">%s</span><span class="s2"> &quot;</span><span class="p">,</span>
+</span><span data-line="230">                <span class="s2">"Failed to palettize op </span><span class="si">%s</span><span class="s2">. Skipped this op. "</span>
+</span><span data-line="231">                <span class="s2">"Detailed reason about palettization failure:</span><span class="se">\n</span><span class="si">%s</span><span class="s2"> "</span><span class="p">,</span>
 </span><span data-line="232">                <span class="n">const_weight</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
 </span><span data-line="233">                <span class="n">e</span><span class="p">,</span>
 </span><span data-line="234">            <span class="p">)</span>
@@ -576,7 +580,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="256">            <span class="k">if</span> <span class="n">lut_dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="257">                <span class="n">quant_block_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">lut_params</span><span class="o">.</span><span class="n">lut</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </span><span data-line="258">                <span class="n">target_shape</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">lut_params</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-</span><span data-line="259">                <span class="n">weight_element_type</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="s2">&quot;Any&quot;</span><span class="p">,</span> <span class="n">const_weight</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">type</span><span class="p">)</span><span class="o">.</span><span class="n">element_type</span>
+</span><span data-line="259">                <span class="n">weight_element_type</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="s2">"Any"</span><span class="p">,</span> <span class="n">const_weight</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">type</span><span class="p">)</span><span class="o">.</span><span class="n">element_type</span>
 </span><span data-line="260">
 </span><span data-line="261">                <span class="k">if</span> <span class="n">lut_dtype</span><span class="o">.</span><span class="n">is_int</span><span class="p">():</span>
 </span><span data-line="262">                    <span class="n">lut_dtype_builtin</span> <span class="o">=</span> <span class="n">_compression_types</span><span class="o">.</span><span class="n">string_to_builtin</span><span class="p">(</span><span class="n">lut_dtype</span><span class="p">)</span>
@@ -595,7 +599,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="275">                    <span class="p">)</span>
 </span><span data-line="276">                    <span class="k">if</span> <span class="n">quant_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="277">                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-</span><span data-line="278">                            <span class="s2">&quot;Failed to compute quantization parameters for </span><span class="si">%s</span><span class="s2">. Skipped this op.&quot;</span><span class="p">,</span>
+</span><span data-line="278">                            <span class="s2">"Failed to compute quantization parameters for </span><span class="si">%s</span><span class="s2">. Skipped this op."</span><span class="p">,</span>
 </span><span data-line="279">                            <span class="n">const_weight</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
 </span><span data-line="280">                        <span class="p">)</span>
 </span><span data-line="281">                        <span class="k">return</span> <span class="n">_WalkResult</span><span class="o">.</span><span class="n">ADVANCE</span>
@@ -652,7 +656,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="332">                    <span class="p">)</span>
 </span><span data-line="333">                    <span class="k">if</span> <span class="n">quant_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="334">                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-</span><span data-line="335">                            <span class="s2">&quot;Failed to compute quantization parameters for </span><span class="si">%s</span><span class="s2">. Skipped this op.&quot;</span><span class="p">,</span>
+</span><span data-line="335">                            <span class="s2">"Failed to compute quantization parameters for </span><span class="si">%s</span><span class="s2">. Skipped this op."</span><span class="p">,</span>
 </span><span data-line="336">                            <span class="n">const_weight</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
 </span><span data-line="337">                        <span class="p">)</span>
 </span><span data-line="338">                        <span class="k">return</span> <span class="n">_WalkResult</span><span class="o">.</span><span class="n">ADVANCE</span>
@@ -673,10 +677,10 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="353">                    <span class="p">)</span>
 </span><span data-line="354">                    <span class="n">lut_quantized_attr</span> <span class="o">=</span> <span class="n">_DenseResourceElementsAttr</span><span class="o">.</span><span class="n">get_from_buffer</span><span class="p">(</span>
 </span><span data-line="355">                        <span class="n">quantized_lut_data</span><span class="p">,</span>
-</span><span data-line="356">                        <span class="s2">&quot;dense_resource&quot;</span><span class="p">,</span>
+</span><span data-line="356">                        <span class="s2">"dense_resource"</span><span class="p">,</span>
 </span><span data-line="357">                        <span class="n">tensor_type</span><span class="p">,</span>
 </span><span data-line="358">                    <span class="p">)</span>
-</span><span data-line="359">                    <span class="n">lut_quantized</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="s2">&quot;Any&quot;</span><span class="p">,</span> <span class="n">_coreai</span><span class="o">.</span><span class="n">ConstantOp</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">lut_quantized_attr</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
+</span><span data-line="359">                    <span class="n">lut_quantized</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="s2">"Any"</span><span class="p">,</span> <span class="n">_coreai</span><span class="o">.</span><span class="n">ConstantOp</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">lut_quantized_attr</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
 </span><span data-line="360">
 </span><span data-line="361">                    <span class="n">lut_scale_const</span> <span class="o">=</span> <span class="n">_create_constant_value_from_np_array</span><span class="p">(</span>
 </span><span data-line="362">                        <span class="n">lut_scale_reshaped</span><span class="p">,</span>
@@ -696,14 +700,14 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="376">                <span class="c1"># Cast lut_to_dense output from quantized type to float so all</span>
 </span><span data-line="377">                <span class="c1"># blockwise_shift_scale operands share the same element type.</span>
 </span><span data-line="378">                <span class="n">cast_type</span> <span class="o">=</span> <span class="n">_RankedTensorType</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-</span><span data-line="379">                    <span class="n">cast</span><span class="p">(</span><span class="s2">&quot;Any&quot;</span><span class="p">,</span> <span class="n">compressed_weight_quantized</span><span class="o">.</span><span class="n">type</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+</span><span data-line="379">                    <span class="n">cast</span><span class="p">(</span><span class="s2">"Any"</span><span class="p">,</span> <span class="n">compressed_weight_quantized</span><span class="o">.</span><span class="n">type</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
 </span><span data-line="380">                    <span class="n">weight_float_mlir_type</span><span class="p">,</span>
 </span><span data-line="381">                <span class="p">)</span>
 </span><span data-line="382">                <span class="n">compressed_weight_float</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span>
-</span><span data-line="383">                    <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
+</span><span data-line="383">                    <span class="s2">"Any"</span><span class="p">,</span>
 </span><span data-line="384">                    <span class="n">_coreai</span><span class="o">.</span><span class="n">CastOp</span><span class="p">(</span><span class="n">cast_type</span><span class="p">,</span> <span class="n">compressed_weight_quantized</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">,</span>
 </span><span data-line="385">                <span class="p">)</span>
-</span><span data-line="386">                <span class="n">lut_t</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="s2">&quot;Any&quot;</span><span class="p">,</span> <span class="n">lut_scale_const</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+</span><span data-line="386">                <span class="n">lut_t</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="s2">"Any"</span><span class="p">,</span> <span class="n">lut_scale_const</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
 </span><span data-line="387">                <span class="n">compressed_weight</span> <span class="o">=</span> <span class="n">_coreai</span><span class="o">.</span><span class="n">blockwise_shift_scale</span><span class="p">(</span>
 </span><span data-line="388">                    <span class="n">data</span><span class="o">=</span><span class="n">compressed_weight_float</span><span class="p">,</span>
 </span><span data-line="389">                    <span class="n">scale</span><span class="o">=</span><span class="n">lut_scale_const</span><span class="p">,</span>
@@ -716,9 +720,9 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="396">                <span class="c1"># Cast back to the original weight IR type so downstream ops</span>
 </span><span data-line="397">                <span class="c1"># (e.g. coreai.transpose) see the same type contract.</span>
 </span><span data-line="398">                <span class="n">compressed_weight</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span>
-</span><span data-line="399">                    <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
+</span><span data-line="399">                    <span class="s2">"Any"</span><span class="p">,</span>
 </span><span data-line="400">                    <span class="n">_coreai</span><span class="o">.</span><span class="n">CastOp</span><span class="p">(</span>
-</span><span data-line="401">                        <span class="n">cast</span><span class="p">(</span><span class="s2">&quot;Any&quot;</span><span class="p">,</span> <span class="n">const_weight</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">type</span><span class="p">),</span>
+</span><span data-line="401">                        <span class="n">cast</span><span class="p">(</span><span class="s2">"Any"</span><span class="p">,</span> <span class="n">const_weight</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">type</span><span class="p">),</span>
 </span><span data-line="402">                        <span class="n">compressed_weight</span><span class="p">,</span>
 </span><span data-line="403">                    <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">,</span>
 </span><span data-line="404">                <span class="p">)</span>
@@ -726,7 +730,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="406">            <span class="k">else</span><span class="p">:</span>
 </span><span data-line="407">                <span class="n">lut</span> <span class="o">=</span> <span class="n">_create_constant_value_from_np_array</span><span class="p">(</span>
 </span><span data-line="408">                    <span class="n">lut_params</span><span class="o">.</span><span class="n">lut</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">original_weight_type</span><span class="p">),</span>
-</span><span data-line="409">                    <span class="n">cast</span><span class="p">(</span><span class="s2">&quot;Any&quot;</span><span class="p">,</span> <span class="n">const_weight</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">type</span><span class="p">)</span><span class="o">.</span><span class="n">element_type</span><span class="p">,</span>
+</span><span data-line="409">                    <span class="n">cast</span><span class="p">(</span><span class="s2">"Any"</span><span class="p">,</span> <span class="n">const_weight</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">type</span><span class="p">)</span><span class="o">.</span><span class="n">element_type</span><span class="p">,</span>
 </span><span data-line="410">                <span class="p">)</span>
 </span><span data-line="411">
 </span><span data-line="412">                <span class="n">compressed_weight</span> <span class="o">=</span> <span class="n">_coreai</span><span class="o">.</span><span class="n">lut_to_dense</span><span class="p">(</span>
@@ -745,10 +749,10 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="425">                        <span class="n">weight_float_mlir_type</span><span class="p">,</span>
 </span><span data-line="426">                    <span class="p">)</span>
 </span><span data-line="427">                    <span class="n">compressed_weight_float</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span>
-</span><span data-line="428">                        <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
+</span><span data-line="428">                        <span class="s2">"Any"</span><span class="p">,</span>
 </span><span data-line="429">                        <span class="n">_coreai</span><span class="o">.</span><span class="n">CastOp</span><span class="p">(</span>
 </span><span data-line="430">                            <span class="n">_RankedTensorType</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-</span><span data-line="431">                                <span class="n">cast</span><span class="p">(</span><span class="s2">&quot;Any&quot;</span><span class="p">,</span> <span class="n">compressed_weight</span><span class="o">.</span><span class="n">type</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+</span><span data-line="431">                                <span class="n">cast</span><span class="p">(</span><span class="s2">"Any"</span><span class="p">,</span> <span class="n">compressed_weight</span><span class="o">.</span><span class="n">type</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
 </span><span data-line="432">                                <span class="n">weight_float_mlir_type</span><span class="p">,</span>
 </span><span data-line="433">                            <span class="p">),</span>
 </span><span data-line="434">                            <span class="n">compressed_weight</span><span class="p">,</span>
@@ -764,9 +768,9 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="444">                        <span class="p">),</span>
 </span><span data-line="445">                    <span class="p">)</span>
 </span><span data-line="446">                    <span class="n">compressed_weight</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span>
-</span><span data-line="447">                        <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
+</span><span data-line="447">                        <span class="s2">"Any"</span><span class="p">,</span>
 </span><span data-line="448">                        <span class="n">_coreai</span><span class="o">.</span><span class="n">CastOp</span><span class="p">(</span>
-</span><span data-line="449">                            <span class="n">cast</span><span class="p">(</span><span class="s2">&quot;Any&quot;</span><span class="p">,</span> <span class="n">const_weight</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">type</span><span class="p">),</span>
+</span><span data-line="449">                            <span class="n">cast</span><span class="p">(</span><span class="s2">"Any"</span><span class="p">,</span> <span class="n">const_weight</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">type</span><span class="p">),</span>
 </span><span data-line="450">                            <span class="n">compressed_weight</span><span class="p">,</span>
 </span><span data-line="451">                        <span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">,</span>
 </span><span data-line="452">                    <span class="p">)</span>

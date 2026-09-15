@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -90,6 +90,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/overview.html">API Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/config.html">Config API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/advanced.html">Deeper Dive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quantization/composite_op_quantization.html">Quantization with Composite Ops</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../palettization/index.html">Palettization</a><ul>
@@ -110,7 +111,6 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/joint_compression.html">Joint Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/mixed_precision.html">Mixed-Precision Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/activation_comparison.html">Comparing Intermediate Activations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../utils/composite_op_quantization.html">Quantizing Models with Core AI Composite Ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/casting.html">16-bit PyTorch Model Casting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/coreai_compression.html">Compressing Core AI Models</a></li>
 </ul>
@@ -172,9 +172,13 @@ data-aria-dark="Switch to auto color mode">
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -330,31 +334,31 @@ data-aria-dark="Switch to auto color mode">
 <div class="viewcode-block" id="QuantizationScheme">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.quantization.spec.QuantizationScheme.html#coreai_opt.quantization.spec.QuantizationScheme">[docs]</a>
 </span><span data-line="12"><span class="k">class</span><span class="w"> </span><span class="nc">QuantizationScheme</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-</span><span data-line="13">    <span class="n">SYMMETRIC</span> <span class="o">=</span> <span class="s2">&quot;symmetric&quot;</span>
-</span><span data-line="14">    <span class="n">ASYMMETRIC</span> <span class="o">=</span> <span class="s2">&quot;asymmetric&quot;</span>
-</span><span data-line="15">    <span class="n">SYMMETRIC_WITH_CLIPPING</span> <span class="o">=</span> <span class="s2">&quot;symmetric_with_clipping&quot;</span>
+</span><span data-line="13">    <span class="n">SYMMETRIC</span> <span class="o">=</span> <span class="s2">"symmetric"</span>
+</span><span data-line="14">    <span class="n">ASYMMETRIC</span> <span class="o">=</span> <span class="s2">"asymmetric"</span>
+</span><span data-line="15">    <span class="n">SYMMETRIC_WITH_CLIPPING</span> <span class="o">=</span> <span class="s2">"symmetric_with_clipping"</span>
 </span><span data-line="16">
 </span><span data-line="17">    <span class="nd">@classmethod</span>
-</span><span data-line="18">    <span class="k">def</span><span class="w"> </span><span class="nf">_to_mapping_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">qscheme</span><span class="p">:</span> <span class="s2">&quot;QuantizationScheme&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TorchAOMappingType</span><span class="p">:</span>
+</span><span data-line="18">    <span class="k">def</span><span class="w"> </span><span class="nf">_to_mapping_type</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">qscheme</span><span class="p">:</span> <span class="s2">"QuantizationScheme"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TorchAOMappingType</span><span class="p">:</span>
 </span><span data-line="19">        <span class="k">if</span> <span class="n">qscheme</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">SYMMETRIC</span> <span class="ow">or</span> <span class="n">qscheme</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">SYMMETRIC_WITH_CLIPPING</span><span class="p">:</span>
 </span><span data-line="20">            <span class="k">return</span> <span class="n">TorchAOMappingType</span><span class="o">.</span><span class="n">SYMMETRIC</span>
 </span><span data-line="21">        <span class="k">elif</span> <span class="n">qscheme</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ASYMMETRIC</span><span class="p">:</span>
 </span><span data-line="22">            <span class="k">return</span> <span class="n">TorchAOMappingType</span><span class="o">.</span><span class="n">ASYMMETRIC</span>
 </span><span data-line="23">        <span class="k">else</span><span class="p">:</span>
-</span><span data-line="24">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown value for quantization scheme: </span><span class="si">{</span><span class="n">qscheme</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span data-line="24">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown value for quantization scheme: </span><span class="si">{</span><span class="n">qscheme</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </span><span data-line="25">
 </span><span data-line="26">    <span class="nd">@classmethod</span>
 </span><span data-line="27">    <span class="k">def</span><span class="w"> </span><span class="nf">_maybe_clip_bounds</span><span class="p">(</span>
 </span><span data-line="28">        <span class="bp">cls</span><span class="p">,</span>
-</span><span data-line="29">        <span class="n">qscheme</span><span class="p">:</span> <span class="s2">&quot;QuantizationScheme&quot;</span><span class="p">,</span>
+</span><span data-line="29">        <span class="n">qscheme</span><span class="p">:</span> <span class="s2">"QuantizationScheme"</span><span class="p">,</span>
 </span><span data-line="30">        <span class="n">dtype</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
 </span><span data-line="31">        <span class="n">min_val</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 </span><span data-line="32">        <span class="n">max_val</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 </span><span data-line="33">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-</span><span data-line="34"><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span data-line="34"><span class="w">        </span><span class="sd">"""</span>
 </span><span data-line="35"><span class="sd">        Clip min_val for SYMMETRIC_WITH_CLIPPING to ensure equal bins on</span>
 </span><span data-line="36"><span class="sd">        each side of zero.</span>
-</span><span data-line="37"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="37"><span class="sd">        """</span>
 </span><span data-line="38">        <span class="k">if</span> <span class="n">qscheme</span> <span class="o">==</span> <span class="bp">cls</span><span class="o">.</span><span class="n">SYMMETRIC_WITH_CLIPPING</span> <span class="ow">and</span> <span class="n">dtype</span><span class="o">.</span><span class="n">is_signed</span><span class="p">:</span>
 </span><span data-line="39">            <span class="n">min_val</span> <span class="o">=</span> <span class="o">-</span><span class="n">max_val</span>
 </span><span data-line="40">        <span class="k">return</span> <span class="p">(</span><span class="n">min_val</span><span class="p">,</span> <span class="n">max_val</span><span class="p">)</span></div>

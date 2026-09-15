@@ -7,7 +7,7 @@
     setColorMode(localStorage._theme||"auto");
   </script><link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=d88b86f9" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/shibuya.css?v=9454f7d5" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css?v=a0a71c94" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/autodoc_pydantic.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=2d1dc041" />
     <link media="print" rel="stylesheet" type="text/css" href="../../../../_static/print.css?v=20ff2c19" />
@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -90,6 +90,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/overview.html">API Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/config.html">Config API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/advanced.html">Deeper Dive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quantization/composite_op_quantization.html">Quantization with Composite Ops</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../palettization/index.html">Palettization</a><ul>
@@ -112,7 +113,6 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/activation_comparison.html">Comparing Intermediate Activations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/casting.html">16-bit PyTorch Model Casting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/coreai_compression.html">Compressing Core AI Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../utils/composite_op_quantization.html">Quantizing Models with Core AI Composite Ops in Graph Mode</a></li>
 </ul>
 <p class="caption" role="heading" aria-level="3"><span class="caption-text">Debugging</span></p>
 <ul>
@@ -173,12 +173,12 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.DefaultTrainingConfig.html">coreai_opt.palettization.spec.DefaultTrainingConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategyConfig.html">coreai_opt.palettization.spec.TrainingStrategyConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -325,7 +325,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="3"><span class="c1"># Use of this source code is governed by a BSD-3-Clause license that can</span>
 </span><span data-line="4"><span class="c1"># be found in the LICENSE file or at https://opensource.org/licenses/BSD-3-Clause</span>
 </span><span data-line="5">
-</span><span data-line="6"><span class="sd">&quot;&quot;&quot;Pluggable training-time behavior for fake-palettize modules.&quot;&quot;&quot;</span>
+</span><span data-line="6"><span class="sd">"""Pluggable training-time behavior for fake-palettize modules."""</span>
 </span><span data-line="7">
 </span><span data-line="8"><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 </span><span data-line="9">
@@ -344,59 +344,59 @@ data-aria-dark="Switch to auto color mode">
 <div class="viewcode-block" id="TrainingStrategy">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html#coreai_opt.palettization.spec.TrainingStrategy">[docs]</a>
 </span><span data-line="22"><span class="k">class</span><span class="w"> </span><span class="nc">TrainingStrategy</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-</span><span data-line="23"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Contract for a fake-palettize module&#39;s training-time forward pass.&quot;&quot;&quot;</span>
+</span><span data-line="23"><span class="w">    </span><span class="sd">"""Contract for a fake-palettize module's training-time forward pass."""</span>
 </span><span data-line="24">
 <div class="viewcode-block" id="TrainingStrategy.train_forward">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html#coreai_opt.palettization.spec.TrainingStrategy.train_forward">[docs]</a>
 </span><span data-line="25">    <span class="nd">@abstractmethod</span>
 </span><span data-line="26">    <span class="k">def</span><span class="w"> </span><span class="nf">train_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">_FakePalettizeImplBase</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-</span><span data-line="27"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the training-time output for ``weight``.</span>
+</span><span data-line="27"><span class="w">        </span><span class="sd">"""Return the training-time output for ``weight``.</span>
 </span><span data-line="28">
 </span><span data-line="29"><span class="sd">        Defines how the palettized weight behaves during training (e.g. frozen,</span>
 </span><span data-line="30"><span class="sd">        straight-through, soft assignment).</span>
-</span><span data-line="31"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="31"><span class="sd">        """</span>
 </span><span data-line="32">        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 </div>
 
 </span><span data-line="33">
 </span><span data-line="34">
 </span><span data-line="35"><span class="k">class</span><span class="w"> </span><span class="nc">_DefaultTrainingStrategy</span><span class="p">(</span><span class="n">TrainingStrategy</span><span class="p">):</span>
-</span><span data-line="36"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Post-training, one-shot k-means — today&#39;s KMeansPalettizer behavior.</span>
+</span><span data-line="36"><span class="w">    </span><span class="sd">"""Post-training, one-shot k-means — today's KMeansPalettizer behavior.</span>
 </span><span data-line="37">
 </span><span data-line="38"><span class="sd">    This strategy does not train the palettized weights. Inside a</span>
 </span><span data-line="39"><span class="sd">    ``training_mode()`` loop it reconstructs each forward from the frozen</span>
 </span><span data-line="40"><span class="sd">    centroids/indices computed at ``prepare()`` time, so no gradient flows back</span>
 </span><span data-line="41"><span class="sd">    to a palettized weight — palettized weights stay fixed at their one-shot</span>
-</span><span data-line="42"><span class="sd">    k-means values. Once a module&#39;s ``pat_schedule`` has enabled fake</span>
+</span><span data-line="42"><span class="sd">    k-means values. Once a module's ``pat_schedule`` has enabled fake</span>
 </span><span data-line="43"><span class="sd">    palettization, the rest of the model still trains normally and its forward</span>
 </span><span data-line="44"><span class="sd">    pass sees the palettized weights, so non-palettized parameters adapt around</span>
 </span><span data-line="45"><span class="sd">    them (palettization-aware fine-tuning of the rest of the network). To learn</span>
 </span><span data-line="46"><span class="sd">    the palettized weights/centroids themselves, register a custom</span>
 </span><span data-line="47"><span class="sd">    ``TrainingStrategy``.</span>
-</span><span data-line="48"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="48"><span class="sd">    """</span>
 </span><span data-line="49">
 </span><span data-line="50">    <span class="k">def</span><span class="w"> </span><span class="nf">train_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">_FakePalettizeImplBase</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
 </span><span data-line="51">        <span class="k">return</span> <span class="n">module</span><span class="o">.</span><span class="n">hard_assign</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span>
 </span><span data-line="52">
 </span><span data-line="53">
-<div class="viewcode-block" id="TrainingStrategyConfig">
-<a class="viewcode-back" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategyConfig.html#coreai_opt.palettization.spec.TrainingStrategyConfig">[docs]</a>
-</span><span data-line="54"><span class="k">class</span><span class="w"> </span><span class="nc">TrainingStrategyConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">_ConfigRegistryMixin</span><span class="p">):</span>
-</span><span data-line="55"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for a fake-palettize module&#39;s training-strategy settings.</span>
+<div class="viewcode-block" id="TrainingStrategySpec">
+<a class="viewcode-back" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html#coreai_opt.palettization.spec.TrainingStrategySpec">[docs]</a>
+</span><span data-line="54"><span class="k">class</span><span class="w"> </span><span class="nc">TrainingStrategySpec</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">_ConfigRegistryMixin</span><span class="p">):</span>
+</span><span data-line="55"><span class="w">    </span><span class="sd">"""Base class for a fake-palettize module's training-strategy settings.</span>
 </span><span data-line="56">
 </span><span data-line="57"><span class="sd">    Each subclass points ``_strategy_cls`` at its paired ``TrainingStrategy``</span>
 </span><span data-line="58"><span class="sd">    behavior class; ``build_strategy()`` constructs that strategy from this</span>
-</span><span data-line="59"><span class="sd">    config&#39;s own fields.</span>
-</span><span data-line="60"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="59"><span class="sd">    spec's own fields.</span>
+</span><span data-line="60"><span class="sd">    """</span>
 </span><span data-line="61">
-</span><span data-line="62">    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">)</span>
+</span><span data-line="62">    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">"forbid"</span><span class="p">)</span>
 </span><span data-line="63">
 </span><span data-line="64">    <span class="c1"># Each subclass points this at its paired TrainingStrategy behavior class.</span>
 </span><span data-line="65">    <span class="n">_strategy_cls</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="n">TrainingStrategy</span><span class="p">]]</span>
 </span><span data-line="66">
 </span><span data-line="67">    <span class="nd">@model_serializer</span>
 </span><span data-line="68">    <span class="k">def</span><span class="w"> </span><span class="nf">_serialize_model</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span data-line="69"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Custom serializer that includes the registry type.&quot;&quot;&quot;</span>
+</span><span data-line="69"><span class="w">        </span><span class="sd">"""Custom serializer that includes the registry type."""</span>
 </span><span data-line="70">        <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
 </span><span data-line="71">
 </span><span data-line="72">        <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">model_fields</span><span class="p">:</span>
@@ -405,31 +405,31 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="75">        <span class="c1"># Find the registry key for this class type</span>
 </span><span data-line="76">        <span class="n">registry_key</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span data-line="77">        <span class="c1"># Use the base class registry instead of instance registry</span>
-</span><span data-line="78">        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">registered_class</span> <span class="ow">in</span> <span class="n">TrainingStrategyConfig</span><span class="o">.</span><span class="n">REGISTRY</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span data-line="78">        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">registered_class</span> <span class="ow">in</span> <span class="n">TrainingStrategySpec</span><span class="o">.</span><span class="n">REGISTRY</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 </span><span data-line="79">            <span class="k">if</span> <span class="n">registered_class</span> <span class="ow">is</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span data-line="80">                <span class="n">registry_key</span> <span class="o">=</span> <span class="n">key</span>
 </span><span data-line="81">                <span class="k">break</span>
 </span><span data-line="82">
 </span><span data-line="83">        <span class="k">if</span> <span class="n">registry_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="84">            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">registry_key</span>
+</span><span data-line="84">            <span class="n">data</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">registry_key</span>
 </span><span data-line="85">
 </span><span data-line="86">        <span class="k">return</span> <span class="n">data</span>
 </span><span data-line="87">
-<div class="viewcode-block" id="TrainingStrategyConfig.build_strategy">
-<a class="viewcode-back" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategyConfig.html#coreai_opt.palettization.spec.TrainingStrategyConfig.build_strategy">[docs]</a>
+<div class="viewcode-block" id="TrainingStrategySpec.build_strategy">
+<a class="viewcode-back" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html#coreai_opt.palettization.spec.TrainingStrategySpec.build_strategy">[docs]</a>
 </span><span data-line="88">    <span class="k">def</span><span class="w"> </span><span class="nf">build_strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TrainingStrategy</span><span class="p">:</span>
-</span><span data-line="89"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct this config&#39;s paired ``TrainingStrategy`` behavior instance.&quot;&quot;&quot;</span>
-</span><span data-line="90">        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="s2">&quot;type&quot;</span><span class="p">}</span>
+</span><span data-line="89"><span class="w">        </span><span class="sd">"""Construct this spec's paired ``TrainingStrategy`` behavior instance."""</span>
+</span><span data-line="90">        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="s2">"type"</span><span class="p">}</span>
 </span><span data-line="91">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strategy_cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 </div>
 
 </span><span data-line="92">
 </span><span data-line="93">
-<div class="viewcode-block" id="DefaultTrainingConfig">
-<a class="viewcode-back" href="../../../../api/generated/coreai_opt.palettization.spec.DefaultTrainingConfig.html#coreai_opt.palettization.spec.DefaultTrainingConfig">[docs]</a>
-</span><span data-line="94"><span class="nd">@TrainingStrategyConfig</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
-</span><span data-line="95"><span class="k">class</span><span class="w"> </span><span class="nc">DefaultTrainingConfig</span><span class="p">(</span><span class="n">TrainingStrategyConfig</span><span class="p">):</span>
-</span><span data-line="96"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Settings for the default, post-training one-shot k-means strategy. No fields.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="DefaultTrainingSpec">
+<a class="viewcode-back" href="../../../../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html#coreai_opt.palettization.spec.DefaultTrainingSpec">[docs]</a>
+</span><span data-line="94"><span class="nd">@TrainingStrategySpec</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">"default"</span><span class="p">)</span>
+</span><span data-line="95"><span class="k">class</span><span class="w"> </span><span class="nc">DefaultTrainingSpec</span><span class="p">(</span><span class="n">TrainingStrategySpec</span><span class="p">):</span>
+</span><span data-line="96"><span class="w">    </span><span class="sd">"""Settings for the default, post-training one-shot k-means strategy. No fields."""</span>
 </span><span data-line="97">
 </span><span data-line="98">    <span class="n">_strategy_cls</span> <span class="o">=</span> <span class="n">_DefaultTrainingStrategy</span></div>
 

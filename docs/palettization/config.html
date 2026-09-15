@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -173,12 +173,12 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.DefaultTrainingConfig.html">coreai_opt.palettization.spec.DefaultTrainingConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategyConfig.html">coreai_opt.palettization.spec.TrainingStrategyConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -267,6 +267,7 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li><a class="reference internal" href="#apply-4-bit-palettization-to-conv-layers-8-bit-to-linear-layers">Apply 4-bit palettization to conv layers, 8-bit to linear layers</a></li>
+<li><a class="reference internal" href="#enable-palettization-at-different-training-steps-per-module-patschedule">Enable palettization at different training steps per module (PATSchedule)</a></li>
 </ul>
 </li>
 </ul>
@@ -367,7 +368,7 @@ They are simpler as palettization applies only to the weights in the model.
 </span><span data-line="17"><span class="c1"># 4-bit with quantized LUT entries — LUT centroids stored as INT8</span>
 </span><span data-line="18"><span class="n">spec</span> <span class="o">=</span> <span class="n">PalettizationSpec</span><span class="p">(</span>
 </span><span data-line="19">    <span class="n">n_bits</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-</span><span data-line="20">    <span class="n">lut_qspec</span><span class="o">=</span><span class="n">QuantizationSpec</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int8</span><span class="p">,</span> <span class="n">qscheme</span><span class="o">=</span><span class="s2">&quot;symmetric&quot;</span><span class="p">),</span>
+</span><span data-line="20">    <span class="n">lut_qspec</span><span class="o">=</span><span class="n">QuantizationSpec</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int8</span><span class="p">,</span> <span class="n">qscheme</span><span class="o">=</span><span class="s2">"symmetric"</span><span class="p">),</span>
 </span><span data-line="21"><span class="p">)</span>
 </span><span data-line="22">
 </span><span data-line="23"><span class="c1"># Cluster pairs of weight values instead of individual scalars</span>
@@ -419,8 +420,8 @@ They are simpler as palettization applies only to the weights in the model.
 </span><span data-line="6"><span class="n">config</span> <span class="o">=</span> <span class="n">KMeansPalettizerConfig</span><span class="p">(</span>
 </span><span data-line="7">    <span class="n">global_config</span><span class="o">=</span><span class="n">ModuleKMeansPalettizerConfig</span><span class="p">(</span>
 </span><span data-line="8">        <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span>
-</span><span data-line="9">            <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">default_weight_palettization_spec</span><span class="p">(),</span>
-</span><span data-line="10">            <span class="s2">&quot;in_proj_weight&quot;</span><span class="p">:</span> <span class="n">default_weight_palettization_spec</span><span class="p">(),</span>
+</span><span data-line="9">            <span class="s2">"weight"</span><span class="p">:</span> <span class="n">default_weight_palettization_spec</span><span class="p">(),</span>
+</span><span data-line="10">            <span class="s2">"in_proj_weight"</span><span class="p">:</span> <span class="n">default_weight_palettization_spec</span><span class="p">(),</span>
 </span><span data-line="11">        <span class="p">},</span>
 </span><span data-line="12">    <span class="p">)</span>
 </span><span data-line="13"><span class="p">)</span>
@@ -429,8 +430,8 @@ They are simpler as palettization applies only to the weights in the model.
 </span><span data-line="16"><span class="c1"># is equivalent to:</span>
 </span><span data-line="17"><span class="n">op_config</span> <span class="o">=</span> <span class="n">OpKMeansPalettizerConfig</span><span class="p">(</span>
 </span><span data-line="18">    <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span>
-</span><span data-line="19">        <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">default_weight_palettization_spec</span><span class="p">(),</span>
-</span><span data-line="20">        <span class="s2">&quot;in_proj_weight&quot;</span><span class="p">:</span> <span class="n">default_weight_palettization_spec</span><span class="p">(),</span>
+</span><span data-line="19">        <span class="s2">"weight"</span><span class="p">:</span> <span class="n">default_weight_palettization_spec</span><span class="p">(),</span>
+</span><span data-line="20">        <span class="s2">"in_proj_weight"</span><span class="p">:</span> <span class="n">default_weight_palettization_spec</span><span class="p">(),</span>
 </span><span data-line="21">    <span class="p">},</span>
 </span><span data-line="22"><span class="p">)</span>
 </span></pre></div>
@@ -454,7 +455,7 @@ They are simpler as palettization applies only to the weights in the model.
 </span><span data-line="5">    <span class="n">ModuleKMeansPalettizerConfig</span><span class="p">,</span>
 </span><span data-line="6"><span class="p">)</span>
 </span><span data-line="7">
-</span><span data-line="8"><span class="c1"># define a config that applies 4-bit per-grouped-channel palettization to all supported layers, using one of the &quot;pre-defined&quot; presets.</span>
+</span><span data-line="8"><span class="c1"># define a config that applies 4-bit per-grouped-channel palettization to all supported layers, using one of the "pre-defined" presets.</span>
 </span><span data-line="9"><span class="n">config</span> <span class="o">=</span> <span class="n">KMeansPalettizerConfig</span><span class="o">.</span><span class="n">presets</span><span class="o">.</span><span class="n">w4</span><span class="p">()</span>
 </span><span data-line="10">
 </span><span data-line="11"><span class="c1"># then update this config, to change the palettization for just the linear layers: to 8-bit per-tensor</span>
@@ -499,11 +500,11 @@ They are simpler as palettization applies only to the weights in the model.
 </span><span data-line="7">
 </span><span data-line="8"><span class="n">config</span> <span class="o">=</span> <span class="n">KMeansPalettizerConfig</span><span class="p">(</span>
 </span><span data-line="9">    <span class="n">module_type_configs</span><span class="o">=</span><span class="p">{</span>
-</span><span data-line="10">        <span class="s2">&quot;torch.nn.modules.linear.Linear&quot;</span><span class="p">:</span> <span class="n">ModuleKMeansPalettizerConfig</span><span class="p">(</span>
-</span><span data-line="11">            <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">PalettizationSpec</span><span class="p">(</span><span class="n">n_bits</span><span class="o">=</span><span class="mi">8</span><span class="p">)},</span>
+</span><span data-line="10">        <span class="s2">"torch.nn.modules.linear.Linear"</span><span class="p">:</span> <span class="n">ModuleKMeansPalettizerConfig</span><span class="p">(</span>
+</span><span data-line="11">            <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"weight"</span><span class="p">:</span> <span class="n">PalettizationSpec</span><span class="p">(</span><span class="n">n_bits</span><span class="o">=</span><span class="mi">8</span><span class="p">)},</span>
 </span><span data-line="12">        <span class="p">),</span>
-</span><span data-line="13">        <span class="s2">&quot;torch.nn.modules.conv.Conv2d&quot;</span><span class="p">:</span> <span class="n">ModuleKMeansPalettizerConfig</span><span class="p">(</span>
-</span><span data-line="14">            <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">PalettizationSpec</span><span class="p">(</span><span class="n">n_bits</span><span class="o">=</span><span class="mi">4</span><span class="p">)},</span>
+</span><span data-line="13">        <span class="s2">"torch.nn.modules.conv.Conv2d"</span><span class="p">:</span> <span class="n">ModuleKMeansPalettizerConfig</span><span class="p">(</span>
+</span><span data-line="14">            <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"weight"</span><span class="p">:</span> <span class="n">PalettizationSpec</span><span class="p">(</span><span class="n">n_bits</span><span class="o">=</span><span class="mi">4</span><span class="p">)},</span>
 </span><span data-line="15">        <span class="p">),</span>
 </span><span data-line="16">    <span class="p">},</span>
 </span><span data-line="17"><span class="p">)</span>
@@ -522,6 +523,57 @@ They are simpler as palettization applies only to the weights in the model.
 </span><span data-line="11"><span class="w">        </span><span class="nt">weight</span><span class="p">:</span>
 </span><span data-line="12"><span class="w">          </span><span class="nt">n_bits</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
 </span><span data-line="13"><span class="w">          </span><span class="nt">granularity</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> type</span><span class="p">:</span><span class="w"> </span><span class="nv">per_tensor</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span></pre></div>
+</div>
+</section>
+<section id="enable-palettization-at-different-training-steps-per-module-patschedule">
+<h3>Enable palettization at different training steps per module (PATSchedule)<a class="headerlink" href="#enable-palettization-at-different-training-steps-per-module-patschedule" title="Link to this heading">¶</a></h3>
+<p>For palettization-aware training, you can defer when each module’s palettizer turns on using a <a class="reference internal" href="../api/generated/coreai_opt.palettization.config.PATSchedule.html#coreai_opt.palettization.config.PATSchedule" title="coreai_opt.palettization.config.PATSchedule"><code class="xref py py-class docutils literal notranslate"><span class="pre">PATSchedule</span></code></a> set on that module’s <code class="xref py py-class docutils literal notranslate"><span class="pre">ModuleKMeansPalettizerConfig</span></code>. Its <code class="docutils literal notranslate"><span class="pre">enable_fake_palettize</span></code> field is the step-count threshold at which that module’s palettizer becomes active; until then the module trains uncompressed. See <a class="reference internal" href="overview.html#using-patschedule"><span class="std std-ref">Using PATSchedule</span></a> for the training loop that drives the schedule via <code class="docutils literal notranslate"><span class="pre">palettizer.training_mode()</span></code> and <code class="docutils literal notranslate"><span class="pre">palettizer.step()</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">coreai_opt.palettization</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span data-line="2">    <span class="n">KMeansPalettizerConfig</span><span class="p">,</span>
+</span><span data-line="3">    <span class="n">ModuleKMeansPalettizerConfig</span><span class="p">,</span>
+</span><span data-line="4">    <span class="n">PalettizationSpec</span><span class="p">,</span>
+</span><span data-line="5"><span class="p">)</span>
+</span><span data-line="6"><span class="kn">from</span><span class="w"> </span><span class="nn">coreai_opt.palettization.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">PATSchedule</span>
+</span><span data-line="7">
+</span><span data-line="8"><span class="c1"># All layers palettized 4-bit, but each named module's palettizer turns on at a different training step:</span>
+</span><span data-line="9"><span class="c1"># module1 after 100 steps, module2 after 500.</span>
+</span><span data-line="10"><span class="n">config</span> <span class="o">=</span> <span class="n">KMeansPalettizerConfig</span><span class="p">(</span>
+</span><span data-line="11">    <span class="n">global_config</span><span class="o">=</span><span class="n">ModuleKMeansPalettizerConfig</span><span class="p">(</span>
+</span><span data-line="12">        <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"weight"</span><span class="p">:</span> <span class="n">PalettizationSpec</span><span class="p">(</span><span class="n">n_bits</span><span class="o">=</span><span class="mi">4</span><span class="p">)},</span>
+</span><span data-line="13">    <span class="p">),</span>
+</span><span data-line="14">    <span class="n">module_name_configs</span><span class="o">=</span><span class="p">{</span>
+</span><span data-line="15">        <span class="s2">"module1"</span><span class="p">:</span> <span class="n">ModuleKMeansPalettizerConfig</span><span class="p">(</span>
+</span><span data-line="16">            <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"weight"</span><span class="p">:</span> <span class="n">PalettizationSpec</span><span class="p">(</span><span class="n">n_bits</span><span class="o">=</span><span class="mi">4</span><span class="p">)},</span>
+</span><span data-line="17">            <span class="n">pat_schedule</span><span class="o">=</span><span class="n">PATSchedule</span><span class="p">(</span><span class="n">enable_fake_palettize</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span>
+</span><span data-line="18">        <span class="p">),</span>
+</span><span data-line="19">        <span class="s2">"module2"</span><span class="p">:</span> <span class="n">ModuleKMeansPalettizerConfig</span><span class="p">(</span>
+</span><span data-line="20">            <span class="n">op_state_spec</span><span class="o">=</span><span class="p">{</span><span class="s2">"weight"</span><span class="p">:</span> <span class="n">PalettizationSpec</span><span class="p">(</span><span class="n">n_bits</span><span class="o">=</span><span class="mi">4</span><span class="p">)},</span>
+</span><span data-line="21">            <span class="n">pat_schedule</span><span class="o">=</span><span class="n">PATSchedule</span><span class="p">(</span><span class="n">enable_fake_palettize</span><span class="o">=</span><span class="mi">500</span><span class="p">),</span>
+</span><span data-line="22">        <span class="p">),</span>
+</span><span data-line="23">    <span class="p">},</span>
+</span><span data-line="24"><span class="p">)</span>
+</span></pre></div>
+</div>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="c1"># yaml</span>
+</span><span data-line="2"><span class="nt">kmeans_palettization_config</span><span class="p">:</span>
+</span><span data-line="3"><span class="w">  </span><span class="nt">global_config</span><span class="p">:</span>
+</span><span data-line="4"><span class="w">    </span><span class="nt">op_state_spec</span><span class="p">:</span>
+</span><span data-line="5"><span class="w">      </span><span class="nt">weight</span><span class="p">:</span>
+</span><span data-line="6"><span class="w">        </span><span class="nt">n_bits</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+</span><span data-line="7"><span class="w">  </span><span class="nt">module_name_configs</span><span class="p">:</span>
+</span><span data-line="8"><span class="w">    </span><span class="nt">module1</span><span class="p">:</span>
+</span><span data-line="9"><span class="w">      </span><span class="nt">op_state_spec</span><span class="p">:</span>
+</span><span data-line="10"><span class="w">        </span><span class="nt">weight</span><span class="p">:</span>
+</span><span data-line="11"><span class="w">          </span><span class="nt">n_bits</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+</span><span data-line="12"><span class="w">      </span><span class="nt">pat_schedule</span><span class="p">:</span>
+</span><span data-line="13"><span class="w">        </span><span class="nt">enable_fake_palettize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+</span><span data-line="14"><span class="w">    </span><span class="nt">module2</span><span class="p">:</span>
+</span><span data-line="15"><span class="w">      </span><span class="nt">op_state_spec</span><span class="p">:</span>
+</span><span data-line="16"><span class="w">        </span><span class="nt">weight</span><span class="p">:</span>
+</span><span data-line="17"><span class="w">          </span><span class="nt">n_bits</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+</span><span data-line="18"><span class="w">      </span><span class="nt">pat_schedule</span><span class="p">:</span>
+</span><span data-line="19"><span class="w">        </span><span class="nt">enable_fake_palettize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">500</span>
 </span></pre></div>
 </div>
 </section>

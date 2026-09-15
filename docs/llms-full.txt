@@ -194,13 +194,13 @@ Palettization configuration classes.
 
 Palettization specs, granularity classes, and factory functions.
 
-| [`coreai_opt.palettization.spec.DefaultTrainingConfig`](generated/coreai_opt.palettization.spec.DefaultTrainingConfig.md#coreai_opt.palettization.spec.DefaultTrainingConfig)                                       | Settings for the default, post-training one-shot k-means strategy.   |
+| [`coreai_opt.palettization.spec.DefaultTrainingSpec`](generated/coreai_opt.palettization.spec.DefaultTrainingSpec.md#coreai_opt.palettization.spec.DefaultTrainingSpec)                                             | Settings for the default, post-training one-shot k-means strategy.   |
 |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
 | [`coreai_opt.palettization.spec.PalettizationGranularity`](generated/coreai_opt.palettization.spec.PalettizationGranularity.md#coreai_opt.palettization.spec.PalettizationGranularity)                              | Base class for palettization granularity specifications.             |
 | [`coreai_opt.palettization.spec.PerGroupedChannelGranularity`](generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.md#coreai_opt.palettization.spec.PerGroupedChannelGranularity)                  | Per-grouped-channel palettization granularity.                       |
 | [`coreai_opt.palettization.spec.PerTensorGranularity`](generated/coreai_opt.palettization.spec.PerTensorGranularity.md#coreai_opt.palettization.spec.PerTensorGranularity)                                          | Per-tensor palettization granularity.                                |
 | [`coreai_opt.palettization.spec.TrainingStrategy`](generated/coreai_opt.palettization.spec.TrainingStrategy.md#coreai_opt.palettization.spec.TrainingStrategy)()                                                    | Contract for a fake-palettize module's training-time forward pass.   |
-| [`coreai_opt.palettization.spec.TrainingStrategyConfig`](generated/coreai_opt.palettization.spec.TrainingStrategyConfig.md#coreai_opt.palettization.spec.TrainingStrategyConfig)                                    | Base class for a fake-palettize module's training-strategy settings. |
+| [`coreai_opt.palettization.spec.TrainingStrategySpec`](generated/coreai_opt.palettization.spec.TrainingStrategySpec.md#coreai_opt.palettization.spec.TrainingStrategySpec)                                          | Base class for a fake-palettize module's training-strategy settings. |
 | [`coreai_opt.palettization.spec.default_weight_palettization_spec`](generated/coreai_opt.palettization.spec.default_weight_palettization_spec.md#coreai_opt.palettization.spec.default_weight_palettization_spec)() |                                                                      |
 
 ## coreai_opt.pruning
@@ -299,6 +299,7 @@ Fake quantization implementation base class and default implementation.
 * [API Overview](overview.md)
   * [Vanilla K-means API](overview.md#vanilla-k-means-api)
   * [Sensitive K-means API](overview.md#sensitive-k-means-api)
+  * [Training a Palettized model](overview.md#training-a-palettized-model)
 * [Config API](config.md)
   * [PalettizationSpec](config.md#palettizationspec)
   * [Config classes and their defaults](config.md#config-classes-and-their-defaults)
@@ -2577,6 +2578,59 @@ kmeans_palettization_config:
           granularity: { type: per_tensor }
 ```
 
+### Enable palettization at different training steps per module (PATSchedule)
+
+For palettization-aware training, you can defer when each module’s palettizer turns on using a [`PATSchedule`](../api/generated/coreai_opt.palettization.config.PATSchedule.md#coreai_opt.palettization.config.PATSchedule) set on that module’s `ModuleKMeansPalettizerConfig`. Its `enable_fake_palettize` field is the step-count threshold at which that module’s palettizer becomes active; until then the module trains uncompressed. See [Using PATSchedule](overview.md#using-patschedule) for the training loop that drives the schedule via `palettizer.training_mode()` and `palettizer.step()`.
+
+```python
+from coreai_opt.palettization import (
+    KMeansPalettizerConfig,
+    ModuleKMeansPalettizerConfig,
+    PalettizationSpec,
+)
+from coreai_opt.palettization.config import PATSchedule
+
+# All layers palettized 4-bit, but each named module's palettizer turns on at a different training step:
+# module1 after 100 steps, module2 after 500.
+config = KMeansPalettizerConfig(
+    global_config=ModuleKMeansPalettizerConfig(
+        op_state_spec={"weight": PalettizationSpec(n_bits=4)},
+    ),
+    module_name_configs={
+        "module1": ModuleKMeansPalettizerConfig(
+            op_state_spec={"weight": PalettizationSpec(n_bits=4)},
+            pat_schedule=PATSchedule(enable_fake_palettize=100),
+        ),
+        "module2": ModuleKMeansPalettizerConfig(
+            op_state_spec={"weight": PalettizationSpec(n_bits=4)},
+            pat_schedule=PATSchedule(enable_fake_palettize=500),
+        ),
+    },
+)
+```
+
+```yaml
+# yaml
+kmeans_palettization_config:
+  global_config:
+    op_state_spec:
+      weight:
+        n_bits: 4
+  module_name_configs:
+    module1:
+      op_state_spec:
+        weight:
+          n_bits: 4
+      pat_schedule:
+        enable_fake_palettize: 100
+    module2:
+      op_state_spec:
+        weight:
+          n_bits: 4
+      pat_schedule:
+        enable_fake_palettize: 500
+```
+
 
 # coreai_compression.html.md
 
@@ -3526,6 +3580,8 @@ specific compression technique.
   flowing through
 * **Return type:**
   *Tensor*
+
+#### tensor_fqn *: str* *= '<unknown>'*
 
 
 # coreai_opt.config.spec.CompressionTargetTensor.html.md
@@ -5047,16 +5103,16 @@ When set to True, weights are normalized along the
 output channels using per-channel scales before being palettized.
 Default: False.
 
-#### training_strategy_config
+#### training_strategy_spec
 
 Which training-time behavior this weight’s
 fake-palettize module uses, and that strategy’s settings.
-`DefaultTrainingConfig()` is post-training, one-shot k-means
+`DefaultTrainingSpec()` is post-training, one-shot k-means
 (today’s KMeansPalettizer behavior). Additional strategies are added
-by subclassing `TrainingStrategyConfig` (registered via
-`TrainingStrategyConfig.register()`) and pointing its
+by subclassing `TrainingStrategySpec` (registered via
+`TrainingStrategySpec.register()`) and pointing its
 `_strategy_cls` at a `TrainingStrategy` subclass. Default:
-DefaultTrainingConfig().
+DefaultTrainingSpec().
 
 #### model_dump_preserve_objects()
 
@@ -5129,13 +5185,13 @@ Step count at which fake palettization is
 enabled. Must be >= 0.
 
 
-# coreai_opt.palettization.spec.DefaultTrainingConfig.html.md
+# coreai_opt.palettization.spec.DefaultTrainingSpec.html.md
 
-# coreai_opt.palettization.spec.DefaultTrainingConfig
+# coreai_opt.palettization.spec.DefaultTrainingSpec
 
-### *class* coreai_opt.palettization.spec.DefaultTrainingConfig
+### *class* coreai_opt.palettization.spec.DefaultTrainingSpec
 
-Bases: [`TrainingStrategyConfig`](coreai_opt.palettization.spec.TrainingStrategyConfig.md#coreai_opt.palettization.spec.TrainingStrategyConfig)
+Bases: [`TrainingStrategySpec`](coreai_opt.palettization.spec.TrainingStrategySpec.md#coreai_opt.palettization.spec.TrainingStrategySpec)
 
 Settings for the default, post-training one-shot k-means strategy. No fields.
 
@@ -5296,11 +5352,11 @@ straight-through, soft assignment).
   torch.Tensor
 
 
-# coreai_opt.palettization.spec.TrainingStrategyConfig.html.md
+# coreai_opt.palettization.spec.TrainingStrategySpec.html.md
 
-# coreai_opt.palettization.spec.TrainingStrategyConfig
+# coreai_opt.palettization.spec.TrainingStrategySpec
 
-### *class* coreai_opt.palettization.spec.TrainingStrategyConfig
+### *class* coreai_opt.palettization.spec.TrainingStrategySpec
 
 Bases: `BaseModel`, `ConfigRegistryMixin`
 
@@ -5308,11 +5364,11 @@ Base class for a fake-palettize module’s training-strategy settings.
 
 Each subclass points `_strategy_cls` at its paired `TrainingStrategy`
 behavior class; `build_strategy()` constructs that strategy from this
-config’s own fields.
+spec’s own fields.
 
 #### build_strategy()
 
-Construct this config’s paired `TrainingStrategy` behavior instance.
+Construct this spec’s paired `TrainingStrategy` behavior instance.
 
 * **Return type:**
   [*TrainingStrategy*](coreai_opt.palettization.spec.TrainingStrategy.md#coreai_opt.palettization.spec.TrainingStrategy)
@@ -6252,7 +6308,7 @@ Quantization scheme determining how values are mapped to the quantized
 range.
 Valid inputs:
 
-> - “symmetric” (default), “symmetric_with_clipping”, “asymmetric”
+- “symmetric” (default), “symmetric_with_clipping”, “asymmetric”
 
 On how it affects the quantization and dequantization formulae,
 please refer to the qformulation description below.
@@ -8413,7 +8469,7 @@ with quantizer.calibration_mode():
 
 The W_P4(INT8)_A_INT8 model achieves `29.86 dB` — a further drop of `0.47 dB` compared to W_INT8_A_INT8.
 
-Refer to [Joint Compression](../utils/joint_compression.md) for more information on joint compression.
+Refer to [Joint Compression](../../utils/joint_compression.md) for more information on joint compression.
 
 ## Finalize
 
@@ -8425,7 +8481,7 @@ finalized_model = quantizer.finalize(backend=opt.ExportBackend.CoreAI)
 ```
 
 At this point, the model is ready to be exported for downstream conversion with `coreai-torch`.
-Refer to [Integration with Core AI](../introduction/integration_coreai.md) for more details.
+Refer to [Integration with Core AI](../../introduction/integration_coreai.md) for more details.
 
 ## Summary
 
@@ -8442,7 +8498,7 @@ Users may also consider:
 
 - Increasing the number of calibration images to improve activation scale estimates
 - Applying palettization or quantization selectively to only the most compressible layers
-- Using [Sensitive K-Means](../palettization/overview.md#sensitive-k-means-api) calibration to place centroids near weight values that matter most for output quality
+- Using [Sensitive K-Means](../../palettization/overview.md#sensitive-k-means-api) calibration to place centroids near weight values that matter most for output quality
 
 
 # graph_mode_troubleshooting.html.md
@@ -8814,7 +8870,7 @@ final_model = quantizer.finalize(backend=opt.ExportBackend.CoreAI)
 
 - For a working end-to-end example, see `test_p4a8_compression_mnist_accuracy` in `tests/test_joint_compression.py`.
 - For export-related tests, see `test_mnist_p4a8_compression_export` in `tests/export/test_pt2e_mlir_export.py`.
-- We explore applying joint compression to the EDSR model [here](../examples/edsr.md).
+- We explore applying joint compression to the EDSR model [here](../examples/model_examples/edsr.md).
 
 
 # landing_page.html.md
@@ -8931,15 +8987,56 @@ Likewise, the per-layer setting being varied across candidate configs does not h
 
 ## Examples
 
-- [Mixed-precision palettization with ResNet50](../examples/mixed_precision_palettization.md) — applies palettization with 2/4/6-bit per-tensor candidate configs and the greedy approach targeting a BPW of 4.
+- [Mixed-precision palettization with ResNet50](../examples/model_examples/mixed_precision_palettization.md) — applies palettization with 2/4/6-bit per-tensor candidate configs and the greedy approach targeting a BPW of 4.
 - [coreai-models](https://github.com/apple/coreai-models) — the same workflow is applied to a few LLMs in this repository to produce mixed precision compression recipes. Users can find the mixed precision configs in the repo and apply them with `coreai-opt`.
+
+## Utility for computing analytical Bits Per Weight (BPW)
+
+`bits_per_weight()` is a utility that computes an analytical BPW estimate from a *prepared* `coreai-opt` model.
+
+It estimates the average bit width of a model, amortizing compression overhead such as quantization scales and zero-points as well as palettization look-up tables and per-channel scales. Compressed tensors are counted at their effective compressed cost and everything else (biases, norms and buffers such as BatchNorm running statistics) is counted at its full-precision dtype cost.
+
+**Usage:**
+
+```python
+from coreai_opt.quantization import Quantizer, QuantizerConfig
+from coreai_opt.quantization.config import ExecutionMode
+from coreai_opt.inspection import bits_per_weight
+
+# Prepare an eager-mode weight-quantized model
+quantizer = Quantizer(
+    model, QuantizerConfig.presets.w8(execution_mode=ExecutionMode.EAGER)
+)
+prepared_model = quantizer.prepare(example_inputs)
+
+result = bits_per_weight(prepared_model)
+print(result.bpw)  # e.g. 8.86
+```
+
+The returned `BitsPerWeightResult` also exposes `per_module_map`, a mapping from module name to the module’s own average BPW, which is useful for inspecting how bits are distributed across different parts of the model.
+
+The utility supports:
+
+- **Eager-mode integer weight quantization**: int8, int4, int2 and their unsigned variants along with symmetric and asymmetric, at any granularity.
+- **Eager-mode floating-point weight quantization**: FP8 (`e4m3`, `e5m2`) and FP4 (`e2m1`).
+- **Palettization** at any spec-supported `n_bits`, including a quantized LUT.
+
+Sub-byte payloads and zero-points are packed at `n_bits` with no padding.
+
+#### NOTE
+Pruned models and graph-mode (`torch.fx.GraphModule`) quantized models are currently not supported.
+
+#### NOTE
+This is an analytical estimate computed on a *prepared* `coreai-opt` model and as such does not reflect the exported asset size of any [`finalize()` backend](../introduction/integration_coreai.md). Passing a finalized model to the utility is not supported.
+
+For the full API, see the `bits_per_weight()` reference.
 
 
 # mixed_precision_palettization.html.md
 
 # Mixed-precision palettization with ResNet50
 
-In this article we walk through the [Mixed-Precision Compression](../utils/mixed_precision.md) workflow applied to ResNet50 weight palettization. We use 2/4/6-bit per-tensor palettization as our candidate configs, PSNR on logits as the sensitivity metric, and generate the recipe with the greedy approach targeting 4 bits-per-weight (BPW). See the linked page for definitions of each term and the three-stage workflow.
+In this article we walk through the [Mixed-Precision Compression](../../utils/mixed_precision.md) workflow applied to ResNet50 weight palettization. We use 2/4/6-bit per-tensor palettization as our candidate configs, PSNR on logits as the sensitivity metric, and generate the recipe with the greedy approach targeting 4 bits-per-weight (BPW). See the linked page for definitions of each term and the three-stage workflow.
 
 ## Model and dataset
 
@@ -9422,9 +9519,9 @@ Check out the [coreai-models](https://github.com/apple/coreai-models/blob/main/m
 
 The examples in this section use simpler models (like ResNet50) to illustrate various compression options, hyper-parameters choices and processes that you may use for determining which methods to apply to your specific model.
 
-* [ResNet50 model: Weight + Activation Quantization (PTQ)](resnet50.md)
-* [Mixed-precision palettization with ResNet50](mixed_precision_palettization.md)
-* [EDSR model: Weight palettization + activation quantization (PTQ)](edsr.md)
+* [ResNet50 model: Weight + Activation Quantization (PTQ)](model_examples/resnet50.md)
+* [Mixed-precision palettization with ResNet50](model_examples/mixed_precision_palettization.md)
+* [EDSR model: Weight palettization + activation quantization (PTQ)](model_examples/edsr.md)
 
 
 # model_inspection.html.md
@@ -10098,7 +10195,7 @@ val_metric = validate(prepared_model, val_dataset)
 # same as before
 ```
 
-To save the importance-scores (aka sensitivities) for the weights to reuse later:
+To save the importance-scores (aka sensitivities) for the weights to reuse later, specify a `sensitivity_path` argument in the `calibration_mode` context:
 
 ```python
 # provide path to save weight sensitivities
@@ -10110,7 +10207,7 @@ with palettizer.calibration_mode(
         skm.step(output, target)
 ```
 
-And then in a future new run, load precomputed sensitivities during prepare:
+Precomputed sensitivities can be loaded during preparation in a future new run to avoid needing to recalibrate:
 
 ```python
 prepared_model = palettizer.prepare(example_inputs, sensitivity_path="sensitivities.pt")
@@ -10122,7 +10219,90 @@ val_metric = validate(prepared_model, val_dataset)
 # same as before
 ```
 
+Note that `Sensitive K-means` shares the same `KMeansPalettizer` and `KMeansPalettizerConfig` as `Vanilla K-means`. `Sensitive K-means` is achieved simply by passing representative data samples through the model while inside the `calibration_mode` context.
+
 For more details on how to use `KMeansPalettizerConfig`, `ModuleKMeansPalettizerConfig` to apply different settings to different weights in the model, see [Palettization Config](config.md).
+
+## Training a Palettized model
+
+A `KMeansPalettizer` palettized model can still be fine-tuned in a training pipeline. As palettization is a hard assignment lookup, gradients cannot be propagated for palettized weights, meaning any parameter which is palettized will not update during `optimizer.step()` (the palettization codebook and index assignments will also be fixed).
+
+Any parameters not being palettized can still update and learn so that one can fine-tune any non-palettized portion of the model while being palettization-aware, i.e. adapting to other parameters which are palettized.
+
+Run the training loop inside `palettizer.training_mode()`, which places the model in train mode and restores its original train/eval state on exit:
+
+```python
+from coreai_opt.palettization import KMeansPalettizer, KMeansPalettizerConfig, ModuleKMeansPalettizerConfig, PalettizationSpec
+
+kmeans_palettizer_config = KMeansPalettizerConfig(...)
+
+palettizer = KMeansPalettizer(model, kmeans_palettizer_config)
+prepared_model = palettizer.prepare(example_inputs)
+
+with palettizer.training_mode():
+    for ...
+        # Perform whatever training forward pass / loss calculation / optimizer gradient application is desired
+        ...
+```
+
+### Using PATSchedule
+
+Users may also choose to enable palettization of parameters at a future point during training instead of right from the start. Weights which are marked for palettization, but have not yet had their palettizers enabled, will still be able to update during training. When a weight’s palettizer is switched from disabled to enabled, its codebook and index assignments are recomputed using the most current weight values.
+
+Since palettizer enabling can be configured on a module by module basis, this gives users more flexibility on training to be palettization-aware by allowing weights to update in response to palettization noise from other palettized weights before themselves being palettized.
+
+For example, users could choose to apply the following workflow:
+
+1. Begin training with all parameters marked to be palettized but with all palettizers disabled
+2. Fine-tune the model with no palettization noise for a few epochs
+3. Enable a subset of palettizers while keeping the rest of the palettizers disabled
+4. Fine-tune the model with palettization noise from the subset of enabled palettizers (any weights with enabled palettizers will not update further, but any weights with palettizers not yet enabled will continue training)
+5. Enable the rest of palettizers in the model and evaluate the final accuracy
+
+Steps 3 and 4 can be repeated as many times as desired with more and more palettizers being enabled.
+
+To achieve this, add a `PATSchedule` to the relevant module configs and call `palettizer.step()` inside the training loop to advance the schedule:
+
+```python
+from coreai_opt.palettization import KMeansPalettizer, KMeansPalettizerConfig, ModuleKMeansPalettizerConfig, PalettizationSpec
+from coreai_opt.palettization.config import PATSchedule
+
+# Create a KMeansPalettizer config with 2 modules being palettized using different PATSchedules
+kmeans_palettizer_config = KMeansPalettizerConfig(
+    global_config = ...,
+    module_name_configs = {
+        "module1": ModuleKMeansPalettizerConfig(
+            ...,
+            pat_schedule=PATSchedule(
+                enable_fake_palettize=2
+            )
+        ),
+        "module2": ModuleKMeansPalettizerConfig(
+            ...,
+            pat_schedule=PATSchedule(
+                enable_fake_palettize=4
+            )
+        )
+    }
+)
+
+palettizer = KMeansPalettizer(model, kmeans_palettizer_config)
+prepared_model = palettizer.prepare(example_inputs)
+
+# Track the palettizer's step count so palettizer state is managed
+# in accordance with each module's PATSchedule.
+with palettizer.training_mode():
+    for ...
+        # Perform whatever training forward pass / loss calculation / optimizer gradient application is desired
+        ...
+
+        # Call palettizer.step() to increase palettizer's step count by 1
+        palettizer.step()
+```
+
+Each time `palettizer.step()` is called, the palettizer checks each module’s `PATSchedule` to see whether any palettizer should be enabled. With the above config settings of `enable_fake_palettize` = 2 and 4 for `module1` and `module2` respectively, this results in both palettizers being disabled to start, `module1`’s palettizer enabled after `palettizer.step()` has been called twice, and `module2`’s palettizer enabled after `palettizer.step()` has been called 4 times in total.
+
+Note that `palettizer.step()` can be called whenever the user desires, whether it be per-batch, per-epoch, or on some other cadence.
 
 
 # resnet50.html.md
@@ -10323,7 +10503,7 @@ finalized_model = quantizer.finalize(
 ```
 
 At this point, the model is ready to be exported or traced for downstream conversion with `coreai-torch` or `coremltools`.
-Refer to [Integration with Core AI](../introduction/integration_coreai.md) for more details.
+Refer to [Integration with Core AI](../../introduction/integration_coreai.md) for more details.
 
 ## Summary
 

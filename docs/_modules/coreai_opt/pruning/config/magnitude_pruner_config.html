@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -90,6 +90,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/overview.html">API Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/config.html">Config API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../quantization/advanced.html">Deeper Dive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../quantization/composite_op_quantization.html">Quantization with Composite Ops</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../palettization/index.html">Palettization</a><ul>
@@ -110,7 +111,6 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/joint_compression.html">Joint Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/mixed_precision.html">Mixed-Precision Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/activation_comparison.html">Comparing Intermediate Activations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../utils/composite_op_quantization.html">Quantizing Models with Core AI Composite Ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/casting.html">16-bit PyTorch Model Casting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../utils/coreai_compression.html">Compressing Core AI Models</a></li>
 </ul>
@@ -172,9 +172,13 @@ data-aria-dark="Switch to auto color mode">
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -321,7 +325,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="3"><span class="c1"># Use of this source code is governed by a BSD-3-Clause license that can</span>
 </span><span data-line="4"><span class="c1"># be found in the LICENSE file or at https://opensource.org/licenses/BSD-3-Clause</span>
 </span><span data-line="5">
-</span><span data-line="6"><span class="sd">&quot;&quot;&quot;Pruning configuration classes.&quot;&quot;&quot;</span>
+</span><span data-line="6"><span class="sd">"""Pruning configuration classes."""</span>
 </span><span data-line="7">
 </span><span data-line="8"><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ClassVar</span>
 </span><span data-line="9">
@@ -336,37 +340,37 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="18">
 </span><span data-line="19"><span class="kn">from</span><span class="w"> </span><span class="nn">.sparsity_schedule</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparsityScheduleBase</span>
 </span><span data-line="20">
-</span><span data-line="21"><span class="n">_MAGNITUDE_PRUNING_CONFIG</span> <span class="o">=</span> <span class="s2">&quot;magnitude_pruning_config&quot;</span>
-</span><span data-line="22"><span class="n">_PRUNING_SPEC</span> <span class="o">=</span> <span class="s2">&quot;pruning_spec&quot;</span>
+</span><span data-line="21"><span class="n">_MAGNITUDE_PRUNING_CONFIG</span> <span class="o">=</span> <span class="s2">"magnitude_pruning_config"</span>
+</span><span data-line="22"><span class="n">_PRUNING_SPEC</span> <span class="o">=</span> <span class="s2">"pruning_spec"</span>
 </span><span data-line="23">
 </span><span data-line="24">
 <div class="viewcode-block" id="OpMagnitudePrunerConfig">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.pruning.config.OpMagnitudePrunerConfig.html#coreai_opt.pruning.OpMagnitudePrunerConfig">[docs]</a>
 </span><span data-line="25"><span class="k">class</span><span class="w"> </span><span class="nc">OpMagnitudePrunerConfig</span><span class="p">(</span><span class="n">WeightOnlyOpValidationMixin</span><span class="p">,</span> <span class="n">OpCompressionConfig</span><span class="p">[</span><span class="n">PruningSpec</span><span class="p">]):</span>
-</span><span data-line="26"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Operation-level pruning configuration.</span>
+</span><span data-line="26"><span class="w">    </span><span class="sd">"""Operation-level pruning configuration.</span>
 </span><span data-line="27">
 </span><span data-line="28"><span class="sd">    Pruning is a weight-only compression technique. Only ``op_state_spec``</span>
 </span><span data-line="29"><span class="sd">    is used to configure which state tensors (e.g. weights) to prune.</span>
 </span><span data-line="30">
 </span><span data-line="31"><span class="sd">    Attributes:</span>
 </span><span data-line="32"><span class="sd">        op_state_spec (dict[str, PruningSpec | None]): Mapping of parameter</span>
-</span><span data-line="33"><span class="sd">            names to their pruning specs. Default includes ``&quot;weight&quot;`` and</span>
-</span><span data-line="34"><span class="sd">            ``&quot;in_proj_weight&quot;`` at 50 % sparsity.</span>
+</span><span data-line="33"><span class="sd">            names to their pruning specs. Default includes ``"weight"`` and</span>
+</span><span data-line="34"><span class="sd">            ``"in_proj_weight"`` at 50 % sparsity.</span>
 </span><span data-line="35">
 </span><span data-line="36"><span class="sd">    Example:</span>
 </span><span data-line="37"><span class="sd">        &gt;&gt;&gt; config = OpMagnitudePrunerConfig()</span>
 </span><span data-line="38"><span class="sd">        &gt;&gt;&gt; config = OpMagnitudePrunerConfig(</span>
-</span><span data-line="39"><span class="sd">        ...     op_state_spec={&quot;weight&quot;: PruningSpec(target_sparsity=0.75)}</span>
+</span><span data-line="39"><span class="sd">        ...     op_state_spec={"weight": PruningSpec(target_sparsity=0.75)}</span>
 </span><span data-line="40"><span class="sd">        ... )</span>
-</span><span data-line="41"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="41"><span class="sd">    """</span>
 </span><span data-line="42">
 <div class="viewcode-block" id="OpMagnitudePrunerConfig.get_default_state_spec">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.pruning.config.OpMagnitudePrunerConfig.html#coreai_opt.pruning.OpMagnitudePrunerConfig.get_default_state_spec">[docs]</a>
 </span><span data-line="43">    <span class="nd">@classmethod</span>
 </span><span data-line="44">    <span class="k">def</span><span class="w"> </span><span class="nf">get_default_state_spec</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PruningSpec</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-</span><span data-line="45"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Provide default state spec for pruning.&quot;&quot;&quot;</span>
+</span><span data-line="45"><span class="w">        </span><span class="sd">"""Provide default state spec for pruning."""</span>
 </span><span data-line="46">        <span class="n">spec</span> <span class="o">=</span> <span class="n">default_weight_pruning_spec</span><span class="p">()</span>
-</span><span data-line="47">        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">spec</span><span class="p">,</span> <span class="s2">&quot;in_proj_weight&quot;</span><span class="p">:</span> <span class="n">spec</span><span class="p">}</span></div>
+</span><span data-line="47">        <span class="k">return</span> <span class="p">{</span><span class="s2">"weight"</span><span class="p">:</span> <span class="n">spec</span><span class="p">,</span> <span class="s2">"in_proj_weight"</span><span class="p">:</span> <span class="n">spec</span><span class="p">}</span></div>
 </div>
 
 </span><span data-line="48">
@@ -377,7 +381,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="51">    <span class="n">WeightOnlyModuleValidationMixin</span><span class="p">,</span>
 </span><span data-line="52">    <span class="n">ModuleCompressionConfig</span><span class="p">[</span><span class="n">OpMagnitudePrunerConfig</span><span class="p">,</span> <span class="n">PruningSpec</span><span class="p">],</span>
 </span><span data-line="53"><span class="p">):</span>
-</span><span data-line="54"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Module-level pruning configuration.</span>
+</span><span data-line="54"><span class="w">    </span><span class="sd">"""Module-level pruning configuration.</span>
 </span><span data-line="55">
 </span><span data-line="56"><span class="sd">    Manages pruning settings for an entire module, following the same</span>
 </span><span data-line="57"><span class="sd">    hierarchical precedence as other compression configs:</span>
@@ -395,9 +399,9 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="69"><span class="sd">            across all ops in the module.</span>
 </span><span data-line="70"><span class="sd">        sparsity_schedule (SparsityScheduleBase | None): Optional sparsity schedule.</span>
 </span><span data-line="71"><span class="sd">            When set, the ``pruner.step()`` API drives sparsity over training</span>
-</span><span data-line="72"><span class="sd">            steps; when ``None`` (default), the spec&#39;s ``target_sparsity`` is</span>
+</span><span data-line="72"><span class="sd">            steps; when ``None`` (default), the spec's ``target_sparsity`` is</span>
 </span><span data-line="73"><span class="sd">            applied immediately and statically.</span>
-</span><span data-line="74"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="74"><span class="sd">    """</span>
 </span><span data-line="75">
 </span><span data-line="76">    <span class="n">sparsity_schedule</span><span class="p">:</span> <span class="n">SparsityScheduleBase</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></div>
 
@@ -406,7 +410,7 @@ data-aria-dark="Switch to auto color mode">
 <div class="viewcode-block" id="MagnitudePrunerConfig">
 <a class="viewcode-back" href="../../../../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html#coreai_opt.pruning.MagnitudePrunerConfig">[docs]</a>
 </span><span data-line="79"><span class="k">class</span><span class="w"> </span><span class="nc">MagnitudePrunerConfig</span><span class="p">(</span><span class="n">CompressionConfig</span><span class="p">[</span><span class="n">ModuleMagnitudePrunerConfig</span><span class="p">]):</span>
-</span><span data-line="80"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Top-level configuration for magnitude pruning.</span>
+</span><span data-line="80"><span class="w">    </span><span class="sd">"""Top-level configuration for magnitude pruning.</span>
 </span><span data-line="81">
 </span><span data-line="82"><span class="sd">    Attributes:</span>
 </span><span data-line="83"><span class="sd">        global_config (ModuleMagnitudePrunerConfig | None): Default pruning</span>
@@ -419,9 +423,9 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="90"><span class="sd">    Example:</span>
 </span><span data-line="91"><span class="sd">        &gt;&gt;&gt; config = MagnitudePrunerConfig()  # 50 % sparsity everywhere</span>
 </span><span data-line="92"><span class="sd">        &gt;&gt;&gt; config = MagnitudePrunerConfig(</span>
-</span><span data-line="93"><span class="sd">        ...     module_name_configs={&quot;layer1&quot;: None}  # skip layer1</span>
+</span><span data-line="93"><span class="sd">        ...     module_name_configs={"layer1": None}  # skip layer1</span>
 </span><span data-line="94"><span class="sd">        ... )</span>
-</span><span data-line="95"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="95"><span class="sd">    """</span>
 </span><span data-line="96">
 </span><span data-line="97">    <span class="n">_CONFIG_KEY</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">_MAGNITUDE_PRUNING_CONFIG</span>
 </span><span data-line="98">    <span class="n">_SPEC_KEY</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">_PRUNING_SPEC</span></div>

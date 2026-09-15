@@ -77,9 +77,9 @@ data-aria-dark="Switch to auto color mode">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/model_examples.html">Model Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/model_examples/resnet50.html">ResNet50 model: Weight + Activation Quantization (PTQ)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/model_examples/mixed_precision_palettization.html">Mixed-precision palettization with ResNet50</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../examples/model_examples/edsr.html">EDSR model: Weight palettization + activation quantization (PTQ)</a></li>
 </ul>
 </li>
 </ul>
@@ -90,6 +90,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="../../../quantization/overview.html">API Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../quantization/config.html">Config API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../quantization/advanced.html">Deeper Dive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../quantization/composite_op_quantization.html">Quantization with Composite Ops</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../palettization/index.html">Palettization</a><ul>
@@ -110,7 +111,6 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l1"><a class="reference internal" href="../../../utils/joint_compression.html">Joint Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../utils/mixed_precision.html">Mixed-Precision Compression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../utils/activation_comparison.html">Comparing Intermediate Activations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../utils/composite_op_quantization.html">Quantizing Models with Core AI Composite Ops</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../utils/casting.html">16-bit PyTorch Model Casting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../utils/coreai_compression.html">Compressing Core AI Models</a></li>
 </ul>
@@ -172,9 +172,13 @@ data-aria-dark="Switch to auto color mode">
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.PalettizationSpec.html">coreai_opt.palettization.PalettizationSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.config.OpKMeansPalettizerConfig.html">coreai_opt.palettization.config.OpKMeansPalettizerConfig</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.config.PATSchedule.html">coreai_opt.palettization.config.PATSchedule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.DefaultTrainingSpec.html">coreai_opt.palettization.spec.DefaultTrainingSpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.PalettizationGranularity.html">coreai_opt.palettization.spec.PalettizationGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.PerGroupedChannelGranularity.html">coreai_opt.palettization.spec.PerGroupedChannelGranularity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.PerTensorGranularity.html">coreai_opt.palettization.spec.PerTensorGranularity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.TrainingStrategy.html">coreai_opt.palettization.spec.TrainingStrategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.TrainingStrategySpec.html">coreai_opt.palettization.spec.TrainingStrategySpec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.palettization.spec.default_weight_palettization_spec.html">coreai_opt.palettization.spec.default_weight_palettization_spec</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.pruning.MagnitudePruner.html">coreai_opt.pruning.MagnitudePruner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/coreai_opt.pruning.MagnitudePrunerConfig.html">coreai_opt.pruning.MagnitudePrunerConfig</a></li>
@@ -321,7 +325,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="3"><span class="c1"># Use of this source code is governed by a BSD-3-Clause license that can</span>
 </span><span data-line="4"><span class="c1"># be found in the LICENSE file or at https://opensource.org/licenses/BSD-3-Clause</span>
 </span><span data-line="5">
-</span><span data-line="6"><span class="sd">&quot;&quot;&quot;Public API for model operation inspection.&quot;&quot;&quot;</span>
+</span><span data-line="6"><span class="sd">"""Public API for model operation inspection."""</span>
 </span><span data-line="7">
 </span><span data-line="8"><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 </span><span data-line="9">
@@ -350,7 +354,7 @@ data-aria-dark="Switch to auto color mode">
 <div class="viewcode-block" id="ModelInspector">
 <a class="viewcode-back" href="../../../api/generated/coreai_opt.inspection.ModelInspector.html#coreai_opt.inspection.ModelInspector">[docs]</a>
 </span><span data-line="32"><span class="k">class</span><span class="w"> </span><span class="nc">ModelInspector</span><span class="p">:</span>
-</span><span data-line="33"><span class="w">    </span><span class="sd">&quot;&quot;&quot;Inspect operations in a PyTorch model for compression configuration.</span>
+</span><span data-line="33"><span class="w">    </span><span class="sd">"""Inspect operations in a PyTorch model for compression configuration.</span>
 </span><span data-line="34">
 </span><span data-line="35"><span class="sd">    Accepts an ``nn.Module`` with example inputs, auto-exports the model</span>
 </span><span data-line="36"><span class="sd">    (for graph mode), and provides query methods for discovering operation</span>
@@ -368,16 +372,16 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="48"><span class="sd">            When ``None``, all ops in the model are included.</span>
 </span><span data-line="49"><span class="sd">        dynamic_shapes: Only relevant for graph execution mode.</span>
 </span><span data-line="50"><span class="sd">            Optional dynamic shapes specification for torch.export.</span>
-</span><span data-line="51"><span class="sd">        export_with_no_grad: Only relevant for &quot;graph&quot; execution mode.</span>
+</span><span data-line="51"><span class="sd">        export_with_no_grad: Only relevant for "graph" execution mode.</span>
 </span><span data-line="52"><span class="sd">            Whether to call torch.export.export within a</span>
 </span><span data-line="53"><span class="sd">            torch.no_grad() context. Defaults to True.</span>
 </span><span data-line="54">
 </span><span data-line="55"><span class="sd">    Raises:</span>
 </span><span data-line="56"><span class="sd">        TypeError: If *model* is not an ``nn.Module``, or if *model* is a</span>
-</span><span data-line="57"><span class="sd">            ``GraphModule`` and *execution_mode* is ``&quot;eager&quot;``.</span>
+</span><span data-line="57"><span class="sd">            ``GraphModule`` and *execution_mode* is ``"eager"``.</span>
 </span><span data-line="58"><span class="sd">        RuntimeError: If model export fails (graph mode).</span>
 </span><span data-line="59"><span class="sd">        ValueError: If example_inputs is None without the right model/execution_mode combination, or</span>
-</span><span data-line="60"><span class="sd">            if execution_mode is not either &quot;eager&quot; or &quot;graph&quot;.</span>
+</span><span data-line="60"><span class="sd">            if execution_mode is not either "eager" or "graph".</span>
 </span><span data-line="61">
 </span><span data-line="62"><span class="sd">    Example:</span>
 </span><span data-line="63"><span class="sd">        &gt;&gt;&gt; import torch</span>
@@ -389,7 +393,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="69"><span class="sd">        Inspect all compressable ops for the Quantizer compressor:</span>
 </span><span data-line="70">
 </span><span data-line="71"><span class="sd">        &gt;&gt;&gt; inspector = ModelInspector(model, (torch.randn(1, 10),),</span>
-</span><span data-line="72"><span class="sd">        ...     execution_mode=&quot;graph&quot;, compressor=Quantizer)</span>
+</span><span data-line="72"><span class="sd">        ...     execution_mode="graph", compressor=Quantizer)</span>
 </span><span data-line="73">
 </span><span data-line="74"><span class="sd">        Query all ops in the model:</span>
 </span><span data-line="75">
@@ -403,11 +407,11 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="83">
 </span><span data-line="84"><span class="sd">        &gt;&gt;&gt; root = inspector.summary.model</span>
 </span><span data-line="85"><span class="sd">        &gt;&gt;&gt; for name, child in root.named_children():</span>
-</span><span data-line="86"><span class="sd">        ...     print(f&quot;{name}: {child.module_type}, {len(child.ops)} ops&quot;)</span>
+</span><span data-line="86"><span class="sd">        ...     print(f"{name}: {child.module_type}, {len(child.ops)} ops")</span>
 </span><span data-line="87">
 </span><span data-line="88"><span class="sd">        Look up a specific submodule by fully-qualified name:</span>
 </span><span data-line="89">
-</span><span data-line="90"><span class="sd">        &gt;&gt;&gt; linear_mod = root.get_submodule(&quot;0&quot;)</span>
+</span><span data-line="90"><span class="sd">        &gt;&gt;&gt; linear_mod = root.get_submodule("0")</span>
 </span><span data-line="91"><span class="sd">        &gt;&gt;&gt; print(linear_mod.module_type)  # torch.nn.modules.linear.Linear</span>
 </span><span data-line="92"><span class="sd">        &gt;&gt;&gt; print(linear_mod.ops)          # ops directly owned by this module</span>
 </span><span data-line="93">
@@ -418,10 +422,10 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="98"><span class="sd">        Filter ops by type, name pattern, or module with the same filtering logic which Quantizer</span>
 </span><span data-line="99"><span class="sd">        uses:</span>
 </span><span data-line="100">
-</span><span data-line="101"><span class="sd">        &gt;&gt;&gt; inspector.get_matched_ops_for_op_type(&quot;linear&quot;)</span>
-</span><span data-line="102"><span class="sd">        &gt;&gt;&gt; inspector.get_matched_ops_for_op_name(&quot;.*linear.*&quot;)</span>
+</span><span data-line="101"><span class="sd">        &gt;&gt;&gt; inspector.get_matched_ops_for_op_type("linear")</span>
+</span><span data-line="102"><span class="sd">        &gt;&gt;&gt; inspector.get_matched_ops_for_op_name(".*linear.*")</span>
 </span><span data-line="103"><span class="sd">        &gt;&gt;&gt; inspector.get_matched_ops_for_module_type(nn.Linear)</span>
-</span><span data-line="104"><span class="sd">    &quot;&quot;&quot;</span>
+</span><span data-line="104"><span class="sd">    """</span>
 </span><span data-line="105">
 </span><span data-line="106">    <span class="n">_summary</span><span class="p">:</span> <span class="n">ModelSummary</span>
 </span><span data-line="107">
@@ -458,9 +462,9 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="135">        <span class="n">dynamic_shapes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
 </span><span data-line="136">        <span class="n">export_with_no_grad</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
 </span><span data-line="137">    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span data-line="138"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate constructor arguments.&quot;&quot;&quot;</span>
+</span><span data-line="138"><span class="w">        </span><span class="sd">"""Validate constructor arguments."""</span>
 </span><span data-line="139">        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">GraphModule</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">)):</span>
-</span><span data-line="140">            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Expected a torch.fx.GraphModule or torch.nn.Module, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span data-line="140">            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Expected a torch.fx.GraphModule or torch.nn.Module, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
 </span><span data-line="141">            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 </span><span data-line="142">
 </span><span data-line="143">        <span class="k">if</span> <span class="n">execution_mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ExecutionMode</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">,</span> <span class="n">ExecutionMode</span><span class="o">.</span><span class="n">EAGER</span><span class="p">):</span>
@@ -470,68 +474,68 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="147">            <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">GraphModule</span><span class="p">)</span> <span class="ow">and</span> <span class="n">execution_mode</span> <span class="o">==</span> <span class="n">ExecutionMode</span><span class="o">.</span><span class="n">GRAPH</span>
 </span><span data-line="148">        <span class="p">):</span>
 </span><span data-line="149">            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-</span><span data-line="150">                <span class="s2">&quot;example_inputs can only be None when model is a GraphModule and &quot;</span>
-</span><span data-line="151">                <span class="s2">&quot;execution_mode is ExecutionMode.GRAPH&quot;</span>
+</span><span data-line="150">                <span class="s2">"example_inputs can only be None when model is a GraphModule and "</span>
+</span><span data-line="151">                <span class="s2">"execution_mode is ExecutionMode.GRAPH"</span>
 </span><span data-line="152">            <span class="p">)</span>
 </span><span data-line="153">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 </span><span data-line="154">
 </span><span data-line="155">        <span class="k">if</span> <span class="n">compressor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">compressor</span><span class="p">,</span> <span class="p">(</span><span class="n">Quantizer</span><span class="p">,</span> <span class="n">KMeansPalettizer</span><span class="p">)):</span>
 </span><span data-line="156">            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-</span><span data-line="157">                <span class="sa">f</span><span class="s2">&quot;Unsupported compressor class </span><span class="si">{</span><span class="n">compressor</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">. &quot;</span>
-</span><span data-line="158">                <span class="s2">&quot;Supported compressors: Quantizer, KMeansPalettizer.&quot;</span>
+</span><span data-line="157">                <span class="sa">f</span><span class="s2">"Unsupported compressor class </span><span class="si">{</span><span class="n">compressor</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">. "</span>
+</span><span data-line="158">                <span class="s2">"Supported compressors: Quantizer, KMeansPalettizer."</span>
 </span><span data-line="159">            <span class="p">)</span>
 </span><span data-line="160">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 </span><span data-line="161">
 </span><span data-line="162">        <span class="k">if</span> <span class="n">execution_mode</span> <span class="o">==</span> <span class="n">ExecutionMode</span><span class="o">.</span><span class="n">GRAPH</span><span class="p">:</span>
 </span><span data-line="163">            <span class="k">if</span> <span class="n">compressor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">compressor</span><span class="p">,</span> <span class="n">Quantizer</span><span class="p">):</span>
 </span><span data-line="164">                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-</span><span data-line="165">                    <span class="sa">f</span><span class="s2">&quot;Compressor </span><span class="si">{</span><span class="n">compressor</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> is not supported in graph mode. &quot;</span>
-</span><span data-line="166">                    <span class="s2">&quot;Only Quantizer is supported for graph mode inspection.&quot;</span>
+</span><span data-line="165">                    <span class="sa">f</span><span class="s2">"Compressor </span><span class="si">{</span><span class="n">compressor</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> is not supported in graph mode. "</span>
+</span><span data-line="166">                    <span class="s2">"Only Quantizer is supported for graph mode inspection."</span>
 </span><span data-line="167">                <span class="p">)</span>
 </span><span data-line="168">                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 </span><span data-line="169">        <span class="k">else</span><span class="p">:</span>
 </span><span data-line="170">            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">fx</span><span class="o">.</span><span class="n">GraphModule</span><span class="p">):</span>
 </span><span data-line="171">                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-</span><span data-line="172">                    <span class="s2">&quot;Expected a torch.nn.Module for Eager execution_mode, got torch.fx.GraphModule&quot;</span>
+</span><span data-line="172">                    <span class="s2">"Expected a torch.nn.Module for Eager execution_mode, got torch.fx.GraphModule"</span>
 </span><span data-line="173">                <span class="p">)</span>
 </span><span data-line="174">                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 </span><span data-line="175">            <span class="k">if</span> <span class="n">dynamic_shapes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 </span><span data-line="176">                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-</span><span data-line="177">                    <span class="s2">&quot;dynamic_shapes is only supported in graph mode and will be ignored.&quot;</span><span class="p">,</span>
+</span><span data-line="177">                    <span class="s2">"dynamic_shapes is only supported in graph mode and will be ignored."</span><span class="p">,</span>
 </span><span data-line="178">                    <span class="ne">UserWarning</span><span class="p">,</span>
 </span><span data-line="179">                    <span class="n">stacklevel</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 </span><span data-line="180">                <span class="p">)</span>
 </span><span data-line="181">            <span class="k">if</span> <span class="ow">not</span> <span class="n">export_with_no_grad</span><span class="p">:</span>
 </span><span data-line="182">                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-</span><span data-line="183">                    <span class="s2">&quot;export_with_no_grad is only supported in graph mode and will be ignored.&quot;</span><span class="p">,</span>
+</span><span data-line="183">                    <span class="s2">"export_with_no_grad is only supported in graph mode and will be ignored."</span><span class="p">,</span>
 </span><span data-line="184">                    <span class="ne">UserWarning</span><span class="p">,</span>
 </span><span data-line="185">                    <span class="n">stacklevel</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 </span><span data-line="186">                <span class="p">)</span>
 </span><span data-line="187">
 </span><span data-line="188">    <span class="nd">@property</span>
 </span><span data-line="189">    <span class="k">def</span><span class="w"> </span><span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelSummary</span><span class="p">:</span>
-</span><span data-line="190"><span class="w">        </span><span class="sd">&quot;&quot;&quot;The underlying operation summary.&quot;&quot;&quot;</span>
+</span><span data-line="190"><span class="w">        </span><span class="sd">"""The underlying operation summary."""</span>
 </span><span data-line="191">        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_summary</span>
 </span><span data-line="192">
 <div class="viewcode-block" id="ModelInspector.get_matched_ops_for_op_type">
 <a class="viewcode-back" href="../../../api/generated/coreai_opt.inspection.ModelInspector.html#coreai_opt.inspection.ModelInspector.get_matched_ops_for_op_type">[docs]</a>
 </span><span data-line="193">    <span class="k">def</span><span class="w"> </span><span class="nf">get_matched_ops_for_op_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">OpInfo</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-</span><span data-line="194"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return operations matching the given op type.</span>
+</span><span data-line="194"><span class="w">        </span><span class="sd">"""Return operations matching the given op type.</span>
 </span><span data-line="195">
 </span><span data-line="196"><span class="sd">        Args:</span>
 </span><span data-line="197"><span class="sd">            op_type (str): The operation type to filter by (e.g.,</span>
-</span><span data-line="198"><span class="sd">                ``&quot;conv2d&quot;``, ``&quot;linear&quot;``).</span>
+</span><span data-line="198"><span class="sd">                ``"conv2d"``, ``"linear"``).</span>
 </span><span data-line="199">
 </span><span data-line="200"><span class="sd">        Returns:</span>
 </span><span data-line="201"><span class="sd">            tuple[OpInfo, ...]: Matching operations.</span>
-</span><span data-line="202"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="202"><span class="sd">        """</span>
 </span><span data-line="203">        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">op</span> <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_summary</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">all_ops</span><span class="p">()</span> <span class="k">if</span> <span class="n">op</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="n">op_type</span><span class="p">)</span></div>
 
 </span><span data-line="204">
 <div class="viewcode-block" id="ModelInspector.get_matched_ops_for_op_name">
 <a class="viewcode-back" href="../../../api/generated/coreai_opt.inspection.ModelInspector.html#coreai_opt.inspection.ModelInspector.get_matched_ops_for_op_name">[docs]</a>
 </span><span data-line="205">    <span class="k">def</span><span class="w"> </span><span class="nf">get_matched_ops_for_op_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">OpInfo</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-</span><span data-line="206"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return operations whose name matches the given regex pattern.</span>
+</span><span data-line="206"><span class="w">        </span><span class="sd">"""Return operations whose name matches the given regex pattern.</span>
 </span><span data-line="207">
 </span><span data-line="208"><span class="sd">        Uses ``re.fullmatch``, consistent with how ``op_name_config``</span>
 </span><span data-line="209"><span class="sd">        patterns are matched in Graph mode.</span>
@@ -544,37 +548,37 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="216">
 </span><span data-line="217"><span class="sd">        Raises:</span>
 </span><span data-line="218"><span class="sd">            ValueError: If *pattern* is not a valid regex.</span>
-</span><span data-line="219"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="219"><span class="sd">        """</span>
 </span><span data-line="220">        <span class="k">try</span><span class="p">:</span>
 </span><span data-line="221">            <span class="n">compiled</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
 </span><span data-line="222">        <span class="k">except</span> <span class="n">re</span><span class="o">.</span><span class="n">error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span data-line="223">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid regex pattern &#39;</span><span class="si">{</span><span class="n">pattern</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+</span><span data-line="223">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Invalid regex pattern '</span><span class="si">{</span><span class="n">pattern</span><span class="si">}</span><span class="s2">': </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 </span><span data-line="224">        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">op</span> <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_summary</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">all_ops</span><span class="p">()</span> <span class="k">if</span> <span class="n">compiled</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">op_name</span><span class="p">))</span></div>
 
 </span><span data-line="225">
 <div class="viewcode-block" id="ModelInspector.get_matched_ops_for_module_name">
 <a class="viewcode-back" href="../../../api/generated/coreai_opt.inspection.ModelInspector.html#coreai_opt.inspection.ModelInspector.get_matched_ops_for_module_name">[docs]</a>
 </span><span data-line="226">    <span class="k">def</span><span class="w"> </span><span class="nf">get_matched_ops_for_module_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">OpInfo</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-</span><span data-line="227"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return operations whose module stack contains the given module name.</span>
+</span><span data-line="227"><span class="w">        </span><span class="sd">"""Return operations whose module stack contains the given module name.</span>
 </span><span data-line="228">
-</span><span data-line="229"><span class="sd">        Uses ``re.fullmatch`` against each module FQN in the op&#39;s module</span>
+</span><span data-line="229"><span class="sd">        Uses ``re.fullmatch`` against each module FQN in the op's module</span>
 </span><span data-line="230"><span class="sd">        stack, consistent with how ``module_name_configs`` patterns are</span>
 </span><span data-line="231"><span class="sd">        matched in Graph mode.</span>
 </span><span data-line="232">
 </span><span data-line="233"><span class="sd">        Args:</span>
 </span><span data-line="234"><span class="sd">            module_name (str): A regex pattern to match against module FQNs</span>
-</span><span data-line="235"><span class="sd">                (e.g., ``&quot;encoder.layer1&quot;``, ``&quot;encoder\\..*&quot;``).</span>
+</span><span data-line="235"><span class="sd">                (e.g., ``"encoder.layer1"``, ``"encoder\\..*"``).</span>
 </span><span data-line="236">
 </span><span data-line="237"><span class="sd">        Returns:</span>
 </span><span data-line="238"><span class="sd">            tuple[OpInfo, ...]: Matching operations.</span>
 </span><span data-line="239">
 </span><span data-line="240"><span class="sd">        Raises:</span>
 </span><span data-line="241"><span class="sd">            ValueError: If *module_name* is not a valid regex.</span>
-</span><span data-line="242"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="242"><span class="sd">        """</span>
 </span><span data-line="243">        <span class="k">try</span><span class="p">:</span>
 </span><span data-line="244">            <span class="n">compiled</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
 </span><span data-line="245">        <span class="k">except</span> <span class="n">re</span><span class="o">.</span><span class="n">error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span data-line="246">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid regex pattern &#39;</span><span class="si">{</span><span class="n">module_name</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+</span><span data-line="246">            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Invalid regex pattern '</span><span class="si">{</span><span class="n">module_name</span><span class="si">}</span><span class="s2">': </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 </span><span data-line="247">        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span>
 </span><span data-line="248">            <span class="n">op</span>
 </span><span data-line="249">            <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_summary</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">all_ops</span><span class="p">()</span>
@@ -585,20 +589,20 @@ data-aria-dark="Switch to auto color mode">
 <div class="viewcode-block" id="ModelInspector.get_matched_ops_for_module_type">
 <a class="viewcode-back" href="../../../api/generated/coreai_opt.inspection.ModelInspector.html#coreai_opt.inspection.ModelInspector.get_matched_ops_for_module_type">[docs]</a>
 </span><span data-line="253">    <span class="k">def</span><span class="w"> </span><span class="nf">get_matched_ops_for_module_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module_type</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">OpInfo</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-</span><span data-line="254"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return operations whose module stack contains the given type.</span>
+</span><span data-line="254"><span class="w">        </span><span class="sd">"""Return operations whose module stack contains the given type.</span>
 </span><span data-line="255">
 </span><span data-line="256"><span class="sd">        Matches using exact string equality against the fully-qualified</span>
 </span><span data-line="257"><span class="sd">        type name, consistent with how ``module_type_configs`` keys are</span>
 </span><span data-line="258"><span class="sd">        resolved in the quantizer.  Accepts either a class (converted via</span>
 </span><span data-line="259"><span class="sd">        :func:`~coreai_opt._utils.python_utils.fqn`) or a fully-qualified</span>
-</span><span data-line="260"><span class="sd">        type string (e.g., ``&quot;torch.nn.modules.conv.Conv2d&quot;``).</span>
+</span><span data-line="260"><span class="sd">        type string (e.g., ``"torch.nn.modules.conv.Conv2d"``).</span>
 </span><span data-line="261">
 </span><span data-line="262"><span class="sd">        Args:</span>
 </span><span data-line="263"><span class="sd">            module_type (type | str): Module type to filter by.</span>
 </span><span data-line="264">
 </span><span data-line="265"><span class="sd">        Returns:</span>
 </span><span data-line="266"><span class="sd">            tuple[OpInfo, ...]: Matching operations.</span>
-</span><span data-line="267"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="267"><span class="sd">        """</span>
 </span><span data-line="268">        <span class="n">type_fqn</span> <span class="o">=</span> <span class="n">_fqn</span><span class="p">(</span><span class="n">module_type</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module_type</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span> <span class="k">else</span> <span class="n">module_type</span>
 </span><span data-line="269">        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span>
 </span><span data-line="270">            <span class="n">op</span>
@@ -610,7 +614,7 @@ data-aria-dark="Switch to auto color mode">
 <div class="viewcode-block" id="ModelInspector.format_summary">
 <a class="viewcode-back" href="../../../api/generated/coreai_opt.inspection.ModelInspector.html#coreai_opt.inspection.ModelInspector.format_summary">[docs]</a>
 </span><span data-line="275">    <span class="k">def</span><span class="w"> </span><span class="nf">format_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colorize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-</span><span data-line="276"><span class="w">        </span><span class="sd">&quot;&quot;&quot;Format discovered operations as a module-hierarchy tree string.</span>
+</span><span data-line="276"><span class="w">        </span><span class="sd">"""Format discovered operations as a module-hierarchy tree string.</span>
 </span><span data-line="277">
 </span><span data-line="278"><span class="sd">        Args:</span>
 </span><span data-line="279"><span class="sd">            colorize (bool | None): Whether to include ANSI color codes in the</span>
@@ -619,7 +623,7 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="282">
 </span><span data-line="283"><span class="sd">        Returns:</span>
 </span><span data-line="284"><span class="sd">            str: The formatted tree.</span>
-</span><span data-line="285"><span class="sd">        &quot;&quot;&quot;</span>
+</span><span data-line="285"><span class="sd">        """</span>
 </span><span data-line="286">        <span class="k">return</span> <span class="n">_format_model_summary</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_summary</span><span class="p">,</span> <span class="n">colorize</span><span class="o">=</span><span class="n">colorize</span><span class="p">)</span></div>
 </div>
 
