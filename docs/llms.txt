@@ -45,6 +45,7 @@
 - [coreai_opt.coreai_utils.palettize_weights](api/generated/coreai_opt.coreai_utils.palettize_weights.html.md): Palettize weights in a Core AI AIProgram (MLIR<CoreAI> IR) by using Core AI ops.
 - [coreai_opt.coreai_utils.quantize_weights](api/generated/coreai_opt.coreai_utils.quantize_weights.html.md): Quantize weights in a Core AI AIProgram (MLIR<CoreAI> IR) by using Core AI ops.
 - [coreai_opt.coreai_utils.sparsify_weights](api/generated/coreai_opt.coreai_utils.sparsify_weights.html.md): Sparsify weights in a Core AI AIProgram (MLIR<CoreAI> IR) by using Core AI ops.
+- [coreai_opt.inspection.BitsPerWeightResult](api/generated/coreai_opt.inspection.BitsPerWeightResult.html.md): Bases: `object`
 - [coreai_opt.inspection.BoundaryEdge](api/generated/coreai_opt.inspection.BoundaryEdge.html.md): Bases: `object`
 - [coreai_opt.inspection.InputEdge](api/generated/coreai_opt.inspection.InputEdge.html.md): Bases: `object`
 - [coreai_opt.inspection.ModelInspector](api/generated/coreai_opt.inspection.ModelInspector.html.md): Bases: `object`
@@ -53,6 +54,7 @@
 - [coreai_opt.inspection.ModuleInfo](api/generated/coreai_opt.inspection.ModuleInfo.html.md): Bases: `object`
 - [coreai_opt.inspection.OpInfo](api/generated/coreai_opt.inspection.OpInfo.html.md): Bases: `object`
 - [coreai_opt.inspection.SourceFrame](api/generated/coreai_opt.inspection.SourceFrame.html.md): Bases: `object`
+- [coreai_opt.inspection.bits_per_weight](api/generated/coreai_opt.inspection.bits_per_weight.html.md): Compute the average bits-per-weight of a prepared `coreai-opt` model.
 - [coreai_opt.palettization.KMeansPalettizer](api/generated/coreai_opt.palettization.KMeansPalettizer.html.md): Bases: `_BasePalettizer`, `EagerCompressionComponentBuilderMixin`
 - [coreai_opt.palettization.KMeansPalettizerConfig](api/generated/coreai_opt.palettization.KMeansPalettizerConfig.html.md): Bases: `CompressionConfig[ModuleKMeansPalettizerConfig]`
 - [presets](api/generated/coreai_opt.palettization.KMeansPalettizerConfig.presets.html.md): Convenient factories for common compression recipes. Each preset

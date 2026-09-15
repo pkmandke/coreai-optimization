@@ -144,11 +144,11 @@ Backend-specific processing:
     CoreAI (default), CoreML, and \_TORCH backends.
   * **mmap_dir** (*str* *|* *None*) – If provided, serialize finalized quantized
     weights to safetensors files under this directory and re-load
-    them via mmap. Only supported in eager execution mode with the
-    CoreAI backend; raises `ValueError` otherwise. The files in
-    `mmap_dir` must remain in place for the lifetime of the
-    returned model; removing them invalidates the mmap-backed
-    weights.
+    them via mmap, one file per weight. Supported in both execution
+    modes, with the CoreAI backend only and raises `ValueError`
+    for other backends. The files must remain in place for
+    the lifetime of the returned model; removing them invalidates
+    the mmap-backed weights.
 * **Returns:**
   The finalized quantized model ready for deployment on the target backend.
 * **Return type:**

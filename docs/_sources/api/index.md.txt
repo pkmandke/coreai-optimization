@@ -89,6 +89,7 @@ Utilities for inspecting model operations and compression configuration.
 .. autosummary::
    :toctree: generated
 
+   coreai_opt.inspection.BitsPerWeightResult
    coreai_opt.inspection.BoundaryEdge
    coreai_opt.inspection.InputEdge
    coreai_opt.inspection.ModelInspector
@@ -97,6 +98,7 @@ Utilities for inspecting model operations and compression configuration.
    coreai_opt.inspection.ModuleInfo
    coreai_opt.inspection.OpInfo
    coreai_opt.inspection.SourceFrame
+   coreai_opt.inspection.bits_per_weight
 ```
 
 ## coreai_opt.palettization

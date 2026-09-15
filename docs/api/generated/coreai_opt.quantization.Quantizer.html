@@ -143,6 +143,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.coreai_utils.quantize_weights.html">coreai_opt.coreai_utils.quantize_weights</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.coreai_utils.sparsify_weights.html">coreai_opt.coreai_utils.sparsify_weights</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.coreai_utils.common.QScheme.html">coreai_opt.coreai_utils.common.QScheme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coreai_opt.inspection.BitsPerWeightResult.html">coreai_opt.inspection.BitsPerWeightResult</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.inspection.BoundaryEdge.html">coreai_opt.inspection.BoundaryEdge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.inspection.InputEdge.html">coreai_opt.inspection.InputEdge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.inspection.ModelInspector.html">coreai_opt.inspection.ModelInspector</a></li>
@@ -151,6 +152,7 @@ data-aria-dark="Switch to auto color mode">
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.inspection.ModuleInfo.html">coreai_opt.inspection.ModuleInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.inspection.OpInfo.html">coreai_opt.inspection.OpInfo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.inspection.SourceFrame.html">coreai_opt.inspection.SourceFrame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coreai_opt.inspection.bits_per_weight.html">coreai_opt.inspection.bits_per_weight</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.KMeansPalettizer.html">coreai_opt.palettization.KMeansPalettizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="coreai_opt.palettization.KMeansPalettizerConfig.html">coreai_opt.palettization.KMeansPalettizerConfig</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="coreai_opt.palettization.KMeansPalettizerConfig.presets.html">presets</a><ul>
@@ -646,11 +648,11 @@ prepared model.</p></li>
 CoreAI (default), CoreML, and _TORCH backends.</p></li>
 <li><p><strong>mmap_dir</strong> (<em>str</em><em> | </em><em>None</em>) – If provided, serialize finalized quantized
 weights to safetensors files under this directory and re-load
-them via mmap. Only supported in eager execution mode with the
-CoreAI backend; raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> otherwise. The files in
-<code class="docutils literal notranslate"><span class="pre">mmap_dir</span></code> must remain in place for the lifetime of the
-returned model; removing them invalidates the mmap-backed
-weights.</p></li>
+them via mmap, one file per weight. Supported in both execution
+modes, with the CoreAI backend only and raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>
+for other backends. The files must remain in place for
+the lifetime of the returned model; removing them invalidates
+the mmap-backed weights.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

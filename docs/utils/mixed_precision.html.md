@@ -66,7 +66,7 @@ Likewise, the per-layer setting being varied across candidate configs does not h
 
 ## Utility for computing analytical Bits Per Weight (BPW)
 
-`bits_per_weight()` is a utility that computes an analytical BPW estimate from a *prepared* `coreai-opt` model.
+[`bits_per_weight()`](../api/generated/coreai_opt.inspection.bits_per_weight.md#coreai_opt.inspection.bits_per_weight) is a utility that computes an analytical BPW estimate from a *prepared* `coreai-opt` model.
 
 It estimates the average bit width of a model, amortizing compression overhead such as quantization scales and zero-points as well as palettization look-up tables and per-channel scales. Compressed tensors are counted at their effective compressed cost and everything else (biases, norms and buffers such as BatchNorm running statistics) is counted at its full-precision dtype cost.
 
@@ -87,7 +87,7 @@ result = bits_per_weight(prepared_model)
 print(result.bpw)  # e.g. 8.86
 ```
 
-The returned `BitsPerWeightResult` also exposes `per_module_map`, a mapping from module name to the module’s own average BPW, which is useful for inspecting how bits are distributed across different parts of the model.
+The returned [`BitsPerWeightResult`](../api/generated/coreai_opt.inspection.BitsPerWeightResult.md#coreai_opt.inspection.BitsPerWeightResult) also exposes `per_module_map`, a mapping from module name to the module’s own average BPW, which is useful for inspecting how bits are distributed across different parts of the model.
 
 The utility supports:
 
@@ -103,4 +103,4 @@ Pruned models and graph-mode (`torch.fx.GraphModule`) quantized models are curre
 #### NOTE
 This is an analytical estimate computed on a *prepared* `coreai-opt` model and as such does not reflect the exported asset size of any [`finalize()` backend](../introduction/integration_coreai.md). Passing a finalized model to the utility is not supported.
 
-For the full API, see the `bits_per_weight()` reference.
+For the full API, see the [`bits_per_weight()`](../api/generated/coreai_opt.inspection.bits_per_weight.md#coreai_opt.inspection.bits_per_weight) reference.

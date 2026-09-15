@@ -162,15 +162,17 @@ Common enums and constants for coreai_opt.coreai_utils.
 
 Utilities for inspecting model operations and compression configuration.
 
-| [`coreai_opt.inspection.BoundaryEdge`](generated/coreai_opt.inspection.BoundaryEdge.md#coreai_opt.inspection.BoundaryEdge)(op, index)        | A single data-flow edge crossing a module boundary.                       |
-|----------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
-| [`coreai_opt.inspection.InputEdge`](generated/coreai_opt.inspection.InputEdge.md#coreai_opt.inspection.InputEdge)(op, output_idx)            | One input edge into an op, pairing the producing op with its output slot. |
-| [`coreai_opt.inspection.ModelInspector`](generated/coreai_opt.inspection.ModelInspector.md#coreai_opt.inspection.ModelInspector)(model, ...) | Inspect operations in a PyTorch model for compression configuration.      |
-| [`coreai_opt.inspection.ModelSummary`](generated/coreai_opt.inspection.ModelSummary.md#coreai_opt.inspection.ModelSummary)(model, mode)      | Complete listing of operations discovered in a model.                     |
-| [`coreai_opt.inspection.ModuleContext`](generated/coreai_opt.inspection.ModuleContext.md#coreai_opt.inspection.ModuleContext)(...)           | One level of the `nn.Module` nesting hierarchy.                           |
-| [`coreai_opt.inspection.ModuleInfo`](generated/coreai_opt.inspection.ModuleInfo.md#coreai_opt.inspection.ModuleInfo)(...)                    | A node in the `nn.Module` hierarchy with its directly-owned ops.          |
-| [`coreai_opt.inspection.OpInfo`](generated/coreai_opt.inspection.OpInfo.md#coreai_opt.inspection.OpInfo)(op_name, ...)                       | Information about a single operation discovered in a model.               |
-| [`coreai_opt.inspection.SourceFrame`](generated/coreai_opt.inspection.SourceFrame.md#coreai_opt.inspection.SourceFrame)(filename, ...)       | A single frame in the source call stack leading to an operation.          |
+| [`coreai_opt.inspection.BitsPerWeightResult`](generated/coreai_opt.inspection.BitsPerWeightResult.md#coreai_opt.inspection.BitsPerWeightResult)(...)   | Result of a bits-per-weight computation.                                  |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
+| [`coreai_opt.inspection.BoundaryEdge`](generated/coreai_opt.inspection.BoundaryEdge.md#coreai_opt.inspection.BoundaryEdge)(op, index)                  | A single data-flow edge crossing a module boundary.                       |
+| [`coreai_opt.inspection.InputEdge`](generated/coreai_opt.inspection.InputEdge.md#coreai_opt.inspection.InputEdge)(op, output_idx)                      | One input edge into an op, pairing the producing op with its output slot. |
+| [`coreai_opt.inspection.ModelInspector`](generated/coreai_opt.inspection.ModelInspector.md#coreai_opt.inspection.ModelInspector)(model, ...)           | Inspect operations in a PyTorch model for compression configuration.      |
+| [`coreai_opt.inspection.ModelSummary`](generated/coreai_opt.inspection.ModelSummary.md#coreai_opt.inspection.ModelSummary)(model, mode)                | Complete listing of operations discovered in a model.                     |
+| [`coreai_opt.inspection.ModuleContext`](generated/coreai_opt.inspection.ModuleContext.md#coreai_opt.inspection.ModuleContext)(...)                     | One level of the `nn.Module` nesting hierarchy.                           |
+| [`coreai_opt.inspection.ModuleInfo`](generated/coreai_opt.inspection.ModuleInfo.md#coreai_opt.inspection.ModuleInfo)(...)                              | A node in the `nn.Module` hierarchy with its directly-owned ops.          |
+| [`coreai_opt.inspection.OpInfo`](generated/coreai_opt.inspection.OpInfo.md#coreai_opt.inspection.OpInfo)(op_name, ...)                                 | Information about a single operation discovered in a model.               |
+| [`coreai_opt.inspection.SourceFrame`](generated/coreai_opt.inspection.SourceFrame.md#coreai_opt.inspection.SourceFrame)(filename, ...)                 | A single frame in the source call stack leading to an operation.          |
+| [`coreai_opt.inspection.bits_per_weight`](generated/coreai_opt.inspection.bits_per_weight.md#coreai_opt.inspection.bits_per_weight)(model)             | Compute the average bits-per-weight of a prepared `coreai-opt` model.     |
 
 ## coreai_opt.palettization
 
@@ -1621,7 +1623,7 @@ quantization_config:
 
 This config would apply the FP4 quantization to all supported ops’ weights, and FP8 quantization to all supported ops’ activations at both inputs and outputs. (See discussion in [Two Execution Modes](overview.md#two-execution-modes-graph-and-eager) on the supported ops and patterns for quantization).
 
-To estimate what a weight config like this costs in terms of bits per weight (BPW), use the `bits_per_weight()` utility to get an analytical BPW estimate for a *prepared* `coreai-opt` model.
+To estimate what a weight config like this costs in terms of bits per weight (BPW), use the [`bits_per_weight()`](../api/generated/coreai_opt.inspection.bits_per_weight.md#coreai_opt.inspection.bits_per_weight) utility to get an analytical BPW estimate for a *prepared* `coreai-opt` model.
 
 `global_config` allows access to the scope of all supported ops and modules in the model.
 
@@ -3913,6 +3915,72 @@ are candidates; ops that fail to be sparsified are skipped with a warning.
         has `m <= 0`, or has `n` outside `[0, m]`.
 
 
+# coreai_opt.inspection.BitsPerWeightResult.html.md
+
+# coreai_opt.inspection.BitsPerWeightResult
+
+### *class* coreai_opt.inspection.BitsPerWeightResult(bpw, per_module_map, total_bits, total_weights)
+
+Bases: `object`
+
+Result of a bits-per-weight computation.
+
+* **Parameters:**
+  * **bpw** (*float*)
+  * **per_module_map** (*dict* *[**str* *,* *float* *]*)
+  * **total_bits** (*int*)
+  * **total_weights** (*int*)
+
+#### bpw
+
+Overall average bits per weight across all parameters
+(`total_bits / total_weights`).
+
+* **Type:**
+  float
+
+#### per_module_map
+
+Map from module name to that module’s own
+average bits per weight. Modules with no tensors are omitted.
+
+* **Type:**
+  dict[str, float]
+
+#### total_bits
+
+Total storage cost in bits, including amortized
+compression overhead.
+
+* **Type:**
+  int
+
+#### total_weights
+
+Total number of parameter elements.
+
+* **Type:**
+  int
+
+#### \_\_init_\_(bpw, per_module_map, total_bits, total_weights)
+
+* **Parameters:**
+  * **bpw** (*float*)
+  * **per_module_map** (*dict* *[**str* *,* *float* *]*)
+  * **total_bits** (*int*)
+  * **total_weights** (*int*)
+* **Return type:**
+  None
+
+#### bpw *: float*
+
+#### per_module_map *: dict[str, float]*
+
+#### total_bits *: int*
+
+#### total_weights *: int*
+
+
 # coreai_opt.inspection.BoundaryEdge.html.md
 
 # coreai_opt.inspection.BoundaryEdge
@@ -4585,6 +4653,35 @@ leading/trailing whitespace.
 #### function_name *: str*
 
 #### lineno *: int*
+
+
+# coreai_opt.inspection.bits_per_weight.html.md
+
+# coreai_opt.inspection.bits_per_weight
+
+### coreai_opt.inspection.bits_per_weight(model)
+
+Compute the average bits-per-weight of a prepared `coreai-opt` model.
+
+Walks the module tree once. For each parametrized weight, the dense original
+tensor is counted at its effective compressed cost (eager mode quantization or
+palettization). Every other directly-owned parameter (biases, norms) and every
+buffer (BatchNorm running stats, RoPE caches, etc.) are counted at their
+full-precision dtype cost, regardless of `persistent=`.
+
+* **Parameters:**
+  **model** (*torch.nn.Module*) – A full-precision, eager-mode quantized, or
+  palettized prepared model.
+* **Returns:**
+  Overall bpw, per-module breakdown, and the total
+  number of bits and weights used to derive them.
+* **Return type:**
+  [BitsPerWeightResult](coreai_opt.inspection.BitsPerWeightResult.md#coreai_opt.inspection.BitsPerWeightResult)
+* **Raises:**
+  **NotImplementedError** – If `model` is a graph-mode prepared model (a
+      `torch.fx.GraphModule`) or a `torch.export.ExportedProgram`, or if it
+      contains a weight compression whose storage cost this utility cannot
+      compute.
 
 
 # coreai_opt.palettization.KMeansPalettizer.html.md
@@ -6785,11 +6882,11 @@ Backend-specific processing:
     CoreAI (default), CoreML, and \_TORCH backends.
   * **mmap_dir** (*str* *|* *None*) – If provided, serialize finalized quantized
     weights to safetensors files under this directory and re-load
-    them via mmap. Only supported in eager execution mode with the
-    CoreAI backend; raises `ValueError` otherwise. The files in
-    `mmap_dir` must remain in place for the lifetime of the
-    returned model; removing them invalidates the mmap-backed
-    weights.
+    them via mmap, one file per weight. Supported in both execution
+    modes, with the CoreAI backend only and raises `ValueError`
+    for other backends. The files must remain in place for
+    the lifetime of the returned model; removing them invalidates
+    the mmap-backed weights.
 * **Returns:**
   The finalized quantized model ready for deployment on the target backend.
 * **Return type:**
@@ -8994,7 +9091,7 @@ Likewise, the per-layer setting being varied across candidate configs does not h
 
 ## Utility for computing analytical Bits Per Weight (BPW)
 
-`bits_per_weight()` is a utility that computes an analytical BPW estimate from a *prepared* `coreai-opt` model.
+[`bits_per_weight()`](../api/generated/coreai_opt.inspection.bits_per_weight.md#coreai_opt.inspection.bits_per_weight) is a utility that computes an analytical BPW estimate from a *prepared* `coreai-opt` model.
 
 It estimates the average bit width of a model, amortizing compression overhead such as quantization scales and zero-points as well as palettization look-up tables and per-channel scales. Compressed tensors are counted at their effective compressed cost and everything else (biases, norms and buffers such as BatchNorm running statistics) is counted at its full-precision dtype cost.
 
@@ -9015,7 +9112,7 @@ result = bits_per_weight(prepared_model)
 print(result.bpw)  # e.g. 8.86
 ```
 
-The returned `BitsPerWeightResult` also exposes `per_module_map`, a mapping from module name to the module’s own average BPW, which is useful for inspecting how bits are distributed across different parts of the model.
+The returned [`BitsPerWeightResult`](../api/generated/coreai_opt.inspection.BitsPerWeightResult.md#coreai_opt.inspection.BitsPerWeightResult) also exposes `per_module_map`, a mapping from module name to the module’s own average BPW, which is useful for inspecting how bits are distributed across different parts of the model.
 
 The utility supports:
 
@@ -9031,7 +9128,7 @@ Pruned models and graph-mode (`torch.fx.GraphModule`) quantized models are curre
 #### NOTE
 This is an analytical estimate computed on a *prepared* `coreai-opt` model and as such does not reflect the exported asset size of any [`finalize()` backend](../introduction/integration_coreai.md). Passing a finalized model to the utility is not supported.
 
-For the full API, see the `bits_per_weight()` reference.
+For the full API, see the [`bits_per_weight()`](../api/generated/coreai_opt.inspection.bits_per_weight.md#coreai_opt.inspection.bits_per_weight) reference.
 
 
 # mixed_precision_palettization.html.md

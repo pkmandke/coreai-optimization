@@ -61,15 +61,17 @@ Common enums and constants for coreai_opt.coreai_utils.
 
 Utilities for inspecting model operations and compression configuration.
 
-| [`coreai_opt.inspection.BoundaryEdge`](generated/coreai_opt.inspection.BoundaryEdge.md#coreai_opt.inspection.BoundaryEdge)(op, index)        | A single data-flow edge crossing a module boundary.                       |
-|----------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
-| [`coreai_opt.inspection.InputEdge`](generated/coreai_opt.inspection.InputEdge.md#coreai_opt.inspection.InputEdge)(op, output_idx)            | One input edge into an op, pairing the producing op with its output slot. |
-| [`coreai_opt.inspection.ModelInspector`](generated/coreai_opt.inspection.ModelInspector.md#coreai_opt.inspection.ModelInspector)(model, ...) | Inspect operations in a PyTorch model for compression configuration.      |
-| [`coreai_opt.inspection.ModelSummary`](generated/coreai_opt.inspection.ModelSummary.md#coreai_opt.inspection.ModelSummary)(model, mode)      | Complete listing of operations discovered in a model.                     |
-| [`coreai_opt.inspection.ModuleContext`](generated/coreai_opt.inspection.ModuleContext.md#coreai_opt.inspection.ModuleContext)(...)           | One level of the `nn.Module` nesting hierarchy.                           |
-| [`coreai_opt.inspection.ModuleInfo`](generated/coreai_opt.inspection.ModuleInfo.md#coreai_opt.inspection.ModuleInfo)(...)                    | A node in the `nn.Module` hierarchy with its directly-owned ops.          |
-| [`coreai_opt.inspection.OpInfo`](generated/coreai_opt.inspection.OpInfo.md#coreai_opt.inspection.OpInfo)(op_name, ...)                       | Information about a single operation discovered in a model.               |
-| [`coreai_opt.inspection.SourceFrame`](generated/coreai_opt.inspection.SourceFrame.md#coreai_opt.inspection.SourceFrame)(filename, ...)       | A single frame in the source call stack leading to an operation.          |
+| [`coreai_opt.inspection.BitsPerWeightResult`](generated/coreai_opt.inspection.BitsPerWeightResult.md#coreai_opt.inspection.BitsPerWeightResult)(...)   | Result of a bits-per-weight computation.                                  |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------|
+| [`coreai_opt.inspection.BoundaryEdge`](generated/coreai_opt.inspection.BoundaryEdge.md#coreai_opt.inspection.BoundaryEdge)(op, index)                  | A single data-flow edge crossing a module boundary.                       |
+| [`coreai_opt.inspection.InputEdge`](generated/coreai_opt.inspection.InputEdge.md#coreai_opt.inspection.InputEdge)(op, output_idx)                      | One input edge into an op, pairing the producing op with its output slot. |
+| [`coreai_opt.inspection.ModelInspector`](generated/coreai_opt.inspection.ModelInspector.md#coreai_opt.inspection.ModelInspector)(model, ...)           | Inspect operations in a PyTorch model for compression configuration.      |
+| [`coreai_opt.inspection.ModelSummary`](generated/coreai_opt.inspection.ModelSummary.md#coreai_opt.inspection.ModelSummary)(model, mode)                | Complete listing of operations discovered in a model.                     |
+| [`coreai_opt.inspection.ModuleContext`](generated/coreai_opt.inspection.ModuleContext.md#coreai_opt.inspection.ModuleContext)(...)                     | One level of the `nn.Module` nesting hierarchy.                           |
+| [`coreai_opt.inspection.ModuleInfo`](generated/coreai_opt.inspection.ModuleInfo.md#coreai_opt.inspection.ModuleInfo)(...)                              | A node in the `nn.Module` hierarchy with its directly-owned ops.          |
+| [`coreai_opt.inspection.OpInfo`](generated/coreai_opt.inspection.OpInfo.md#coreai_opt.inspection.OpInfo)(op_name, ...)                                 | Information about a single operation discovered in a model.               |
+| [`coreai_opt.inspection.SourceFrame`](generated/coreai_opt.inspection.SourceFrame.md#coreai_opt.inspection.SourceFrame)(filename, ...)                 | A single frame in the source call stack leading to an operation.          |
+| [`coreai_opt.inspection.bits_per_weight`](generated/coreai_opt.inspection.bits_per_weight.md#coreai_opt.inspection.bits_per_weight)(model)             | Compute the average bits-per-weight of a prepared `coreai-opt` model.     |
 
 ## coreai_opt.palettization
 
