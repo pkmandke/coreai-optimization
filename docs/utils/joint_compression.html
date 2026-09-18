@@ -337,14 +337,6 @@ A floating-point LUT causes operations to execute in floating-point regardless o
 <p>For quantizing activations, <code class="docutils literal notranslate"><span class="pre">graph</span></code>-mode quantization is used (the default).</p>
 <p><strong>Note</strong>: Models compressed via the joint compression flow can currently only be finalized to the <code class="docutils literal notranslate"><span class="pre">Core</span> <span class="pre">AI</span></code> backend.</p>
 <figure class="align-default" id="id1">
-<object data="../_images/mermaid-e97eb482acd4db9f7fba8d74b3de691f0b1e6d2f.svg" type="image/svg+xml">
-            <p class="warning">flowchart LR
-    model[&quot;FP32 Model&quot;] --&gt; palettize[&quot;Palettize Weights&quot;]
-    palettize --&gt; pfin[&quot;palettizer.finalize(...)&quot;]
-    pfin --&gt; quantize[&quot;Quantize Activations&quot;]
-    quantize --&gt; calibrate[&quot;Calibrate&quot;]
-    calibrate --&gt; qfin[&quot;quantizer.finalize(...)&quot;]
-    style model fill:#f9f9f9,stroke:#999</p></object>
 <figcaption>
 <p><span class="caption-text">Joint Compression Workflow</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
 </figcaption>

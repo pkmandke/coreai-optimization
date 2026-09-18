@@ -475,32 +475,6 @@ data-aria-dark="Switch to auto color mode">
 <h2>Graph mode<a class="headerlink" href="#graph-mode" title="Link to this heading">¶</a></h2>
 <p>In graph mode (the default), <code class="docutils literal notranslate"><span class="pre">quantizer.prepare()</span></code> runs <code class="docutils literal notranslate"><span class="pre">torch.export</span></code> and returns an <code class="docutils literal notranslate"><span class="pre">fx.GraphModule</span></code>. The original <code class="docutils literal notranslate"><span class="pre">nn.Module</span></code> hierarchy is flattened into a flat graph of named nodes (<code class="docutils literal notranslate"><span class="pre">conv2d</span></code>, <code class="docutils literal notranslate"><span class="pre">relu</span></code>, <code class="docutils literal notranslate"><span class="pre">linear</span></code>, <code class="docutils literal notranslate"><span class="pre">linear_weight</span></code>, …), and fake-quantize submodules (<code class="docutils literal notranslate"><span class="pre">activation_post_process_0</span></code>, <code class="docutils literal notranslate"><span class="pre">activation_post_process_1</span></code>, …) are inserted around the ops being quantized.</p>
 <p>To compare cleanly, also export the <em>original</em> model with <code class="docutils literal notranslate"><span class="pre">torch.export</span></code>. Both graphs then share identical op-node names, so an op’s float activation and its quantized counterpart can be looked up by the same key — no <code class="docutils literal notranslate"><span class="pre">nn.Module</span></code> ↔ graph-node mapping needed. However, on the prepared side, an op’s <em>quantized</em> output sits on the fake-quantize node downstream of the op, not on the op itself. Build the op-to-FQ lookup by walking the prepared graph once.</p>
-<object data="../_images/mermaid-5670e27f8317c12e260f08cc87c6bfc976b86316.svg" type="image/svg+xml">
-            <p class="warning">%%{init: {&quot;flowchart&quot;: {&quot;rankSpacing&quot;: 25, &quot;nodeSpacing&quot;: 15}}}%%
-graph LR
-    subgraph orig[&quot;Original graph (exported)&quot;]
-        direction TB
-        ow([conv_weight]) --&gt; oc[conv2d]
-        ox([x]) --&gt; oc
-        oc --&gt; or_[relu]
-        or_ --&gt; of[flatten]
-        olw([linear_weight]) --&gt; ol[linear]
-        of --&gt; ol
-        ol --&gt; oout([output])
-    end
-
-    subgraph prep[&quot;Prepared graph (W8A8)&quot;]
-        direction TB
-        pw([conv_weight]) --&gt; pfq1(FQ_1) --&gt; pc[conv2d]
-        px([x]) --&gt; pfq0(FQ_0) --&gt; pc
-        pc --&gt; pr[relu]
-        pr --&gt; pfq2(FQ_2) --&gt; pf[flatten]
-        pf --&gt; pfq3(FQ_3) --&gt; pl[linear]
-        plw([linear_weight]) --&gt; pfq4(FQ_4) --&gt; pl
-        pl --&gt; pfq5(FQ_5) --&gt; pout([output])
-    end
-
-    orig ~~~ prep</p></object>
 <p><em>Left: original exported graph. Right: after W8A8 quantization. Rounded rectangles are FQ nodes (activation_post_process_N), present only in the prepared graph; op node names are identical in both graphs.</em></p>
 <section id="id1">
 <h3>Activation collector<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>

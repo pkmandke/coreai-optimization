@@ -333,16 +333,6 @@ data-aria-dark="Switch to auto color mode">
 <h2>What is <code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code>?<a class="headerlink" href="#what-is-coreai-opt" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code> is a Python library for compressing PyTorch models for deployment on Apple Silicon. It allows you to apply compression-based optimizations (such as quantization or palettization) to any PyTorch model, producing a transformed PyTorch model that can be converted to a Core AI model and run with the <a class="reference external" href="https://developer.apple.com/documentation/coreai">Core AI</a> framework.</p>
 <p>Model compression can help reduce the memory footprint of your model (disk size and at runtime), reduce inference latency, reduce power consumption, or optimize them all at once.</p>
-<object data="_images/mermaid-5107c75c4905a8e1678919d901084ac1e9c7fc7d.svg" type="image/svg+xml">
-            <p class="warning">flowchart LR
-    A[PyTorch model] --&gt; B(coreai-opt)
-    B --&gt; C[&quot;Transformed&lt;br/&gt;PyTorch model&lt;br/&gt;(compressed)&quot;]
-    C --&gt; D(&quot;coreai-torch&lt;br/&gt;(convert)&quot;)
-    D --&gt; E[&quot;Core AI model&lt;br/&gt;(.aimodel)&quot;]
-    style A color:#999,fill:none,stroke:none
-    style C color:#999,fill:none,stroke:none
-    style E color:#999,fill:none,stroke:none
-    linkStyle default stroke:#999,stroke-width:1.5px</p></object>
 <p><code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code> is built around the following ideas:</p>
 <ul class="simple">
 <li><p><strong>PyTorch native.</strong> All APIs operate on PyTorch models. Compression is another transformation in your PyTorch workflow. The output of every compressor is itself a PyTorch model that can be validated, fine-tuned, and exported like any other model.</p></li>

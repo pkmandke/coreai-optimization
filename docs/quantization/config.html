@@ -648,14 +648,6 @@ static qparam calculator.</p>
 <p>Setting any field to <code class="docutils literal notranslate"><span class="pre">None</span></code> disables compression for that tensor group. For example,
 weight-only quantization sets <code class="docutils literal notranslate"><span class="pre">op_input_spec=None</span></code> and <code class="docutils literal notranslate"><span class="pre">op_output_spec=None</span></code> (as seen in <a class="reference internal" href="overview.html#weight-only-quantization-data-free-ptq"><span class="std std-ref">Weight-Only Quantization</span></a>).</p>
 <figure class="align-default" id="id1">
-<object data="../_images/mermaid-bf89d1eb6e5e0c70bede1ec9e13b763748afb003.svg" type="image/svg+xml">
-            <p class="warning">flowchart LR
-    input[&quot;input activations&quot;] --&gt;|&quot;&lt;b&gt;op_input_spec&lt;/b&gt;&quot;| op[&quot;Linear op&quot;]
-    weight[&quot;weight&quot;] --&gt;|&quot;&lt;b&gt;op_state_spec&lt;/b&gt;&quot;| op
-    op --&gt;|&quot;&lt;b&gt;op_output_spec&lt;/b&gt;&quot;| output[&quot;output activations&quot;]
-    style input fill:#d4edda,stroke:#28a745
-    style weight fill:#d4edda,stroke:#28a745
-    style output fill:#d4edda,stroke:#28a745</p></object>
 <figcaption>
 <p><span class="caption-text">Op-Level Tensor Specs</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
 </figcaption>
@@ -1013,15 +1005,6 @@ while leaving everything else uncompressed — use the explicit form:</p>
 <p>Use the flags <code class="docutils literal notranslate"><span class="pre">module_input_spec</span></code> and <code class="docutils literal notranslate"><span class="pre">module_output_spec</span></code> for this. They apply quantization at the module’s entry
 and exit boundaries rather than at individual internal ops. Internal ops remain at full precision.</p>
 <figure class="align-default" id="id2">
-<object data="../_images/mermaid-093b33ea2e81f6d7acf35286fc7d93a106b4ee07.svg" type="image/svg+xml">
-            <p class="warning">flowchart LR
-    input[&quot;&lt;b&gt;module inputs&lt;/b&gt;&quot;] --&gt;|&quot;&lt;b&gt;module_input_spec&lt;/b&gt;&quot;| mha
-    subgraph mha[&quot;MultiheadAttention&quot;]
-        op1[&quot;internal ops&lt;br/&gt;(full precision)&quot;]
-    end
-    mha --&gt;|&quot;&lt;b&gt;module_output_spec&lt;/b&gt;&quot;| output[&quot;&lt;b&gt;module outputs&lt;/b&gt;&quot;]
-    style input fill:#d4edda,stroke:#28a745
-    style output fill:#d4edda,stroke:#28a745</p></object>
 <figcaption>
 <p><span class="caption-text">Figure — Module Boundary Quantization</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
 </figcaption>
@@ -1163,40 +1146,6 @@ apply automatically when <code class="docutils literal notranslate"><span class=
 <p><strong>Precedence rule:</strong> When multiple config levels apply to the same op, the most specific wins: <code class="docutils literal notranslate"><span class="pre">module_name_config</span></code> overrides <code class="docutils literal notranslate"><span class="pre">module_type_config</span></code>, which overrides <code class="docutils literal notranslate"><span class="pre">global_config</span></code>. Setting a level to <code class="docutils literal notranslate"><span class="pre">None</span></code> disables quantization for everything in that scope unless a more specific level re-enables it.</p>
 <p>Here is how the hierarchy of the 3 config and 1 spec classes can be represented visually:</p>
 <figure class="align-default" id="id3">
-<object data="../_images/mermaid-4a82c4d0a9c7a6f602e211526ae3f03fff446dec.svg" type="image/svg+xml">
-            <p class="warning">classDiagram
-    class QuantizerConfig {
-        global_config
-        module_type_configs
-        module_name_configs
-        execution_mode
-    }
-    class ModuleQuantizerConfig {
-        op_input_spec
-        op_output_spec
-        op_state_spec
-        op_type_config
-        op_name_config
-        module_input_spec
-        module_output_spec
-        module_state_spec
-        qat_schedule
-    }
-    class OpQuantizerConfig {
-        op_input_spec
-        op_output_spec
-        op_state_spec
-    }
-    class QuantizationSpec {
-        dtype
-        qscheme
-        granularity
-        ...
-    }
-    QuantizerConfig --&gt; ModuleQuantizerConfig : global / type / name configs
-    ModuleQuantizerConfig --&gt; OpQuantizerConfig : op_type / op_name configs
-    ModuleQuantizerConfig --&gt; QuantizationSpec : input / output / state specs
-    OpQuantizerConfig --&gt; QuantizationSpec : input / output / state specs</p></object>
 <figcaption>
 <p><span class="caption-text">Figure — Config Class Hierarchy</span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
 </figcaption>

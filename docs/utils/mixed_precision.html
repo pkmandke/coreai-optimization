@@ -360,6 +360,10 @@ data-aria-dark="Switch to auto color mode">
 <h3>Stage 2 — Recipe generation<a class="headerlink" href="#stage-2-recipe-generation" title="Link to this heading">¶</a></h3>
 <p>Once we have the sensitivity scores of all the layers and candidate configs, we can generate a mixed-precision recipe for compressing the model. A recipe is essentially a mapping from each layer to its chosen candidate configuration.</p>
 <p>Several strategies can be applied for determining the mixed-precision recipe given a constraint — for example, a target average bits-per-weight (BPW) — and aim to balance model size reduction with minimal accuracy loss.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To obtain the analytical average BPW of a model, see <a class="reference internal" href="#utility-for-computing-analytical-bits-per-weight-bpw"><span class="std std-ref">Utility for computing analytical Bits Per Weight (BPW)</span></a> below.</p>
+</div>
 <p>A simple greedy approach often works well:</p>
 <ol class="arabic simple">
 <li><p>Sort all <code class="docutils literal notranslate"><span class="pre">(layer,</span> <span class="pre">config)</span></code> tuples by sensitivity in descending order (least quality loss first).</p></li>
@@ -398,11 +402,11 @@ data-aria-dark="Switch to auto color mode">
 <section id="utility-for-computing-analytical-bits-per-weight-bpw">
 <h2>Utility for computing analytical Bits Per Weight (BPW)<a class="headerlink" href="#utility-for-computing-analytical-bits-per-weight-bpw" title="Link to this heading">¶</a></h2>
 <p><a class="reference internal" href="../api/generated/coreai_opt.inspection.bits_per_weight.html#coreai_opt.inspection.bits_per_weight" title="coreai_opt.inspection.bits_per_weight"><code class="xref py py-func docutils literal notranslate"><span class="pre">bits_per_weight()</span></code></a> is a utility that computes an analytical BPW estimate from a <em>prepared</em> <code class="docutils literal notranslate"><span class="pre">coreai-opt</span></code> model.</p>
-<p>It estimates the average bit width of a model, amortizing compression overhead such as quantization scales and zero-points as well as palettization look-up tables and per-channel scales. Compressed tensors are counted at their effective compressed cost and everything else (biases, norms and buffers such as BatchNorm running statistics) is counted at its full-precision dtype cost.</p>
+<p>It estimates the average bit width of a model, accounting for compression overhead such as quantization scales and zero-points as well as palettization look-up tables and per-channel scales. Compressed tensors are counted at their effective compressed cost and everything else (biases, norms and buffers such as BatchNorm running statistics) is counted at its full-precision dtype cost.</p>
 <p><strong>Usage:</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">coreai_opt.quantization</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantizer</span><span class="p">,</span> <span class="n">QuantizerConfig</span>
 </span><span data-line="2"><span class="kn">from</span><span class="w"> </span><span class="nn">coreai_opt.quantization.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExecutionMode</span>
-</span><span data-line="3"><span class="kn">from</span><span class="w"> </span><span class="nn">coreai_opt.inspection</span><span class="w"> </span><span class="kn">import</span> <span class="n">bits_per_weight</span>
+</span><span data-line="3"><span class="kn">from</span><span class="w"> </span><span class="nn">coreai_opt.inspection</span><span class="w"> </span><span class="kn">import</span> <span class="n">BitsPerWeightResult</span><span class="p">,</span> <span class="n">bits_per_weight</span>
 </span><span data-line="4">
 </span><span data-line="5"><span class="c1"># Prepare an eager-mode weight-quantized model</span>
 </span><span data-line="6"><span class="n">quantizer</span> <span class="o">=</span> <span class="n">Quantizer</span><span class="p">(</span>
@@ -410,21 +414,21 @@ data-aria-dark="Switch to auto color mode">
 </span><span data-line="8"><span class="p">)</span>
 </span><span data-line="9"><span class="n">prepared_model</span> <span class="o">=</span> <span class="n">quantizer</span><span class="o">.</span><span class="n">prepare</span><span class="p">(</span><span class="n">example_inputs</span><span class="p">)</span>
 </span><span data-line="10">
-</span><span data-line="11"><span class="n">result</span> <span class="o">=</span> <span class="n">bits_per_weight</span><span class="p">(</span><span class="n">prepared_model</span><span class="p">)</span>
+</span><span data-line="11"><span class="n">result</span><span class="p">:</span> <span class="n">BitsPerWeightResult</span> <span class="o">=</span> <span class="n">bits_per_weight</span><span class="p">(</span><span class="n">prepared_model</span><span class="p">)</span>
 </span><span data-line="12"><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">bpw</span><span class="p">)</span>  <span class="c1"># e.g. 8.86</span>
 </span></pre></div>
 </div>
 <p>The returned <a class="reference internal" href="../api/generated/coreai_opt.inspection.BitsPerWeightResult.html#coreai_opt.inspection.BitsPerWeightResult" title="coreai_opt.inspection.BitsPerWeightResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">BitsPerWeightResult</span></code></a> also exposes <code class="docutils literal notranslate"><span class="pre">per_module_map</span></code>, a mapping from module name to the module’s own average BPW, which is useful for inspecting how bits are distributed across different parts of the model.</p>
 <p>The utility supports:</p>
 <ul class="simple">
-<li><p><strong>Eager-mode integer weight quantization</strong>: int8, int4, int2 and their unsigned variants along with symmetric and asymmetric, at any granularity.</p></li>
+<li><p><strong>Eager-mode integer weight quantization</strong>: any spec-supported integer dtype, any quantization scheme (symmetric or asymmetric), at any granularity.</p></li>
 <li><p><strong>Eager-mode floating-point weight quantization</strong>: FP8 (<code class="docutils literal notranslate"><span class="pre">e4m3</span></code>, <code class="docutils literal notranslate"><span class="pre">e5m2</span></code>) and FP4 (<code class="docutils literal notranslate"><span class="pre">e2m1</span></code>).</p></li>
 <li><p><strong>Palettization</strong> at any spec-supported <code class="docutils literal notranslate"><span class="pre">n_bits</span></code>, including a quantized LUT.</p></li>
 </ul>
 <p>Sub-byte payloads and zero-points are packed at <code class="docutils literal notranslate"><span class="pre">n_bits</span></code> with no padding.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Pruned models and graph-mode (<code class="docutils literal notranslate"><span class="pre">torch.fx.GraphModule</span></code>) quantized models are currently not supported.</p>
+<p>Sparsity (pruning) and models quantized using graph mode (<code class="docutils literal notranslate"><span class="pre">ExecutionMode.GRAPH</span></code>) are currently not supported.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
