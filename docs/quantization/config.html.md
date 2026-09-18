@@ -15,7 +15,7 @@ Regarding the terminology of ops and modules, as used in these APIs, here is wha
 
 `QuantizerConfig` lets you customize quantization settings for different parts of the model, via either modules or ops, or a combination of both.
 
-To estimate what a config costs in terms of bits per weight (BPW), use the [`bits_per_weight()`](../api/generated/coreai_opt.inspection.bits_per_weight.md#coreai_opt.inspection.bits_per_weight) utility to get an analytical BPW estimate for a *prepared* `coreai-opt` model.
+To estimate what a config costs in terms of bits per weight (BPW), use the [`bits_per_weight()`](../api/generated/coreai_opt.inspection.bits_per_weight.md#coreai_opt.inspection.bits_per_weight) utility to get an analytical BPW estimate for a model *prepared* by `coreai-opt`. See [Utility for computing analytical Bits Per Weight (BPW)](../utils/mixed_precision.md#utility-for-computing-analytical-bits-per-weight-bpw) for details.
 
 We will first take a look at the `QuantizationSpec` class and then through examples, will walk over how to define the config classes (and thereby covering how they are structured).
 
